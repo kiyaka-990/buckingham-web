@@ -12,6 +12,7 @@ import { AccessibilityPanel } from "@/components/accessibility-panel";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ChatWidget } from "@/components/chatbot/chat-widget";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { Chrome } from "@/components/layout/chrome";
 
 const display = Sora({
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CookieConsent />
             <ChatWidget />
             <WhatsAppWidget />
+            <ScrollToTop />
           </Chrome>
         </Providers>
       </body>

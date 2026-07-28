@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
 import { ShopView } from "@/components/shop/shop-view";
+import { SpecialOffers } from "@/components/shop/special-offers";
 
 export const metadata: Metadata = {
   title: "Shop Dogs & Puppies",
@@ -18,6 +19,7 @@ export default function ShopPage() {
         image="/images/dog-34.jpg"
         crumbs={[{ label: "Shop" }]}
       />
+      <SpecialOffers />
       <Suspense fallback={<div className="py-24 text-center text-muted">Loading collection…</div>}>
         <ShopView />
       </Suspense>
