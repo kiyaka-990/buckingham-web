@@ -1,14 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag, MapPin, BadgeCheck } from "lucide-react";
+import { FadeImage } from "@/components/ui/fade-image";
 import { motion } from "framer-motion";
 import type { Dog } from "@/lib/data/catalog";
 import { formatPrice, cn } from "@/lib/utils";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
 import { Rating } from "@/components/ui/rating";
+import { Tilt } from "@/components/ui/tilt";
 
 const statusStyles: Record<Dog["status"], string> = {
   available: "bg-emerald-500/90 text-white",
@@ -23,24 +24,27 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
   const soldOut = dog.status === "sold";
 
   return (
+    <Tilt max={7} glare={false} className="h-full rounded-3xl">
     <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay: (index % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-surface card-hover"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface card-hover"
     >
       <Link href={`/dogs/${dog.slug}`} className="relative block aspect-[4/5] overflow-hidden">
-        <Image
+        <FadeImage
           src={dog.images[0]}
           alt={`${dog.name}, ${dog.breedName}`}
           fill
           sizes="(max-width:768px) 50vw, 25vw"
           className={cn(
-            "object-cover transition-transform duration-700 group-hover:scale-110",
+            "object-cover duotone transition-transform duration-700 group-hover:scale-110",
             soldOut && "grayscale"
           )}
         />
+        <span className="shine-hover absolute inset-0 z-10" />
+        <span className="spotlight-overlay z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/45 via-transparent to-transparent opacity-60" />
 
         <div className="absolute left-3 top-3 flex flex-col gap-2">
@@ -123,5 +127,6 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
         </div>
       </div>
     </motion.article>
+    </Tilt>
   );
 }

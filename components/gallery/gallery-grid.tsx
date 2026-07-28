@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FadeImage } from "@/components/ui/fade-image";
 
 export function GalleryGrid({ images }: { images: string[] }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -25,13 +26,14 @@ export function GalleryGrid({ images }: { images: string[] }) {
             onClick={() => setOpen(i)}
             className="group relative block w-full overflow-hidden rounded-2xl"
           >
-            <Image
+            <FadeImage
               src={src}
               alt={`Buckingham dog ${i + 1}`}
               width={400}
               height={500}
-              className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="h-auto w-full object-cover duotone transition-transform duration-500 group-hover:scale-105"
             />
+            <span className="shine-hover absolute inset-0 z-10" />
             <span className="absolute inset-0 bg-navy-950/0 transition group-hover:bg-navy-950/20" />
           </motion.button>
         ))}

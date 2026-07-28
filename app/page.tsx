@@ -1,6 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Tilt } from "@/components/ui/tilt";
+import { FadeImage } from "@/components/ui/fade-image";
 import { Hero } from "@/components/home/hero";
 import { Marquee } from "@/components/home/marquee";
 import { FeaturedCarousel } from "@/components/home/featured-carousel";
@@ -70,15 +71,19 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {breeds.map((b, i) => (
             <Reveal key={b.slug} delay={i % 3}>
-              <Link href={`/breeds/${b.slug}`} className="group relative block h-64 overflow-hidden rounded-3xl">
-                <Image src={b.heroImage} alt={b.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-                  <p className="text-[11px] uppercase tracking-wider text-gold-400">{b.group}</p>
-                  <h3 className="font-display text-xl font-bold">{b.name}</h3>
-                  <p className="text-sm text-white/70">{b.tagline}</p>
-                </div>
-              </Link>
+              <Tilt className="rounded-3xl" max={8}>
+                <Link href={`/breeds/${b.slug}`} className="group relative block h-64 overflow-hidden rounded-3xl">
+                  <FadeImage src={b.heroImage} alt={b.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
+                  <span className="shine-hover absolute inset-0 z-10" />
+                  <span className="spotlight-overlay z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-5 text-white [transform:translateZ(40px)]">
+                    <p className="text-[11px] uppercase tracking-wider text-gold-400">{b.group}</p>
+                    <h3 className="font-display text-xl font-bold">{b.name}</h3>
+                    <p className="text-sm text-white/70">{b.tagline}</p>
+                  </div>
+                </Link>
+              </Tilt>
             </Reveal>
           ))}
         </div>

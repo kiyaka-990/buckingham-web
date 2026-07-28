@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Dna, Stethoscope, HeartHandshake, ArrowRight, Box, PawPrint } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { FadeImage } from "@/components/ui/fade-image";
 import { ButtonLink } from "@/components/ui/button";
 import { stats } from "@/lib/data/content";
 import { site } from "@/lib/site";
@@ -19,7 +20,8 @@ export function CategoryTiles() {
       {categories.map((c, i) => (
         <Reveal key={c.title} delay={i}>
           <Link href={c.href} className="group relative block h-72 overflow-hidden rounded-3xl">
-            <Image src={c.image} alt={c.title} fill sizes="(max-width:768px) 100vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+            <FadeImage src={c.image} alt={c.title} fill sizes="(max-width:768px) 100vw, 25vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
+            <span className="shine-hover absolute inset-0 z-10" />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-white">
               <h3 className="font-display text-xl font-bold">{c.title}</h3>

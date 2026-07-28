@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Heart, ShoppingBag, ShieldCheck, Syringe, Bug, Cpu, Stethoscope, MapPin,
-  Check, Truck, Award, ChevronRight, Share2,
+  Check, Truck, Award, ChevronRight, Share2, Rotate3d, Expand,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Dog } from "@/lib/data/catalog";
@@ -13,10 +13,15 @@ import { formatPrice, usdToKes, cn } from "@/lib/utils";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
 import { Rating } from "@/components/ui/rating";
+import { FadeImage } from "@/components/ui/fade-image";
+import { Spin360 } from "@/components/shop/spin360";
+import { Lightbox } from "@/components/shop/lightbox";
 import { site } from "@/lib/site";
 
 export function DogDetail({ dog }: { dog: Dog }) {
   const [activeImg, setActiveImg] = useState(0);
+  const [spin, setSpin] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
   const [tab, setTab] = useState<"overview" | "pedigree" | "health">("overview");
   const add = useCart((s) => s.add);
   const openCart = useCart((s) => s.open);
@@ -32,23 +37,64 @@ export function DogDetail({ dog }: { dog: Dog }) {
       <div className="grid gap-10 lg:grid-cols-2">
         {/* Gallery */}
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <motion.div
-            key={activeImg}
-            initial={{ opacity: 0.4, scale: 0.99 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border"
-          >
-            <Image src={dog.images[activeImg]} alt={dog.name} fill priority sizes="(max-width:1024px) 100vw, 50vw" className={cn("object-cover", soldOut && "grayscale")} />
-            <span className="absolute left-4 top-4 rounded-full bg-navy-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
-              {dog.status}
-            </span>
-          </motion.div>
+          <div className="group relative">
+            {spin ? (
+              <Spin360 images={dog.images} className={cn(soldOut && "grayscale")} />
+            ) : (
+              <motion.div
+                key={activeImg}
+                initial={{ opacity: 0.4, scale: 0.99 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => setLightbox(true)}
+                className="relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-3xl border border-border"
+              >
+                <FadeImage src={dog.images[activeImg]} alt={dog.name} fill priority sizes="(max-width:1024px) 100vw, 50vw" className={cn("object-cover duotone", soldOut && "grayscale")} />
+                <span className="shine-hover absolute inset-0 z-10" />
+                <span className="absolute left-4 top-4 rounded-full bg-navy-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
+                  {dog.status}
+                </span>
+                <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full glass-strong px-3 py-1.5 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
+                  <Expand size={13} className="text-gold-400" /> Click to zoom
+                </span>
+              </motion.div>
+            )}
+
+            {/* Controls */}
+            <div className="absolute right-4 top-4 z-20 flex gap-2">
+              {!spin && (
+                <button
+                  onClick={() => setLightbox(true)}
+                  className="grid h-9 w-9 place-items-center rounded-full glass-strong transition hover:text-gold-500"
+                  aria-label="Open fullscreen"
+                >
+                  <Expand size={15} />
+                </button>
+              )}
+              <button
+                onClick={() => setSpin((s) => !s)}
+                className="flex items-center gap-1.5 rounded-full glass-strong px-3 py-1.5 text-xs font-semibold transition hover:text-gold-500"
+                aria-pressed={spin}
+              >
+                <Rotate3d size={14} className="text-gold-500" /> {spin ? "Exit 360°" : "360° View"}
+              </button>
+            </div>
+          </div>
+
+          <Lightbox
+            images={dog.images}
+            index={activeImg}
+            open={lightbox}
+            onClose={() => setLightbox(false)}
+            onIndexChange={setActiveImg}
+            alt={dog.name}
+          />
+
           <div className="mt-4 flex gap-3">
             {dog.images.map((src, i) => (
               <button
                 key={i}
-                onClick={() => setActiveImg(i)}
-                className={cn("relative h-20 w-20 overflow-hidden rounded-xl border-2 transition", activeImg === i ? "border-gold-400" : "border-transparent opacity-70 hover:opacity-100")}
+                onClick={() => { setSpin(false); setActiveImg(i); }}
+                className={cn("relative h-20 w-20 overflow-hidden rounded-xl border-2 transition", !spin && activeImg === i ? "border-gold-400" : "border-transparent opacity-70 hover:opacity-100")}
               >
                 <Image src={src} alt={`${dog.name} ${i + 1}`} fill sizes="80px" className="object-cover" />
               </button>

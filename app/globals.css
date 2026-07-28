@@ -265,6 +265,42 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     animation: var(--animate-gradient);
   }
 
+  /* Shine sweep on hover (place inside a .group ancestor) --------- */
+  .shine-hover { position: relative; overflow: hidden; pointer-events: none; }
+  .shine-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.38) 48%, rgba(255,255,255,0.05) 60%, transparent 72%);
+    transform: translateX(-130%) skewX(-12deg);
+    transition: transform 0.85s var(--ease-liquid);
+  }
+  .group:hover .shine-hover::after { transform: translateX(130%) skewX(-12deg); }
+
+  /* Duotone / colour-grade on hover ------------------------------- */
+  .duotone { transition: filter 0.6s var(--ease-liquid); }
+  .group:hover .duotone { filter: saturate(1.25) contrast(1.05); }
+
+  /* Cursor spotlight overlay (driven by --mx / --my vars) --------- */
+  .spotlight-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklab, var(--color-gold-400) 30%, transparent), transparent 60%);
+    pointer-events: none;
+  }
+  .group:hover .spotlight-overlay { opacity: 1; }
+
+  /* Reveal-up clip mask (used with intersection reveal) ----------- */
+  .reveal-clip { clip-path: inset(0 0 100% 0); transition: clip-path 0.9s var(--ease-liquid); }
+  .reveal-clip.is-in { clip-path: inset(0 0 0 0); }
+
+  /* Blur-up image load ------------------------------------------- */
+  .img-load { filter: blur(16px); transform: scale(1.06); transition: filter 0.8s ease, transform 0.8s var(--ease-liquid); }
+  .img-load.is-loaded { filter: blur(0); transform: scale(1); }
+
   /* Skeleton shimmer block ---------------------------------------- */
   .skeleton {
     background: linear-gradient(90deg,
