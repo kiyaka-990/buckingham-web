@@ -41,7 +41,7 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
             soldOut && "grayscale"
           )}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent opacity-70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-950/45 via-transparent to-transparent opacity-60" />
 
         <div className="absolute left-3 top-3 flex flex-col gap-2">
           <span className={cn("rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide capitalize", statusStyles[dog.status])}>

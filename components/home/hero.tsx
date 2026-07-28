@@ -39,8 +39,9 @@ export function Hero() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/60 to-navy-950/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-navy-950/40" />
+      {/* Lighter overlay — keeps text legible on the left/bottom while letting the photo stay clear */}
+      <div className="absolute inset-0 bg-gradient-to-r from-navy-950/80 via-navy-950/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-transparent to-transparent" />
 
       {/* Content */}
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-6 py-24">

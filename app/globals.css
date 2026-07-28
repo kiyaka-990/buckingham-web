@@ -113,15 +113,20 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
 @layer base {
   * { border-color: var(--color-border); }
   body {
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(60rem 60rem at 100% -10%, color-mix(in oklab, var(--color-navy-500) 12%, transparent), transparent 55%),
+      radial-gradient(50rem 50rem at -10% 20%, color-mix(in oklab, var(--color-gold-400) 8%, transparent), transparent 50%);
+    background-attachment: fixed;
     color: var(--fg);
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
   h1, h2, h3, h4, .font-display {
-    font-family: var(--font-heading), Georgia, serif;
-    letter-spacing: -0.01em;
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
   }
   ::selection { background: var(--color-gold-300); color: var(--color-navy-900); }
   :focus-visible {
@@ -208,6 +213,67 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
       radial-gradient(40rem 40rem at 10% 0%, color-mix(in oklab, var(--color-navy-500) 35%, transparent), transparent 60%),
       radial-gradient(30rem 30rem at 90% 20%, color-mix(in oklab, var(--color-gold-400) 22%, transparent), transparent 60%),
       radial-gradient(35rem 35rem at 50% 100%, color-mix(in oklab, var(--color-navy-700) 40%, transparent), transparent 60%);
+  }
+
+  /* Gradient mesh backgrounds -------------------------------------- */
+  .bg-mesh {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(at 0% 0%, color-mix(in oklab, var(--color-gold-400) 16%, transparent) 0px, transparent 45%),
+      radial-gradient(at 98% 10%, color-mix(in oklab, var(--color-navy-500) 22%, transparent) 0px, transparent 50%),
+      radial-gradient(at 30% 100%, color-mix(in oklab, var(--color-gold-500) 12%, transparent) 0px, transparent 45%),
+      radial-gradient(at 80% 90%, color-mix(in oklab, var(--color-navy-600) 18%, transparent) 0px, transparent 50%);
+  }
+  .bg-gradient-surface {
+    background-image: linear-gradient(150deg,
+      color-mix(in oklab, var(--surface) 100%, transparent),
+      color-mix(in oklab, var(--surface-2) 70%, var(--surface)));
+  }
+  .bg-royal {
+    background-image: linear-gradient(140deg, var(--color-navy-900), var(--color-navy-950) 55%, #08122e);
+  }
+  .bg-gold-sheen {
+    background-image: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-500) 50%, var(--color-gold-400));
+  }
+
+  /* Gradient border (via padding-box + border-box trick) ----------- */
+  .gradient-border {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, color-mix(in oklab, var(--color-gold-400) 70%, transparent), transparent 40%, color-mix(in oklab, var(--color-navy-400) 55%, transparent));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .text-gradient-mesh {
+    background: linear-gradient(120deg, #eed88c, #d9ad3a 30%, #7d95d6 65%, #eed88c);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: var(--animate-gradient);
+  }
+
+  /* Skeleton shimmer block ---------------------------------------- */
+  .skeleton {
+    background: linear-gradient(90deg,
+      var(--surface-2) 25%,
+      color-mix(in oklab, var(--muted) 18%, var(--surface-2)) 37%,
+      var(--surface-2) 63%);
+    background-size: 400% 100%;
+    animation: var(--animate-shimmer);
+    border-radius: 0.75rem;
   }
 }
 

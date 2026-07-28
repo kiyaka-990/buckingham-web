@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { AdminSidebar, AdminMobileNav } from "@/components/admin/sidebar";
+import { AdminSidebar, AdminMobileNav, AdminHeader } from "@/components/admin/sidebar";
 
 export const metadata = { title: "Admin" };
 
@@ -12,7 +12,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="flex min-h-screen bg-background">
       <AdminSidebar />
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
+        <AdminHeader name={session.user?.name} email={session.user?.email} />
         <AdminMobileNav />
         <div className="p-5 sm:p-8">{children}</div>
       </div>

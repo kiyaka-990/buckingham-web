@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "gold" | "navy" | "outline" | "ghost" | "glass";
+type Variant = "gold" | "navy" | "outline" | "ghost" | "glass" | "gradient";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
   gold: "btn-gold",
   navy: "bg-navy-800 text-white hover:bg-navy-700 dark:bg-navy-600 dark:hover:bg-navy-500",
+  gradient:
+    "bg-[linear-gradient(120deg,var(--color-navy-700),var(--color-navy-500)_50%,var(--color-gold-500))] bg-[length:200%_auto] bg-left text-white hover:bg-right transition-[background-position] duration-500 shadow-soft",
   outline:
     "border border-gold-400/60 text-foreground hover:bg-gold-400/10 hover:border-gold-400",
   ghost: "text-foreground hover:bg-foreground/5",

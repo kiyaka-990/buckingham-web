@@ -43,7 +43,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured carousel */}
-      <section className="bg-surface-2/40 py-20">
+      <section className="bg-mesh py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
             <SectionHeading eyebrow="Handpicked" title="Featured Companions" />
@@ -85,7 +85,7 @@ export default function HomePage() {
       </section>
 
       {/* Why us */}
-      <section className="bg-surface-2/40 py-20">
+      <section className="bg-mesh py-20">
         <div className="mx-auto max-w-7xl px-6">
           <SectionHeading eyebrow="The Buckingham Standard" title="Why families choose us" center className="mb-12" />
           <WhyUs />
@@ -104,7 +104,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-surface-2/40 py-20">
+      <section className="bg-mesh py-20">
         <div className="mx-auto max-w-7xl px-6">
           <SectionHeading eyebrow="Loved by Families" title="Words from our owners" center className="mb-12" />
           <Testimonials />

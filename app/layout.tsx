@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Sora, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { Providers } from "@/components/providers";
@@ -11,9 +11,10 @@ import { SearchModal } from "@/components/layout/search-modal";
 import { AccessibilityPanel } from "@/components/accessibility-panel";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ChatWidget } from "@/components/chatbot/chat-widget";
+import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { Chrome } from "@/components/layout/chrome";
 
-const display = Playfair_Display({
+const display = Sora({
   subsets: ["latin"],
   variable: "--font-heading",
   weight: ["500", "600", "700", "800"],
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AccessibilityPanel />
             <CookieConsent />
             <ChatWidget />
+            <WhatsAppWidget />
           </Chrome>
         </Providers>
       </body>

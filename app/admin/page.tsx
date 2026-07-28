@@ -1,113 +1,165 @@
 import Link from "next/link";
-import { DollarSign, ShoppingCart, Dog, Users, TrendingUp, ArrowUpRight } from "lucide-react";
-import { orders, statusStyles } from "@/lib/data/orders";
-import { dogs, availableCount } from "@/lib/data/catalog";
-import { breeds } from "@/lib/data/breeds";
+import Image from "next/image";
+import { DollarSign, ShoppingCart, Dog, Users, TrendingUp, TrendingDown, ArrowUpRight, Target, Package, MessageSquare, Star, AlertTriangle } from "lucide-react";
+import { orders, statusStyles, type OrderStatus } from "@/lib/data/orders";
+import { dogs, availableCount, bestsellers } from "@/lib/data/catalog";
+import { revenueSeries, activity } from "@/lib/data/admin";
 import { formatPrice } from "@/lib/utils";
+import { DonutChart, Sparkline, AreaChart, ProgressBar } from "@/components/admin/charts";
+
+const activityIcon = { order: ShoppingCart, message: MessageSquare, stock: Package, review: Star };
 
 export default function AdminDashboard() {
   const revenue = orders.filter((o) => o.status !== "cancelled").reduce((n, o) => n + o.total, 0);
   const customers = new Set(orders.map((o) => o.email)).size;
+  const aov = Math.round(revenue / orders.filter((o) => o.status !== "cancelled").length);
   const pending = orders.filter((o) => o.status === "pending" || o.status === "confirmed").length;
+  const target = 40000;
 
   const kpis = [
-    { label: "Total Revenue", value: formatPrice(revenue), icon: DollarSign, delta: "+18.2%" },
-    { label: "Orders", value: String(orders.length), icon: ShoppingCart, delta: "+12.5%" },
-    { label: "Dogs Available", value: String(availableCount), icon: Dog, delta: `${dogs.length} total` },
-    { label: "Customers", value: String(customers), icon: Users, delta: "+8.1%" },
+    { label: "Total Revenue", value: formatPrice(revenue), icon: DollarSign, delta: "+18.2%", up: true, spark: revenueSeries.data },
+    { label: "Orders", value: String(orders.length), icon: ShoppingCart, delta: "+12.5%", up: true, spark: [4, 6, 5, 8, 7, 9, 8] },
+    { label: "Avg Order Value", value: formatPrice(aov), icon: Target, delta: "+4.1%", up: true, spark: [3200, 3400, 3300, 3800, 4100, 3900, 4200] },
+    { label: "Customers", value: String(customers), icon: Users, delta: "-2.0%", up: false, spark: [8, 7, 9, 6, 8, 7, 6] },
   ];
 
-  // Revenue by month (mock)
-  const monthly = [
-    { m: "Feb", v: 12400 }, { m: "Mar", v: 18900 }, { m: "Apr", v: 15600 },
-    { m: "May", v: 24300 }, { m: "Jun", v: 28700 }, { m: "Jul", v: revenue },
-  ];
-  const maxV = Math.max(...monthly.map((x) => x.v));
+  const statusCounts = (["pending", "confirmed", "in-transit", "delivered", "cancelled"] as OrderStatus[]).map((s) => ({
+    label: s,
+    value: orders.filter((o) => o.status === s).length,
+  }));
+  const statusColors: Record<string, string> = { pending: "#d9ad3a", confirmed: "#4d68bd", "in-transit": "#7d95d6", delivered: "#2fb380", cancelled: "#e05561" };
+  const donut = statusCounts.filter((s) => s.value > 0).map((s) => ({ label: s.label, value: s.value, color: statusColors[s.label] }));
 
-  // Top breeds by inventory
-  const breedCounts = breeds
-    .map((b) => ({ name: b.name, count: dogs.filter((d) => d.breedSlug === b.slug).length }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
-  const maxBreed = Math.max(...breedCounts.map((b) => b.count));
+  const topDogs = (bestsellers.length ? bestsellers : dogs).slice(0, 5);
+  const lowStock = dogs.filter((d) => d.status === "available" && d.stock <= 1).slice(0, 4);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted">Welcome back — here&apos;s what&apos;s happening at the kennel.</p>
+          <p className="text-muted">Welcome back — here&apos;s the kennel at a glance.</p>
         </div>
-        <span className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-          {pending} orders need attention
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">{pending} orders need attention</span>
+          <Link href="/admin/orders" className="btn-gold rounded-full px-4 py-2 text-sm">View orders</Link>
+        </div>
       </div>
 
-      {/* KPIs */}
+      {/* KPIs with sparklines */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((k) => (
-          <div key={k.label} className="rounded-3xl border border-border bg-surface p-5">
+          <div key={k.label} className="gradient-border rounded-3xl p-5">
             <div className="flex items-center justify-between">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gold-400/12 text-gold-500">
-                <k.icon size={20} />
-              </div>
-              <span className="flex items-center gap-1 text-xs font-medium text-emerald-500"><TrendingUp size={13} /> {k.delta}</span>
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gold-400/12 text-gold-500"><k.icon size={20} /></div>
+              <span className={`flex items-center gap-1 text-xs font-medium ${k.up ? "text-emerald-500" : "text-red-500"}`}>
+                {k.up ? <TrendingUp size={13} /> : <TrendingDown size={13} />} {k.delta}
+              </span>
             </div>
             <p className="mt-4 font-display text-2xl font-bold">{k.value}</p>
-            <p className="text-sm text-muted">{k.label}</p>
+            <div className="mt-1 flex items-end justify-between">
+              <p className="text-sm text-muted">{k.label}</p>
+              <Sparkline data={k.spark} color={k.up ? "var(--color-gold-400)" : "#e05561"} width={80} height={28} />
+            </div>
           </div>
         ))}
       </div>
 
+      {/* Revenue + Donut */}
       <div className="grid gap-6 xl:grid-cols-3">
-        {/* Revenue chart */}
-        <div className="rounded-3xl border border-border bg-surface p-6 xl:col-span-2">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-display text-lg font-bold">Revenue Overview</h2>
-            <span className="text-sm text-muted">Last 6 months</span>
+        <div className="rounded-3xl border border-border bg-gradient-surface p-6 xl:col-span-2">
+          <div className="mb-2 flex items-center justify-between">
+            <div>
+              <h2 className="font-display text-lg font-bold">Revenue Overview</h2>
+              <p className="text-sm text-muted">Last 7 months</p>
+            </div>
+            <span className="rounded-full bg-emerald-500/12 px-3 py-1 text-xs font-medium text-emerald-500">+22% YoY</span>
           </div>
-          <div className="flex h-56 items-end gap-3">
-            {monthly.map((m) => (
-              <div key={m.m} className="flex flex-1 flex-col items-center gap-2">
-                <div className="flex w-full flex-1 items-end">
-                  <div
-                    className="w-full rounded-t-lg bg-gradient-to-t from-gold-600 to-gold-300 transition-all hover:from-gold-500 hover:to-gold-200"
-                    style={{ height: `${(m.v / maxV) * 100}%` }}
-                    title={formatPrice(m.v)}
-                  />
+          <AreaChart data={revenueSeries.data} labels={revenueSeries.labels} />
+        </div>
+
+        <div className="rounded-3xl border border-border bg-surface p-6">
+          <h2 className="mb-5 font-display text-lg font-bold">Order Status</h2>
+          <DonutChart segments={donut} centerValue={String(orders.length)} centerLabel="orders" />
+        </div>
+      </div>
+
+      {/* Target + Top dogs + Activity */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Monthly target */}
+        <div className="rounded-3xl border border-border bg-royal p-6 text-white">
+          <h2 className="font-display text-lg font-bold">Monthly Target</h2>
+          <p className="mt-1 text-sm text-white/70">July 2026 revenue goal</p>
+          <p className="mt-5 font-display text-3xl font-bold text-gradient-gold">{formatPrice(revenue)}</p>
+          <p className="text-sm text-white/60">of {formatPrice(target)}</p>
+          <div className="mt-4"><ProgressBar value={revenue} max={target} /></div>
+          <p className="mt-2 text-xs text-white/70">{Math.round((revenue / target) * 100)}% achieved · {formatPrice(target - revenue)} to go</p>
+        </div>
+
+        {/* Top dogs */}
+        <div className="rounded-3xl border border-border bg-surface p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-display text-lg font-bold">Top Performers</h2>
+            <Link href="/admin/inventory" className="text-xs font-medium text-gold-500 hover:underline">All</Link>
+          </div>
+          <div className="space-y-3">
+            {topDogs.map((d, i) => (
+              <div key={d.id} className="flex items-center gap-3">
+                <span className="w-4 text-sm font-bold text-muted">{i + 1}</span>
+                <Image src={d.images[0]} alt={d.name} width={36} height={36} className="h-9 w-9 rounded-lg object-cover" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{d.name}</p>
+                  <p className="truncate text-xs text-muted">{d.breedName}</p>
                 </div>
-                <span className="text-xs text-muted">{m.m}</span>
+                <span className="text-sm font-semibold text-gold-500">{formatPrice(d.price)}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Top breeds */}
+        {/* Activity */}
         <div className="rounded-3xl border border-border bg-surface p-6">
-          <h2 className="mb-6 font-display text-lg font-bold">Inventory by Breed</h2>
-          <div className="space-y-4">
-            {breedCounts.map((b) => (
-              <div key={b.name}>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span>{b.name}</span>
-                  <span className="text-muted">{b.count}</span>
+          <h2 className="mb-4 font-display text-lg font-bold">Recent Activity</h2>
+          <ul className="space-y-4">
+            {activity.slice(0, 5).map((a, i) => {
+              const Icon = activityIcon[a.kind];
+              return (
+                <li key={i} className="flex gap-3">
+                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-2 text-gold-500"><Icon size={14} /></span>
+                  <div>
+                    <p className="text-sm"><span className="font-medium">{a.who}</span> <span className="text-muted">{a.action}</span></p>
+                    <p className="text-xs text-muted">{a.time}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+
+      {/* Low stock alert */}
+      {lowStock.length > 0 && (
+        <div className="rounded-3xl border border-amber-500/30 bg-amber-500/5 p-6">
+          <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold"><AlertTriangle size={18} className="text-amber-500" /> Low Stock Alerts</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {lowStock.map((d) => (
+              <Link key={d.id} href={`/dogs/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-gold-400">
+                <Image src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
+                <div>
+                  <p className="text-sm font-medium">{d.name}</p>
+                  <p className="text-xs text-amber-600 dark:text-amber-400">Only {d.stock} left</p>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                  <div className="h-full rounded-full bg-navy-600 dark:bg-navy-400" style={{ width: `${(b.count / maxBreed) * 100}%` }} />
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Recent orders */}
       <div className="rounded-3xl border border-border bg-surface p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-bold">Recent Orders</h2>
-          <Link href="/admin/orders" className="flex items-center gap-1 text-sm font-medium text-gold-500 hover:underline">
-            View all <ArrowUpRight size={14} />
-          </Link>
+          <Link href="/admin/orders" className="flex items-center gap-1 text-sm font-medium text-gold-500 hover:underline">View all <ArrowUpRight size={14} /></Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
