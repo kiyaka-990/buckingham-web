@@ -3,15 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { X, Gift, PawPrint, ShieldCheck, Truck, ArrowRight, Pause } from "lucide-react";
+import { X, Gift, PawPrint, ShieldCheck, Truck, ArrowRight, Pause, Tag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { dogs } from "@/lib/data/catalog";
+import { formatPrice, cn } from "@/lib/utils";
 
-const INITIAL_DELAY = 2800; // before the first advert appears
 const DURATION = 8000; // how long each advert stays
 const GAP = 4500; // pause between adverts
 const TICK = 50;
 
 type Ad = {
+  key: string;
   badge: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   title: string;
@@ -21,25 +23,56 @@ type Ad = {
   image?: string; // when set, renders a photo/banner-style advert
 };
 
-const ads: Ad[] = [
-  { badge: "Grand Opening", icon: Gift, title: "10% off your first puppy", text: "Welcome offer for new families this month only.", cta: { label: "Shop Puppies", href: "/puppies" }, accent: "from-gold-500 to-gold-300" },
-  { badge: "New Litter", icon: PawPrint, title: "Golden Retriever pups just arrived", text: "Health-checked & ready to reserve.", cta: { label: "Meet Them", href: "/puppies" }, accent: "from-amber-500 to-gold-300", image: "/images/dog-70.jpg" },
-  { badge: "Limited", icon: ShieldCheck, title: "Trained protection dogs available", text: "Handler-ready Malinois & German Shepherds in stock.", cta: { label: "View Dogs", href: "/shop?category=trained" }, accent: "from-navy-500 to-gold-400", image: "/images/dog-06.jpg" },
-  { badge: "This Month", icon: Truck, title: "Free delivery within Nairobi", text: "On every dog delivered across the city — limited time.", cta: { label: "Explore", href: "/shop" }, accent: "from-emerald-500 to-gold-300" },
+const promoAds: Ad[] = [
+  { key: "p1", badge: "Grand Opening", icon: Gift, title: "10% off your first puppy", text: "Welcome offer for new families this month only.", cta: { label: "Shop Puppies", href: "/puppies" }, accent: "from-gold-500 to-gold-300" },
+  { key: "p2", badge: "New Litter", icon: PawPrint, title: "Golden Retriever pups just arrived", text: "Health-checked & ready to reserve.", cta: { label: "Meet Them", href: "/puppies" }, accent: "from-amber-500 to-gold-300", image: "/images/dog-70.jpg" },
+  { key: "p3", badge: "Limited", icon: ShieldCheck, title: "Trained protection dogs available", text: "Handler-ready Malinois & GSDs in stock.", cta: { label: "View Dogs", href: "/shop?category=trained" }, accent: "from-navy-500 to-gold-400", image: "/images/dog-06.jpg" },
+  { key: "p4", badge: "This Month", icon: Truck, title: "Free delivery within Nairobi", text: "On every dog delivered across the city.", cta: { label: "Explore", href: "/shop" }, accent: "from-emerald-500 to-gold-300" },
 ];
 
-export function HeroAd() {
+/** Auto-generated deal ads from catalog dogs that are on sale (have compareAt). */
+function buildDealAds(): Ad[] {
+  return dogs
+    .filter((d) => d.compareAt && d.status !== "sold")
+    .slice(0, 4)
+    .map((d) => {
+      const pct = Math.round((1 - d.price / (d.compareAt as number)) * 100);
+      return {
+        key: `deal-${d.id}`,
+        badge: `${pct}% OFF`,
+        icon: Tag,
+        title: `${d.name} · ${d.breedName}`,
+        text: `Now ${formatPrice(d.price)} — was ${formatPrice(d.compareAt as number)}`,
+        cta: { label: "Grab the Deal", href: `/dogs/${d.slug}` },
+        accent: "from-red-500 to-gold-400",
+        image: d.images[0],
+      };
+    });
+}
+
+function AdSlot({
+  ads,
+  containerClass,
+  storageKey,
+  initialDelay,
+}: {
+  ads: Ad[];
+  containerClass: string;
+  storageKey: string;
+  initialDelay: number;
+}) {
   const [i, setI] = useState(0);
   const [show, setShow] = useState(false);
   const [closed, setClosed] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [progress, setProgress] = useState(0); // 0 → 1 over DURATION
+  const [progress, setProgress] = useState(0);
 
   const pausedRef = useRef(false);
   useEffect(() => { pausedRef.current = paused; }, [paused]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("bk-heroad-closed")) {
+    if (!ads.length) return;
+    if (typeof window !== "undefined" && sessionStorage.getItem(storageKey)) {
       setClosed(true);
       return;
     }
@@ -52,7 +85,7 @@ export function HeroAd() {
       setProgress(0);
       setShow(true);
       interval = setInterval(() => {
-        if (pausedRef.current) return; // hover-to-pause freezes the countdown
+        if (pausedRef.current) return;
         setProgress((p) => {
           const np = p + TICK / DURATION;
           if (np >= 1) {
@@ -69,17 +102,17 @@ export function HeroAd() {
       }, TICK);
     };
 
-    const startTimer = setTimeout(startAd, INITIAL_DELAY);
+    const startTimer = setTimeout(startAd, initialDelay);
     return () => { mounted = false; clearTimeout(startTimer); clearTimeout(gapTimer); clearInterval(interval); };
-  }, []);
+  }, [ads.length, storageKey, initialDelay]);
 
   const close = () => {
     setShow(false);
     setClosed(true);
-    try { sessionStorage.setItem("bk-heroad-closed", "1"); } catch {}
+    try { sessionStorage.setItem(storageKey, "1"); } catch {}
   };
 
-  if (closed) return null;
+  if (closed || !ads.length) return null;
   const ad = ads[i];
   const pauseHandlers = {
     onMouseEnter: () => setPaused(true),
@@ -89,11 +122,11 @@ export function HeroAd() {
   };
 
   return (
-    <div className="pointer-events-none absolute inset-x-4 top-20 z-30 flex justify-center sm:inset-x-auto sm:right-6 sm:top-24 sm:justify-end">
+    <div className={containerClass}>
       <AnimatePresence mode="wait">
         {show && (
           <motion.div
-            key={i}
+            key={ad.key}
             {...pauseHandlers}
             initial={{ opacity: 0, y: -16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -105,7 +138,6 @@ export function HeroAd() {
               <X size={15} />
             </button>
 
-            {/* paused indicator */}
             <AnimatePresence>
               {paused && (
                 <motion.span
@@ -118,7 +150,6 @@ export function HeroAd() {
             </AnimatePresence>
 
             {ad.image ? (
-              /* ---- Banner / photo advert ---- */
               <Link href={ad.cta.href} className="block">
                 <div className="relative h-44 w-full">
                   <Image src={ad.image} alt={ad.title} fill sizes="384px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -134,7 +165,6 @@ export function HeroAd() {
                 </div>
               </Link>
             ) : (
-              /* ---- Compact icon advert ---- */
               <div className="flex items-start gap-3 p-4 pr-9 text-white">
                 <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${ad.accent} text-navy-900`}>
                   <ad.icon size={20} />
@@ -150,7 +180,6 @@ export function HeroAd() {
               </div>
             )}
 
-            {/* countdown progress (freezes while paused) */}
             <div className="h-1 w-full bg-white/10">
               <div className="h-full bg-gradient-to-r from-gold-400 to-gold-200" style={{ width: `${(1 - progress) * 100}%`, transition: "width 50ms linear" }} />
             </div>
@@ -158,5 +187,27 @@ export function HeroAd() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export function HeroAd() {
+  const dealAds = buildDealAds();
+  return (
+    <>
+      {/* Slot A — promotional offers, top-right */}
+      <AdSlot
+        ads={promoAds}
+        storageKey="bk-heroad-a"
+        initialDelay={2800}
+        containerClass="pointer-events-none absolute inset-x-4 top-20 z-30 flex justify-center sm:inset-x-auto sm:right-6 sm:top-24 sm:justify-end"
+      />
+      {/* Slot B — real catalog deals, bottom-left, staggered (desktop) */}
+      <AdSlot
+        ads={dealAds}
+        storageKey="bk-heroad-b"
+        initialDelay={6500}
+        containerClass={cn("pointer-events-none absolute bottom-28 left-6 z-30 hidden w-[22rem] justify-start lg:flex")}
+      />
+    </>
   );
 }
