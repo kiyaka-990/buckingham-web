@@ -27,6 +27,15 @@ import { useWishlist } from "@/lib/store/wishlist";
 import { useUI } from "@/lib/store/ui";
 import { usePreferences } from "@/lib/store/preferences";
 import { breeds } from "@/lib/data/breeds";
+import { RotatingText } from "@/components/ui/rotating-text";
+
+const announcements = [
+  "Champion bloodlines · Health guaranteed · Global delivery",
+  "New litters arriving — reserve your puppy today",
+  "Health-guaranteed up to 36 months on every dog",
+  "Free breed consultation — chat with us on WhatsApp",
+  "Elite trained protection dogs now available",
+];
 
 export function Navbar() {
   const pathname = usePathname();
@@ -56,8 +65,11 @@ export function Navbar() {
       <div className="hidden bg-navy-900 text-navy-50 md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
           <p className="flex items-center gap-2">
-            <span className="animate-pulse text-gold-400">●</span>
-            Champion bloodlines · Health guaranteed · Nationwide &amp; global delivery
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-400" />
+            </span>
+            <RotatingText words={announcements} interval={3500} className="h-4 text-navy-50" />
           </p>
           <div className="flex items-center gap-4">
             <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-gold-400 transition">
