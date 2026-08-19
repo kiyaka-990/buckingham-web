@@ -6,6 +6,7 @@ import { Ruler, Weight, Clock, MapPin } from "lucide-react";
 import { getBreed } from "@/lib/data/breeds";
 import { getDogsByBreed } from "@/lib/queries";
 import { DogCard } from "@/components/shop/dog-card";
+import { BreedVideo } from "@/components/breeds/breed-video";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
 
@@ -61,6 +62,14 @@ export default async function BreedPage({ params }: Params) {
             <h2 className="font-display text-2xl font-bold">About the {b.name}</h2>
             <p className="mt-3 leading-relaxed text-muted">{b.description}</p>
           </div>
+          {b.video && (
+            <BreedVideo
+              src={b.video.src}
+              poster={b.video.poster}
+              caption={b.video.caption}
+              breedName={b.name}
+            />
+          )}
           <div className="rounded-3xl border border-border bg-surface p-6">
             <h3 className="font-display text-lg font-semibold">Care &amp; Living</h3>
             <p className="mt-2 leading-relaxed text-muted">{b.care}</p>

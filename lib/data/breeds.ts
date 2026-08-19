@@ -33,6 +33,8 @@ export type Breed = {
   photoPending: boolean;
   heroImage: string;
   gallery: string[];
+  /** Short clips of the dogs, shot at the kennel. Poster comes from the gallery. */
+  video?: { src: string; poster: string; caption: string };
 };
 
 const m = (dir: string, file: string) => `/media/${dir}/${file}`;
@@ -152,6 +154,11 @@ export const breeds: Breed[] = [
     photoPending: false,
     heroImage: m("kangal", "adult-01.jpg"),
     gallery: [...set("kangal", "adult", 2), ...set("kangal", "pup", 2)],
+    video: {
+      src: m("kangal", "clip-01.mp4"),
+      poster: m("kangal", "adult-02.jpg"),
+      caption: "Filmed on the range where our Kangals are raised.",
+    },
   },
   {
     slug: "white-swiss-shepherd",
