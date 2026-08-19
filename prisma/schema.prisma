@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // SQLite for zero-setup local/dev. Swap provider+url to Postgres for prod.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String?
+  email        String   @unique
+  passwordHash String?
+  role         String   @default("client") // "admin" | "client"
+  image        String?
+  createdAt    DateTime @default(now())
+}
+
+model Dog {
+  id          String   @id
+  slug        String   @unique
+  name        String
+  breedSlug   String
+  breedName   String
+  category    String
+  sex         String
+  ageLabel    String
+  color       String
+  price       Int
+  compareAt   Int?
+  status      String   @default("available")
+  stock       Int      @default(1)
+  featured    Boolean  @default(false)
+  bestseller  Boolean  @default(false)
+  weightKg    Float
+  rating      Float    @default(4.8)
+  reviews     Int      @default(0)
+  location    String
+  description String
+  images      String // JSON string[]
+  traits      String // JSON string[]
+  pedigree    String // JSON object
+  health      String // JSON object
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  ref          String      @unique
+  customerName String
+  email        String
+  phone        String?
+  address      String?
+  city         String?
+  county       String?
+  method          String      @default("Card (Stripe)")
+  status          String      @default("pending")
+  total           Int
+  deposit         Int         @default(0)
+  stripeSessionId String?     @unique
+  mpesaCheckoutId String?
+  mpesaReceipt    String?
+  paidAt          DateTime?
+  createdAt       DateTime    @default(now())
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  dogSlug   String
+  name      String
+  breedName String
+  price     Int
+  qty       Int    @default(1)
+  image     String?
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  channel   String   @default("Web Form")
+  subject   String
+  body      String
+  unread    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+/// One-time sign-in codes emailed to a visitor. Codes are stored hashed,
+/// expire after 10 minutes, and are consumed on first successful use.
+model LoginCode {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  consumed  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

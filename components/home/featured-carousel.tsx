@@ -15,10 +15,10 @@ export function FeaturedCarousel({ dogs }: { dogs: Dog[] }) {
   return (
     <div className="relative">
       <div className="absolute -top-16 right-0 hidden gap-2 sm:flex">
-        <button onClick={() => scroll(-1)} aria-label="Previous" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-gold-400 hover:text-gold-500">
+        <button onClick={() => scroll(-1)} aria-label="Previous" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-brass-400 hover:text-brass-500">
           <ChevronLeft size={18} />
         </button>
-        <button onClick={() => scroll(1)} aria-label="Next" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-gold-400 hover:text-gold-500">
+        <button onClick={() => scroll(1)} aria-label="Next" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-brass-400 hover:text-brass-500">
           <ChevronRight size={18} />
         </button>
       </div>

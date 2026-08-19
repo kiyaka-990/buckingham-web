@@ -18,12 +18,15 @@ import {
 import { SectionHeading } from "@/components/ui/section";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { featuredDogs, dogs } from "@/lib/data/catalog";
+import { getFeaturedDogs, getDogs } from "@/lib/queries";
 import { breeds } from "@/lib/data/breeds";
 import { site } from "@/lib/site";
 
-export default function HomePage() {
-  const featured = featuredDogs.length ? featuredDogs : dogs.slice(0, 8);
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const featuredList = await getFeaturedDogs();
+  const featured = featuredList.length ? featuredList : (await getDogs()).slice(0, 8);
 
   return (
     <>
@@ -76,9 +79,9 @@ export default function HomePage() {
                   <FadeImage src={b.heroImage} alt={b.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
                   <span className="shine-hover absolute inset-0 z-10" />
                   <span className="spotlight-overlay z-10" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-5 text-white [transform:translateZ(40px)]">
-                    <p className="text-[11px] uppercase tracking-wider text-gold-400">{b.group}</p>
+                    <p className="text-[11px] uppercase tracking-wider text-brass-400">{b.group}</p>
                     <h3 className="font-display text-xl font-bold">{b.name}</h3>
                     <p className="text-sm text-white/70">{b.tagline}</p>
                   </div>
@@ -122,7 +125,7 @@ export default function HomePage() {
           <p className="font-display text-2xl italic leading-relaxed text-muted sm:text-3xl">
             “{site.quote.text}”
           </p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-gold-500">— {site.quote.author}</p>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-brass-500">— {site.quote.author}</p>
         </Reveal>
       </section>
 

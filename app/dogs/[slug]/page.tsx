@@ -1,19 +1,17 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { dogs, getDog, relatedDogs } from "@/lib/data/catalog";
+import { getDog, getRelated } from "@/lib/queries";
 import { DogDetail } from "@/components/shop/dog-detail";
 import { DogCard } from "@/components/shop/dog-card";
 import { SectionHeading } from "@/components/ui/section";
 
-export function generateStaticParams() {
-  return dogs.map((d) => ({ slug: d.slug }));
-}
+export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const dog = getDog(slug);
+  const dog = await getDog(slug);
   if (!dog) return { title: "Dog not found" };
   return {
     title: `${dog.name} — ${dog.breedName}`,
@@ -24,10 +22,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function DogPage({ params }: Params) {
   const { slug } = await params;
-  const dog = getDog(slug);
+  const dog = await getDog(slug);
   if (!dog) notFound();
 
-  const related = relatedDogs(dog);
+  const related = await getRelated(dog);
 
   return (
     <div className="pt-20">

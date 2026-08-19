@@ -3,7 +3,7 @@ import { Skeleton, DogGridSkeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
     <>
-      <div className="min-h-[60vh] bg-navy-950" />
+      <div className="min-h-[60vh] bg-forest-950" />
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[1fr_360px]">
         <div className="space-y-4">
           <Skeleton className="h-8 w-64" />

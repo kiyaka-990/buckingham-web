@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,7 +22,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[60] bg-navy-950/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-forest-950/60 backdrop-blur-sm"
           />
           <motion.aside
             initial={{ x: "100%" }}
@@ -32,7 +33,7 @@ export function CartDrawer() {
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <h2 className="flex items-center gap-2 font-display text-lg font-bold">
-                <ShoppingBag size={18} className="text-gold-500" /> Your Kennel Cart
+                <ShoppingBag size={18} className="text-brass-500" /> Your Kennel Cart
               </h2>
               <button onClick={close} aria-label="Close cart" className="grid h-9 w-9 place-items-center rounded-full hover:bg-foreground/5">
                 <X size={18} />
@@ -52,11 +53,11 @@ export function CartDrawer() {
                 <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-3 rounded-2xl border border-border p-3">
-                      <Image src={item.image} alt={item.name} width={80} height={96} className="h-24 w-20 rounded-xl object-cover" />
+                      <FadeImage src={item.image} alt={item.name} width={80} height={96} className="h-24 w-20 rounded-xl object-cover" />
                       <div className="flex flex-1 flex-col">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <Link href={`/dogs/${item.slug}`} onClick={close} className="font-semibold leading-tight hover:text-gold-500">
+                            <Link href={`/dogs/${item.slug}`} onClick={close} className="font-semibold leading-tight hover:text-brass-500">
                               {item.name}
                             </Link>
                             <p className="text-xs text-muted">{item.breedName}</p>

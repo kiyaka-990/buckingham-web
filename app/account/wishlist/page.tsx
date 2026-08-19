@@ -14,7 +14,7 @@ export default function WishlistPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 pb-24 pt-28">
       <div className="flex items-center gap-3">
-        <Heart className="text-gold-500" />
+        <Heart className="text-brass-500" />
         <h1 className="font-display text-4xl font-bold">My Wishlist</h1>
       </div>
 

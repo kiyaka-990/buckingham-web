@@ -22,10 +22,10 @@ export default function ShowroomPage() {
       <section className="mx-auto max-w-7xl px-6">
         <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-xs font-medium">
-            <Sparkles size={14} className="text-gold-400" /> Immersive Experience
+            <Sparkles size={14} className="text-brass-400" /> Immersive Experience
           </span>
           <h1 className="mt-4 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            The <span className="text-gradient-gold">3D Showroom</span>
+            The <span className="text-gradient-brass">3D Showroom</span>
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-muted">
             Wander through a living gallery of our champions in real-time 3D. Meet your next companion from anywhere.
@@ -37,7 +37,7 @@ export default function ShowroomPage() {
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {tips.map((t) => (
             <span key={t.label} className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted">
-              <t.icon size={15} className="text-gold-500" /> {t.label}
+              <t.icon size={15} className="text-brass-500" /> {t.label}
             </span>
           ))}
         </div>

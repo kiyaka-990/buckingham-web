@@ -2,48 +2,126 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Mail, Lock, Loader2, User, ShieldCheck } from "lucide-react";
+import { Mail, Lock, Loader2, User, ShieldCheck, KeyRound, ArrowLeft } from "lucide-react";
+import { Crest } from "@/components/brand/crest";
 import { site } from "@/lib/site";
+import { cn } from "@/lib/utils";
+
+type Method = "password" | "otp";
+type Busy = "google" | "credentials" | "otp-send" | "otp-verify" | null;
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
-  const [loading, setLoading] = useState<"google" | "credentials" | null>(null);
+  const [loading, setLoading] = useState<Busy>(null);
   const [error, setError] = useState("");
+  const [method, setMethod] = useState<Method>("password");
+
+  // OTP flow state
+  const [otpEmail, setOtpEmail] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [devCode, setDevCode] = useState<string | null>(null);
+
   const isLogin = mode === "login";
+
+  const finish = () => {
+    router.push("/account");
+    router.refresh();
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading("credentials");
     const form = new FormData(e.currentTarget);
-    const res = await signIn("credentials", {
-      email: String(form.get("email")),
-      password: String(form.get("password")),
-      redirect: false,
-    });
+    const email = String(form.get("email"));
+    const password = String(form.get("password"));
+
+    // Create the account first when registering.
+    if (!isLogin) {
+      const reg = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.get("name"), email, password }),
+      });
+      if (!reg.ok) {
+        const data = await reg.json().catch(() => ({}));
+        setLoading(null);
+        setError(data.error || "Could not create your account.");
+        return;
+      }
+    }
+
+    const res = await signIn("credentials", { email, password, redirect: false });
     setLoading(null);
     if (res?.error) {
-      setError("Invalid credentials. Password must be at least 6 characters.");
+      setError(isLogin ? "Invalid email or password." : "Account created — please sign in.");
       return;
     }
-    router.push("/account");
-    router.refresh();
+    finish();
+  };
+
+  const sendCode = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setDevCode(null);
+    setLoading("otp-send");
+    try {
+      const res = await fetch("/api/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: otpEmail }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Could not send a code. Please try again.");
+        // Email delivery isn't wired up on this deployment — steer them to a
+        // method that does work rather than leaving them stuck on this tab.
+        if (data.unavailable) setMethod("password");
+        return;
+      }
+      setOtpSent(true);
+      if (data.devCode) setDevCode(data.devCode);
+    } catch {
+      setError("Could not reach the server. Please try again.");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const verifyCode = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setLoading("otp-verify");
+    const res = await signIn("otp", { email: otpEmail, code: otpCode, redirect: false });
+    setLoading(null);
+    if (res?.error) {
+      setError("That code isn't right, or it has expired. Ask for a new one.");
+      return;
+    }
+    finish();
   };
 
   return (
     <div className="w-full max-w-md">
       <div className="rounded-3xl border border-border bg-surface p-8 shadow-soft">
         <div className="mb-6 flex flex-col items-center text-center">
-          <Image src="/brand/logo.png" alt={site.name} width={56} height={56} className="mb-3 h-14 w-14 rounded-full ring-1 ring-gold-400/40" />
-          <h1 className="font-display text-2xl font-bold">{isLogin ? "Welcome back" : "Create your account"}</h1>
-          <p className="mt-1 text-sm text-muted">{isLogin ? "Sign in to manage your reservations." : "Join the Buckingham family."}</p>
+          <Crest className="mb-3 h-14" />
+          <h1 className="font-display text-2xl font-bold">
+            {isLogin ? "Welcome back" : "Create your account"}
+          </h1>
+          <p className="mt-1 text-sm text-muted">
+            {isLogin ? "Sign in to manage your reservations." : "Join the Buckingham family."}
+          </p>
         </div>
 
         <button
-          onClick={() => { setLoading("google"); signIn("google", { callbackUrl: "/account" }); }}
+          onClick={() => {
+            setLoading("google");
+            signIn("google", { callbackUrl: "/account" });
+          }}
           disabled={loading !== null}
           className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-border font-medium transition hover:bg-foreground/5"
         >
@@ -52,45 +130,160 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         </button>
 
         <div className="my-5 flex items-center gap-3 text-xs text-muted">
-          <span className="h-px flex-1 bg-border" /> or {isLogin ? "sign in" : "sign up"} with email <span className="h-px flex-1 bg-border" />
+          <span className="h-px flex-1 bg-border" /> or use your email{" "}
+          <span className="h-px flex-1 bg-border" />
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-3">
-          {!isLogin && (
-            <IconInput icon={<User size={16} />} name="name" placeholder="Full name" />
-          )}
-          <IconInput icon={<Mail size={16} />} name="email" type="email" placeholder="Email address" required />
-          <IconInput icon={<Lock size={16} />} name="password" type="password" placeholder="Password (6+ characters)" required />
+        {/* Method switch */}
+        <div className="mb-4 grid grid-cols-2 gap-1 rounded-full border border-border p-1">
+          {(
+            [
+              { key: "password", label: "Password", icon: <Lock size={14} /> },
+              { key: "otp", label: "Email code", icon: <KeyRound size={14} /> },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => {
+                setMethod(t.key);
+                setError("");
+              }}
+              className={cn(
+                "flex items-center justify-center gap-1.5 rounded-full py-2 text-sm font-medium transition",
+                method === t.key ? "bg-forest-800 text-white" : "text-muted hover:text-foreground"
+              )}
+            >
+              {t.icon}
+              {t.label}
+            </button>
+          ))}
+        </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+        {method === "password" ? (
+          <form onSubmit={onSubmit} className="space-y-3">
+            {!isLogin && <IconInput icon={<User size={16} />} name="name" placeholder="Full name" />}
+            <IconInput icon={<Mail size={16} />} name="email" type="email" placeholder="Email address" required />
+            <IconInput
+              icon={<Lock size={16} />}
+              name="password"
+              type="password"
+              placeholder="Password (6+ characters)"
+              required
+              minLength={6}
+            />
 
-          <button disabled={loading !== null} className="btn-gold flex h-12 w-full items-center justify-center gap-2 rounded-full">
-            {loading === "credentials" ? <Loader2 className="animate-spin" size={18} /> : isLogin ? "Sign In" : "Create Account"}
-          </button>
-        </form>
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+            <button disabled={loading !== null} className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full">
+              {loading === "credentials" ? (
+                <Loader2 className="animate-spin" size={18} />
+              ) : isLogin ? (
+                "Sign In"
+              ) : (
+                "Create Account"
+              )}
+            </button>
+          </form>
+        ) : !otpSent ? (
+          <form onSubmit={sendCode} className="space-y-3">
+            <IconInput
+              icon={<Mail size={16} />}
+              type="email"
+              placeholder="Email address"
+              value={otpEmail}
+              onChange={(e) => setOtpEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+            <p className="text-xs text-muted">
+              We&apos;ll email you a six-digit code. No password to remember — and it creates your
+              account if you don&apos;t have one yet.
+            </p>
+
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+            <button disabled={loading !== null} className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full">
+              {loading === "otp-send" ? <Loader2 className="animate-spin" size={18} /> : "Send me a code"}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={verifyCode} className="space-y-3">
+            <button
+              type="button"
+              onClick={() => {
+                setOtpSent(false);
+                setOtpCode("");
+                setError("");
+                setDevCode(null);
+              }}
+              className="flex items-center gap-1 text-xs text-muted transition hover:text-foreground"
+            >
+              <ArrowLeft size={13} /> Use a different email
+            </button>
+
+            <p className="text-sm text-muted">
+              Code sent to <strong className="text-foreground">{otpEmail}</strong>. It expires in ten
+              minutes.
+            </p>
+
+            <input
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxLength={6}
+              placeholder="000000"
+              value={otpCode}
+              onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              required
+              aria-label="Six-digit sign-in code"
+              className="h-14 w-full rounded-xl border border-border bg-background text-center font-display text-2xl tracking-[0.6em] outline-none focus:border-brass-400"
+            />
+
+            {devCode && (
+              <p className="rounded-xl border border-brass-400/40 bg-brass-400/10 px-3 py-2 text-xs text-muted">
+                No mail provider configured, so here is the code for testing:{" "}
+                <strong className="font-mono text-foreground">{devCode}</strong>
+              </p>
+            )}
+
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+            <button
+              disabled={loading !== null || otpCode.length !== 6}
+              className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full disabled:opacity-50"
+            >
+              {loading === "otp-verify" ? <Loader2 className="animate-spin" size={18} /> : "Verify & sign in"}
+            </button>
+          </form>
+        )}
 
         <p className="mt-5 text-center text-sm text-muted">
           {isLogin ? "New to Buckingham?" : "Already have an account?"}{" "}
-          <Link href={isLogin ? "/register" : "/login"} className="font-medium text-gold-500 hover:underline">
+          <Link href={isLogin ? "/register" : "/login"} className="font-medium text-brass-500 hover:underline">
             {isLogin ? "Create an account" : "Sign in"}
           </Link>
         </p>
       </div>
 
       <div className="mt-4 flex items-start gap-2 rounded-2xl border border-border bg-surface-2/50 p-4 text-xs text-muted">
-        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-gold-500" />
+        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-brass-500" />
         <span>
-          <strong className="text-foreground">Demo access:</strong> any email + 6-char password works as a client.
-          Admin dashboard: <code>{site.admin.demoEmail}</code> / <code>{site.admin.demoPassword}</code>
+          <strong className="text-foreground">Three ways in:</strong> Google, a password, or a
+          one-time code emailed to you. Admin demo: <code>{site.admin.demoEmail}</code> /{" "}
+          <code>{site.admin.demoPassword}</code>
         </span>
       </div>
     </div>
   );
 }
 
-function IconInput({ icon, ...props }: { icon: React.ReactNode } & React.InputHTMLAttributes<HTMLInputElement>) {
+function IconInput({
+  icon,
+  ...props
+}: { icon: React.ReactNode } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-gold-400">
+    <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-brass-400">
       <span className="text-muted">{icon}</span>
       <input {...props} className="h-12 flex-1 bg-transparent text-sm outline-none" />
     </div>

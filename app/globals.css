@@ -1,100 +1,132 @@
 @import "tailwindcss";
 
 /* ============================================================= */
-/*  Buckingham Kennel Limited — Design System                    */
-/*  Royal navy + gold. Glassmorphism. Liquid UI.                 */
+/*  Buckingham Kennel Limited — "Estate & Heritage" design system */
+/*  Forest green · brass · bone. Photography-led, light-first.    */
 /* ============================================================= */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Brand palette ------------------------------------------------ */
-  --color-navy-50: #eef2fb;
-  --color-navy-100: #d6def4;
-  --color-navy-200: #aebfe8;
-  --color-navy-300: #7d95d6;
-  --color-navy-400: #4d68bd;
-  --color-navy-500: #2f489c;
-  --color-navy-600: #21357c;
-  --color-navy-700: #182a63;
-  --color-navy-800: #101d47;
-  --color-navy-900: #0a1533;
-  --color-navy-950: #050b1f;
+  /* ---- Brand palette ------------------------------------------ */
+  --color-forest-50: #f0f6f2;
+  --color-forest-100: #dbeae1;
+  --color-forest-200: #b6d4c3;
+  --color-forest-300: #86b69d;
+  --color-forest-400: #559275;
+  --color-forest-500: #35755a;
+  --color-forest-600: #255c46;
+  --color-forest-700: #1b4332;
+  --color-forest-800: #143327;
+  --color-forest-900: #0f2620;
+  --color-forest-950: #081511;
 
-  --color-gold-50: #fbf7ea;
-  --color-gold-100: #f6ecc7;
-  --color-gold-200: #eed88c;
-  --color-gold-300: #e6c65a;
-  --color-gold-400: #d9ad3a;
-  --color-gold-500: #c9972a;
-  --color-gold-600: #a87720;
-  --color-gold-700: #85591e;
-  --color-gold-800: #6f481f;
-  --color-gold-900: #5f3d1f;
+  --color-brass-50: #fbf7ee;
+  --color-brass-100: #f5ebd3;
+  --color-brass-200: #ead4a4;
+  --color-brass-300: #ddb972;
+  --color-brass-400: #cea052;
+  --color-brass-500: #b08442;
+  --color-brass-600: #946a37;
+  --color-brass-700: #775231;
+  --color-brass-800: #63442d;
+  --color-brass-900: #543a29;
 
-  --color-brand: var(--color-navy-800);
-  --color-accent: var(--color-gold-400);
+  --color-bone-50: #fdfcf8;
+  --color-bone-100: #f7f4ec;
+  --color-bone-200: #efeadd;
+  --color-bone-300: #e0d9c7;
+  --color-bone-400: #c9c0a8;
 
-  /* Semantic tokens (bound to CSS vars for theming) -------------- */
+  --color-brand: var(--color-forest-700);
+  --color-accent: var(--color-brass-500);
+
+  /* ---- Semantic tokens (bound to themed CSS vars) ------------- */
   --color-background: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
   --color-foreground: var(--fg);
   --color-muted: var(--muted);
   --color-border: var(--border-c);
-  --color-ring: var(--color-gold-400);
+  --color-ring: var(--color-brass-500);
 
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);
 
-  --radius-xl2: 1.5rem;
+  --radius-xs: 0.25rem;
+  --radius-xl2: 1.25rem;
+  --radius-xl3: 2rem;
 
-  --shadow-glow: 0 0 40px -8px color-mix(in oklab, var(--color-gold-400) 55%, transparent);
-  --shadow-soft: 0 20px 50px -20px rgba(5, 11, 31, 0.45);
+  --shadow-plate: 0 1px 2px rgba(20, 51, 39, 0.05), 0 12px 32px -16px rgba(20, 51, 39, 0.28);
+  --shadow-lift: 0 2px 4px rgba(20, 51, 39, 0.06), 0 28px 60px -28px rgba(20, 51, 39, 0.4);
+  --shadow-brass: 0 0 0 1px color-mix(in oklab, var(--color-brass-500) 40%, transparent),
+    0 18px 40px -20px color-mix(in oklab, var(--color-brass-500) 60%, transparent);
 
-  --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-estate: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-shimmer: shimmer 2.5s linear infinite;
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-gradient: gradient-pan 8s ease infinite;
-  --animate-fade-up: fade-up 0.7s var(--ease-liquid) both;
-  --animate-pulse-ring: pulse-ring 2s ease-out infinite;
+  --animate-marquee: marquee 44s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-ken-burns: ken-burns 18s ease-out both;
+  --animate-fade-up: fade-up 0.8s var(--ease-estate) both;
+  --animate-draw: draw 1.6s var(--ease-estate) both;
+  --animate-pulse-ring: pulse-ring 2.6s var(--ease-estate) infinite;
+
+  --shadow-soft: 0 1px 2px rgba(20, 51, 39, 0.06), 0 16px 40px -20px rgba(20, 51, 39, 0.34);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--color-brass-400) 45%, transparent),
+    0 24px 60px -26px color-mix(in oklab, var(--color-brass-500) 75%, transparent);
 }
 
-/* Light theme (default) */
+/* ---- Light theme (default) ----------------------------------- */
 :root {
-  --bg: #f7f6f2;
+  --bg: #f7f4ec;
   --surface: #ffffff;
-  --surface-2: #f0eee7;
-  --fg: #0a1533;
-  --muted: #5b6478;
-  --border-c: #e4e0d6;
-  --glass: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.7);
+  --surface-2: #efeadd;
+  --surface-3: #e6e0d0;
+  --fg: #16211c;
+  --muted: #5d6b62;
+  --border-c: #e0d9c7;
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-strong: rgba(255, 255, 255, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --scrim: rgba(8, 21, 17, 0.55);
   color-scheme: light;
 }
 
-/* Dark theme */
+/* ---- Dark theme ---------------------------------------------- */
 .dark {
-  --bg: #050b1f;
-  --surface: #0c1734;
-  --surface-2: #101d47;
-  --fg: #eef2fb;
-  --muted: #97a3c0;
-  --border-c: #1c2b54;
-  --glass: rgba(12, 23, 52, 0.5);
-  --glass-border: rgba(126, 149, 214, 0.18);
+  --bg: #0e1613;
+  --surface: #16211c;
+  --surface-2: #1d2c25;
+  --surface-3: #24362d;
+  --fg: #f2efe6;
+  --muted: #9aaaa0;
+  --border-c: #26362e;
+  --glass: rgba(22, 33, 28, 0.55);
+  --glass-strong: rgba(14, 22, 19, 0.86);
+  --glass-border: rgba(134, 182, 157, 0.16);
+  --scrim: rgba(4, 11, 9, 0.66);
   color-scheme: dark;
 }
 
-/* Accessibility: font scaling, contrast, motion ------------------ */
-html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
+/* ---- Accessibility controls ---------------------------------- */
+html {
+  font-size: calc(100% * var(--a11y-font-scale, 1));
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 .a11y-contrast {
   --muted: var(--fg);
   --border-c: currentColor;
 }
-.a11y-contrast a, .a11y-contrast button { text-decoration-thickness: 2px; }
+.a11y-contrast a,
+.a11y-contrast button {
+  text-decoration-thickness: 2px;
+}
+
 .a11y-reduce-motion *,
 .a11y-reduce-motion *::before,
 .a11y-reduce-motion *::after {
@@ -103,144 +135,446 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
 }
+
+/* Dyslexia-friendly spacing mode */
+.a11y-readable {
+  letter-spacing: 0.02em;
+  word-spacing: 0.1em;
+  line-height: 1.85;
+}
+.a11y-readable * {
+  font-family: var(--font-body), "Segoe UI", system-ui, sans-serif !important;
+}
+
+/* Link underlining mode */
+.a11y-underline a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+  }
+
   body {
     background-color: var(--bg);
-    background-image:
-      radial-gradient(60rem 60rem at 100% -10%, color-mix(in oklab, var(--color-navy-500) 12%, transparent), transparent 55%),
-      radial-gradient(50rem 50rem at -10% 20%, color-mix(in oklab, var(--color-gold-400) 8%, transparent), transparent 50%);
-    background-attachment: fixed;
     color: var(--fg);
-    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    font-family: var(--font-body), system-ui, sans-serif;
+    min-height: 100dvh;
   }
-  h1, h2, h3, h4, .font-display {
-    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: -0.02em;
-    font-weight: 700;
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading), Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
-  ::selection { background: var(--color-gold-300); color: var(--color-navy-900); }
+
+  p { text-wrap: pretty; }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brass-400) 40%, transparent);
+    color: var(--fg);
+  }
+
   :focus-visible {
-    outline: 2px solid var(--color-gold-400);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-brass-500);
+    outline-offset: 3px;
     border-radius: 4px;
   }
-  /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 11px; height: 11px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb {
-    background: color-mix(in oklab, var(--color-gold-500) 55%, var(--muted));
+
+  /* Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-brass-500) transparent;
+  }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-forest-500) 45%, transparent);
     border-radius: 999px;
-    border: 3px solid var(--bg);
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brass-500);
+    background-clip: content-box;
   }
 }
 
 @layer components {
-  /* Glassmorphism ------------------------------------------------ */
+  /* ---- Glass surfaces ---------------------------------------- */
   .glass {
     background: var(--glass);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
     border: 1px solid var(--glass-border);
   }
   .glass-strong {
-    background: color-mix(in oklab, var(--surface) 80%, transparent);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    background: var(--glass-strong);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
     border: 1px solid var(--glass-border);
   }
 
-  /* Gold gradient text ------------------------------------------ */
-  .text-gradient-gold {
-    background: linear-gradient(100deg, #eed88c 0%, #d9ad3a 40%, #f6ecc7 60%, #c9972a 100%);
+  /* ---- Editorial section frame ------------------------------- */
+  .rule-brass {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-brass-500) 70%, transparent),
+      transparent
+    );
+  }
+
+  .eyebrow {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-brass-600);
+  }
+  .dark .eyebrow { color: var(--color-brass-300); }
+
+  /* ---- Photo treatments -------------------------------------- */
+  .photo-scrim::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--color-forest-950) 88%, transparent) 0%,
+      color-mix(in oklab, var(--color-forest-950) 45%, transparent) 38%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  .photo-vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      120% 90% at 50% 40%,
+      transparent 40%,
+      color-mix(in oklab, var(--color-forest-950) 55%, transparent) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Brass hairline frame used on cards & imagery */
+  .frame-brass {
+    position: relative;
+  }
+  .frame-brass::before {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-brass-300) 55%, transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ---- Liquid hover plate ------------------------------------ */
+  .plate {
+    background: var(--surface);
+    border: 1px solid var(--border-c);
+    box-shadow: var(--shadow-plate);
+    transition: transform 0.5s var(--ease-estate), box-shadow 0.5s var(--ease-estate),
+      border-color 0.4s var(--ease-estate);
+  }
+  .plate:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in oklab, var(--color-brass-400) 55%, var(--border-c));
+  }
+
+  /* ---- Shimmer skeleton -------------------------------------- */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--surface-2) 25%,
+      var(--surface-3) 37%,
+      var(--surface-2) 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  /* ---- Text link with brass underline swipe ------------------ */
+  .link-swipe {
+    position: relative;
+    display: inline-block;
+  }
+  .link-swipe::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: var(--color-brass-500);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-estate);
+  }
+  .link-swipe:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* ---- Marquee ----------------------------------------------- */
+  .marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  /* ---- Estate paper texture ---------------------------------- */
+  .paper {
+    background-image:
+      radial-gradient(
+        60rem 60rem at 88% -12%,
+        color-mix(in oklab, var(--color-forest-400) 8%, transparent),
+        transparent 55%
+      ),
+      radial-gradient(
+        50rem 50rem at -12% 18%,
+        color-mix(in oklab, var(--color-brass-400) 9%, transparent),
+        transparent 52%
+      );
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .drag-none { -webkit-user-drag: none; user-select: none; }
+  .snap-x-mandatory { scroll-snap-type: x mandatory; }
+  .snap-start-always { scroll-snap-align: start; scroll-snap-stop: always; }
+}
+
+/* ============================================================= */
+/*  Keyframes                                                     */
+/* ============================================================= */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@keyframes ken-burns {
+  from { transform: scale(1.06) translate3d(0, 0, 0); }
+  to { transform: scale(1.16) translate3d(-1.5%, -1.5%, 0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: var(--dash, 400); }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-brass-500) 55%, transparent); }
+  70% { box-shadow: 0 0 0 14px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* View transitions between routes */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================= */
+/*  Estate component primitives                                   */
+/*  (re-skinned in forest/brass — these replace the v1 navy/gold   */
+/*   equivalents that the rest of the UI still composes with)      */
+/* ============================================================= */
+
+@layer components {
+  /* ---- Primary brass button ---------------------------------- */
+  .btn-brass {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(
+      135deg,
+      var(--color-brass-500) 0%,
+      var(--color-brass-400) 45%,
+      var(--color-brass-600) 100%
+    );
+    color: #221704;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 1px 0 color-mix(in oklab, #fff 45%, transparent) inset,
+      0 10px 26px -14px color-mix(in oklab, var(--color-brass-700) 90%, transparent);
+    transition: filter 0.35s var(--ease-estate), transform 0.35s var(--ease-estate),
+      box-shadow 0.35s var(--ease-estate);
+  }
+  .btn-brass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.55) 50%, transparent 80%);
+    transform: translateX(-120%);
+    transition: transform 0.8s var(--ease-estate);
+  }
+  .btn-brass:hover::after { transform: translateX(120%); }
+  .btn-brass:hover {
+    filter: saturate(1.08) brightness(1.04);
+    box-shadow: 0 1px 0 color-mix(in oklab, #fff 55%, transparent) inset,
+      0 16px 34px -16px color-mix(in oklab, var(--color-brass-700) 95%, transparent);
+  }
+  .dark .btn-brass { color: #1a1204; }
+
+  /* ---- Deep estate panel ------------------------------------- */
+  .bg-estate {
+    background:
+      radial-gradient(90rem 50rem at 82% -20%, color-mix(in oklab, var(--color-forest-600) 55%, transparent), transparent 60%),
+      linear-gradient(160deg, var(--color-forest-800), var(--color-forest-950));
+    color: var(--color-bone-100);
+  }
+
+  /* ---- Soft tinted field ------------------------------------- */
+  .bg-mesh {
+    background:
+      radial-gradient(48rem 34rem at 12% 0%, color-mix(in oklab, var(--color-forest-400) 12%, transparent), transparent 60%),
+      radial-gradient(42rem 32rem at 92% 12%, color-mix(in oklab, var(--color-brass-400) 13%, transparent), transparent 58%),
+      var(--surface-2);
+  }
+  .dark .bg-mesh {
+    background:
+      radial-gradient(48rem 34rem at 12% 0%, color-mix(in oklab, var(--color-forest-400) 10%, transparent), transparent 60%),
+      radial-gradient(42rem 32rem at 92% 12%, color-mix(in oklab, var(--color-brass-500) 9%, transparent), transparent 58%),
+      var(--surface-2);
+  }
+
+  .bg-gradient-surface {
+    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  }
+
+  /* ---- Brass foil lettering ---------------------------------- */
+  .text-gradient-brass {
+    background: linear-gradient(
+      100deg,
+      var(--color-brass-600) 0%,
+      var(--color-brass-300) 38%,
+      var(--color-brass-500) 62%,
+      var(--color-brass-700) 100%
+    );
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: var(--animate-gradient);
+    animation: foil 6s linear infinite;
   }
-  .text-gradient-royal {
-    background: linear-gradient(100deg, var(--color-navy-400), var(--color-gold-400));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .dark .text-gradient-brass {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-brass-400) 0%,
+      var(--color-brass-200) 38%,
+      var(--color-brass-300) 62%,
+      var(--color-brass-500) 100%
+    );
   }
 
-  /* Liquid gold button ------------------------------------------ */
-  .btn-gold {
-    position: relative;
-    background: linear-gradient(135deg, #e6c65a, #c9972a);
-    color: #0a1533;
-    font-weight: 600;
-    overflow: hidden;
-    transition: transform 0.35s var(--ease-liquid), box-shadow 0.35s var(--ease-liquid);
-  }
-  .btn-gold:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
-  .btn-gold::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
-    transform: translateX(-120%);
-    transition: transform 0.7s var(--ease-liquid);
-  }
-  .btn-gold:hover::after { transform: translateX(120%); }
-
+  /* ---- Card lift --------------------------------------------- */
   .card-hover {
-    transition: transform 0.5s var(--ease-liquid), box-shadow 0.5s var(--ease-liquid);
+    transition: transform 0.5s var(--ease-estate), box-shadow 0.5s var(--ease-estate),
+      border-color 0.4s var(--ease-estate);
   }
-  .card-hover:hover { transform: translateY(-6px); box-shadow: var(--shadow-soft); }
-
-  .shimmer {
-    background: linear-gradient(90deg,
-      color-mix(in oklab, var(--surface-2) 100%, transparent) 25%,
-      color-mix(in oklab, var(--muted) 25%, var(--surface-2)) 37%,
-      color-mix(in oklab, var(--surface-2) 100%, transparent) 63%);
-    background-size: 400% 100%;
-    animation: var(--animate-shimmer);
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in oklab, var(--color-brass-400) 55%, var(--border-c));
   }
 
+  /* ---- Sheen swipe over imagery ------------------------------ */
+  .shine-hover {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .shine-hover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+    transform: translateX(-140%);
+    transition: transform 0.9s var(--ease-estate);
+  }
+  .group:hover .shine-hover::before { transform: translateX(140%); }
+
+  /* ---- Warm cursor glow over photography --------------------- */
+  .spotlight-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      22rem 22rem at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklab, var(--color-brass-300) 26%, transparent),
+      transparent 65%
+    );
+    transition: opacity 0.5s var(--ease-estate);
+  }
+  .group:hover .spotlight-overlay { opacity: 1; }
+
+  /* ---- Editorial photo grade --------------------------------- */
+  .duotone {
+    filter: saturate(0.86) contrast(1.06) sepia(0.1) hue-rotate(-6deg);
+    transition: filter 0.6s var(--ease-estate);
+  }
+  .group:hover .duotone { filter: saturate(1) contrast(1.02) sepia(0); }
+
+  /* ---- Ambient estate light ---------------------------------- */
   .aurora {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
     background:
-      radial-gradient(40rem 40rem at 10% 0%, color-mix(in oklab, var(--color-navy-500) 35%, transparent), transparent 60%),
-      radial-gradient(30rem 30rem at 90% 20%, color-mix(in oklab, var(--color-gold-400) 22%, transparent), transparent 60%),
-      radial-gradient(35rem 35rem at 50% 100%, color-mix(in oklab, var(--color-navy-700) 40%, transparent), transparent 60%);
+      radial-gradient(28rem 28rem at 18% 22%, color-mix(in oklab, var(--color-forest-400) 26%, transparent), transparent 60%),
+      radial-gradient(24rem 24rem at 78% 68%, color-mix(in oklab, var(--color-brass-400) 24%, transparent), transparent 62%);
+    filter: blur(48px);
+    animation: float 12s ease-in-out infinite;
   }
 
-  /* Gradient mesh backgrounds -------------------------------------- */
-  .bg-mesh {
-    background-color: var(--bg);
-    background-image:
-      radial-gradient(at 0% 0%, color-mix(in oklab, var(--color-gold-400) 16%, transparent) 0px, transparent 45%),
-      radial-gradient(at 98% 10%, color-mix(in oklab, var(--color-navy-500) 22%, transparent) 0px, transparent 50%),
-      radial-gradient(at 30% 100%, color-mix(in oklab, var(--color-gold-500) 12%, transparent) 0px, transparent 45%),
-      radial-gradient(at 80% 90%, color-mix(in oklab, var(--color-navy-600) 18%, transparent) 0px, transparent 50%);
-  }
-  .bg-gradient-surface {
-    background-image: linear-gradient(150deg,
-      color-mix(in oklab, var(--surface) 100%, transparent),
-      color-mix(in oklab, var(--surface-2) 70%, var(--surface)));
-  }
-  .bg-royal {
-    background-image: linear-gradient(140deg, var(--color-navy-900), var(--color-navy-950) 55%, #08122e);
-  }
-  .bg-gold-sheen {
-    background-image: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-500) 50%, var(--color-gold-400));
-  }
-
-  /* Gradient border (via padding-box + border-box trick) ----------- */
+  /* ---- Brass hairline border via gradient -------------------- */
   .gradient-border {
     position: relative;
-    background: var(--surface);
-    border: 1px solid transparent;
     background-clip: padding-box;
   }
   .gradient-border::before {
@@ -249,81 +583,35 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, color-mix(in oklab, var(--color-gold-400) 70%, transparent), transparent 40%, color-mix(in oklab, var(--color-navy-400) 55%, transparent));
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-brass-300) 85%, transparent),
+      transparent 45%,
+      color-mix(in oklab, var(--color-forest-400) 60%, transparent)
+    );
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
   }
 
-  .text-gradient-mesh {
-    background: linear-gradient(120deg, #eed88c, #d9ad3a 30%, #7d95d6 65%, #eed88c);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: var(--animate-gradient);
-  }
-
-  /* Shine sweep on hover (place inside a .group ancestor) --------- */
-  .shine-hover { position: relative; overflow: hidden; pointer-events: none; }
-  .shine-hover::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.38) 48%, rgba(255,255,255,0.05) 60%, transparent 72%);
-    transform: translateX(-130%) skewX(-12deg);
-    transition: transform 0.85s var(--ease-liquid);
-  }
-  .group:hover .shine-hover::after { transform: translateX(130%) skewX(-12deg); }
-
-  /* Duotone / colour-grade on hover ------------------------------- */
-  .duotone { transition: filter 0.6s var(--ease-liquid); }
-  .group:hover .duotone { filter: saturate(1.25) contrast(1.05); }
-
-  /* Cursor spotlight overlay (driven by --mx / --my vars) --------- */
-  .spotlight-overlay {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in oklab, var(--color-gold-400) 30%, transparent), transparent 60%);
-    pointer-events: none;
-  }
-  .group:hover .spotlight-overlay { opacity: 1; }
-
-  /* Reveal-up clip mask (used with intersection reveal) ----------- */
-  .reveal-clip { clip-path: inset(0 0 100% 0); transition: clip-path 0.9s var(--ease-liquid); }
-  .reveal-clip.is-in { clip-path: inset(0 0 0 0); }
-
-  /* Blur-up image load ------------------------------------------- */
-  .img-load { filter: blur(16px); transform: scale(1.06); transition: filter 0.8s ease, transform 0.8s var(--ease-liquid); }
-  .img-load.is-loaded { filter: blur(0); transform: scale(1); }
-
-  /* Skeleton shimmer block ---------------------------------------- */
-  .skeleton {
-    background: linear-gradient(90deg,
-      var(--surface-2) 25%,
-      color-mix(in oklab, var(--muted) 18%, var(--surface-2)) 37%,
-      var(--surface-2) 63%);
+  .shimmer {
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 37%, var(--surface-2) 63%);
     background-size: 400% 100%;
-    animation: var(--animate-shimmer);
-    border-radius: 0.75rem;
+    animation: shimmer 1.6s ease-in-out infinite;
   }
+
+  .img-load { animation: fade-up 0.7s var(--ease-estate) both; }
 }
 
 @layer utilities {
-  .mask-fade-b { -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
   .perspective { perspective: 1200px; }
   .preserve-3d { transform-style: preserve-3d; }
   .backface-hidden { backface-visibility: hidden; }
+  .mask-fade-b { mask-image: linear-gradient(to bottom, #000 62%, transparent); }
 }
 
-/* Keyframes ----------------------------------------------------- */
-@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-@keyframes shimmer { to { background-position: -400% 0; } }
-@keyframes marquee { to { transform: translateX(-50%); } }
-@keyframes gradient-pan { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-@keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-gold-400) 60%, transparent); } 70% { box-shadow: 0 0 0 16px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes foil {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}

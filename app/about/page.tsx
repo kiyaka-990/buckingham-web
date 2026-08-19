@@ -1,3 +1,4 @@
+import { heroImages, kennel } from "@/lib/data/media";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ShieldCheck, Heart, Award, Leaf } from "lucide-react";
@@ -27,14 +28,14 @@ export default function AboutPage() {
         eyebrow="Our Story"
         title="About Buckingham"
         subtitle="Where royal heritage meets Kenyan excellence in dog breeding."
-        image="/images/dog-44.jpg"
+        image={heroImages.about}
         crumbs={[{ label: "About" }]}
       />
 
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
         <Reveal>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-            <Image src="/images/dog-52.jpg" alt="Buckingham Kennel" fill className="object-cover" />
+            <Image src={kennel.team[1]} alt="Buckingham Kennel" fill className="object-cover" />
           </div>
         </Reveal>
         <Reveal delay={1} className="space-y-4">
@@ -66,7 +67,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-gold-400/12 text-gold-500">
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-brass-400/12 text-brass-500">
                 <v.icon size={24} />
               </div>
               <h3 className="font-display text-lg font-semibold">{v.title}</h3>
@@ -79,7 +80,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-4xl px-6 py-16 text-center">
         <Reveal>
           <p className="font-display text-2xl italic leading-relaxed text-muted sm:text-3xl">“{site.quote.text}”</p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-gold-500">— {site.quote.author}</p>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-brass-500">— {site.quote.author}</p>
         </Reveal>
       </section>
 

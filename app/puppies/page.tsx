@@ -1,3 +1,4 @@
+import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import { Baby, Syringe, HeartHandshake, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/ui/page-hero";
@@ -5,7 +6,7 @@ import { DogCard } from "@/components/shop/dog-card";
 import { SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { ButtonLink } from "@/components/ui/button";
-import { puppies } from "@/lib/data/catalog";
+import { getPuppies } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Available Puppies",
@@ -19,14 +20,17 @@ const perks = [
   { icon: Sparkles, title: "Health Guarantee", desc: "Written genetic health guarantee up to 36 months." },
 ];
 
-export default function PuppiesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PuppiesPage() {
+  const puppies = await getPuppies();
   return (
     <>
       <PageHero
         eyebrow="New Litters"
         title="Available Puppies"
         subtitle="Bundles of royal joy, ready to fill your home with love — from $1,600."
-        image="/images/dog-70.jpg"
+        image={heroImages.puppies}
         crumbs={[{ label: "Puppies" }]}
       />
 
@@ -34,7 +38,7 @@ export default function PuppiesPage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {perks.map((p, i) => (
             <Reveal key={p.title} delay={i} className="rounded-3xl border border-border bg-surface p-5">
-              <p.icon className="mb-3 text-gold-500" />
+              <p.icon className="mb-3 text-brass-500" />
               <h3 className="font-display font-semibold">{p.title}</h3>
               <p className="mt-1 text-sm text-muted">{p.desc}</p>
             </Reveal>

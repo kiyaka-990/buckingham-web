@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Crest } from "@/components/brand/crest";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -23,10 +24,10 @@ export function AdminSidebar() {
   return (
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-surface p-4 lg:flex">
       <Link href="/admin" className="mb-8 flex items-center gap-2.5 px-2 pt-2">
-        <Image src="/brand/logo.png" alt={site.name} width={40} height={40} className="h-10 w-10 rounded-full ring-1 ring-gold-400/40" />
+        <Crest className="h-10" />
         <span>
           <span className="block font-display text-sm font-bold leading-tight">Buckingham</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-gold-500">Admin</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-brass-500">Admin</span>
         </span>
       </Link>
 
@@ -39,7 +40,7 @@ export function AdminSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
-                active ? "bg-gold-400/12 text-gold-600 dark:text-gold-400" : "text-muted hover:bg-foreground/5 hover:text-foreground"
+                active ? "bg-brass-400/12 text-brass-600 dark:text-brass-400" : "text-muted hover:bg-foreground/5 hover:text-foreground"
               )}
             >
               <item.icon size={18} /> {item.label}
@@ -71,12 +72,12 @@ export function AdminHeader({ name, email }: { name?: string | null; email?: str
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2 sm:flex-none">
-        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-gold-400" aria-label="Notifications">
+        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-brass-400" aria-label="Notifications">
           <Bell size={17} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-gold-400" />
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-brass-400" />
         </button>
         <div className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-gold-400/15 font-display text-sm font-bold text-gold-500">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-brass-400/15 font-display text-sm font-bold text-brass-500">
             {(name || email || "A").charAt(0).toUpperCase()}
           </span>
           <span className="hidden text-left sm:block">
@@ -96,7 +97,7 @@ export function AdminMobileNav() {
       {nav.map((item) => {
         const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
-          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-gold-400/12 text-gold-500" : "text-muted")}>
+          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-brass-400/12 text-brass-500" : "text-muted")}>
             <item.icon size={14} /> {item.label}
           </Link>
         );

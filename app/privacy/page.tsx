@@ -1,3 +1,4 @@
+import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
 import { site } from "@/lib/site";
@@ -7,7 +8,7 @@ export const metadata: Metadata = { title: "Privacy Policy" };
 export default function PrivacyPage() {
   return (
     <>
-      <PageHero title="Privacy Policy" eyebrow="Legal" image="/images/dog-20.jpg" crumbs={[{ label: "Privacy" }]} />
+      <PageHero title="Privacy Policy" eyebrow="Legal" image={heroImages.legal} crumbs={[{ label: "Privacy" }]} />
       <article className="mx-auto max-w-3xl space-y-5 px-6 py-16 text-muted leading-relaxed">
         <p>Your privacy matters to {site.name}. This policy explains what we collect and how we use it.</p>
         <h2 className="font-display text-xl font-bold text-foreground">Information we collect</h2>

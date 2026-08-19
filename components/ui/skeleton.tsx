@@ -33,7 +33,7 @@ export function DogGridSkeleton({ count = 8 }: { count?: number }) {
 
 export function PageHeroSkeleton() {
   return (
-    <div className="relative flex min-h-[42vh] items-end overflow-hidden bg-navy-950">
+    <div className="relative flex min-h-[42vh] items-end overflow-hidden bg-forest-950">
       <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-28">
         <Skeleton className="mb-3 h-3 w-24 bg-white/10" />
         <Skeleton className="h-12 w-72 bg-white/10" />

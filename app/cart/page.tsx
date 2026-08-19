@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ShieldCheck } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
@@ -27,11 +28,11 @@ export default function CartPage() {
           <div className="space-y-4">
             {items.map((item) => (
               <div key={item.id} className="flex gap-4 rounded-3xl border border-border bg-surface p-4">
-                <Image src={item.image} alt={item.name} width={120} height={140} className="h-32 w-28 rounded-2xl object-cover" />
+                <FadeImage src={item.image} alt={item.name} width={120} height={140} className="h-32 w-28 rounded-2xl object-cover" />
                 <div className="flex flex-1 flex-col">
                   <div className="flex items-start justify-between">
                     <div>
-                      <Link href={`/dogs/${item.slug}`} className="font-display text-lg font-semibold hover:text-gold-500">{item.name}</Link>
+                      <Link href={`/dogs/${item.slug}`} className="font-display text-lg font-semibold hover:text-brass-500">{item.name}</Link>
                       <p className="text-sm text-muted">{item.breedName}</p>
                     </div>
                     <button onClick={() => remove(item.id)} aria-label="Remove" className="text-muted hover:text-red-500"><Trash2 size={18} /></button>
@@ -59,7 +60,7 @@ export default function CartPage() {
                 <Row label="Total" value={formatPrice(subtotal)} bold />
               </div>
               <ButtonLink href="/checkout" size="lg" className="mt-6 w-full">Proceed to Checkout <ArrowRight size={18} /></ButtonLink>
-              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted"><ShieldCheck size={14} className="text-gold-500" /> Secure checkout · Deposit reserves your dog</p>
+              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted"><ShieldCheck size={14} className="text-brass-500" /> Secure checkout · Deposit reserves your dog</p>
             </div>
           </aside>
         </div>

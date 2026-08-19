@@ -1,3 +1,4 @@
+import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/ui/page-hero";
@@ -17,7 +18,7 @@ export default function ContactPage() {
         eyebrow="We'd Love to Hear From You"
         title="Contact Us"
         subtitle="Questions, visits or reservations — our team is here to help."
-        image="/images/dog-01.jpg"
+        image={heroImages.contact}
         crumbs={[{ label: "Contact" }]}
       />
 
@@ -58,8 +59,8 @@ export default function ContactPage() {
 
 function InfoCard({ icon: Icon, title, lines, href }: { icon: React.ComponentType<{ size?: number; className?: string }>; title: string; lines: string[]; href?: string }) {
   const inner = (
-    <div className="flex gap-4 rounded-2xl border border-border bg-surface p-5 transition hover:border-gold-400">
-      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gold-400/12 text-gold-500">
+    <div className="flex gap-4 rounded-2xl border border-border bg-surface p-5 transition hover:border-brass-400">
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brass-400/12 text-brass-500">
         <Icon size={22} />
       </div>
       <div>

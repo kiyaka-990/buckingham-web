@@ -54,9 +54,9 @@ export function Typewriter({
   }, [display, phase, i, words, typeSpeed, deleteSpeed, hold]);
 
   return (
-    <span className={cn("text-gradient-gold", className)}>
+    <span className={cn("text-gradient-brass", className)}>
       {display}
-      <span className="ml-0.5 inline-block w-[3px] translate-y-1 self-stretch bg-gold-400 align-middle animate-pulse" style={{ height: "0.9em" }} aria-hidden />
+      <span className="ml-0.5 inline-block w-[3px] translate-y-1 self-stretch bg-brass-400 align-middle animate-pulse" style={{ height: "0.9em" }} aria-hidden />
     </span>
   );
 }

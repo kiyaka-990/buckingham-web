@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
+import { FadeImage } from "@/components/ui/fade-image";
 import { useRouter } from "next/navigation";
 import { Search, X, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -56,7 +57,7 @@ export function SearchModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] flex items-start justify-center bg-navy-950/60 p-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-[80] flex items-start justify-center bg-forest-950/60 p-4 pt-[12vh] backdrop-blur-sm"
           onClick={() => setSearch(false)}
         >
           <motion.div
@@ -67,7 +68,7 @@ export function SearchModal() {
             className="w-full max-w-xl overflow-hidden rounded-3xl glass-strong shadow-soft"
           >
             <div className="flex items-center gap-3 border-b border-border px-5">
-              <Search size={20} className="text-gold-500" />
+              <Search size={20} className="text-brass-500" />
               <input
                 autoFocus
                 value={q}
@@ -94,7 +95,7 @@ export function SearchModal() {
                       <button
                         key={t}
                         onClick={() => setQ(t)}
-                        className="rounded-full border border-border px-3 py-1.5 text-sm transition hover:border-gold-400 hover:text-gold-500"
+                        className="rounded-full border border-border px-3 py-1.5 text-sm transition hover:border-brass-400 hover:text-brass-500"
                       >
                         {t}
                       </button>
@@ -107,7 +108,7 @@ export function SearchModal() {
                 <div className="space-y-1">
                   {results.breeds.map((b) => (
                     <button key={b.slug} onClick={() => go(`/breeds/${b.slug}`)} className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition hover:bg-foreground/5">
-                      <Image src={b.heroImage} alt={b.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
+                      <FadeImage src={b.heroImage} alt={b.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                       <span>
                         <span className="block font-medium">{b.name}</span>
                         <span className="text-xs text-muted">Breed · {b.group}</span>
@@ -116,12 +117,12 @@ export function SearchModal() {
                   ))}
                   {results.dogs.map((d) => (
                     <button key={d.id} onClick={() => go(`/dogs/${d.slug}`)} className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition hover:bg-foreground/5">
-                      <Image src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
+                      <FadeImage src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                       <span className="flex-1">
                         <span className="block font-medium">{d.name}</span>
                         <span className="text-xs text-muted">{d.breedName} · {d.ageLabel}</span>
                       </span>
-                      <span className="font-display font-semibold text-gold-500">{formatPrice(d.price)}</span>
+                      <span className="font-display font-semibold text-brass-500">{formatPrice(d.price)}</span>
                     </button>
                   ))}
                 </div>

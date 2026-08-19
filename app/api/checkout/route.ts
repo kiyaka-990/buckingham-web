@@ -1,20 +1,60 @@
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 
 export const runtime = "nodejs";
 
-type Item = { name: string; breedName: string; price: number; qty: number; image?: string };
+type Item = { slug?: string; name: string; breedName: string; price: number; qty: number; image?: string };
+type Customer = Record<string, string>;
+
+async function persistOrder(ref: string, items: Item[], customer: Customer, total: number, method: string, stripeSessionId?: string) {
+  await db.order.create({
+    data: {
+      ref,
+      customerName: [customer.firstName, customer.lastName].filter(Boolean).join(" ") || customer.name || "Guest",
+      email: customer.email || "",
+      phone: customer.phone || null,
+      address: customer.address || null,
+      city: customer.city || null,
+      county: customer.county || null,
+      method,
+      status: "pending",
+      total,
+      deposit: Math.round(total * 0.3),
+      stripeSessionId: stripeSessionId ?? null,
+      items: {
+        create: items.map((i) => ({
+          dogSlug: i.slug ?? "",
+          name: i.name,
+          breedName: i.breedName,
+          price: i.price,
+          qty: i.qty,
+          image: i.image ?? null,
+        })),
+      },
+    },
+  });
+
+  // Decrement stock for known dogs; mark reserved when depleted.
+  for (const i of items) {
+    if (!i.slug) continue;
+    const dog = await db.dog.findUnique({ where: { slug: i.slug } });
+    if (!dog) continue;
+    const stock = Math.max(0, dog.stock - i.qty);
+    await db.dog.update({ where: { slug: i.slug }, data: { stock, status: stock === 0 ? "reserved" : dog.status } });
+  }
+}
 
 export async function POST(req: Request) {
-  const { items, customer } = (await req.json()) as { items: Item[]; customer?: Record<string, string> };
+  const { items, customer } = (await req.json()) as { items: Item[]; customer?: Customer };
   if (!items?.length) return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
 
   const total = items.reduce((n, i) => n + i.price * i.qty, 0);
   const orderId = "BK-" + Date.now().toString(36).toUpperCase();
-
+  const method = customer?.method === "mpesa" ? "M-Pesa" : "Card (Stripe)";
   const stripeKey = process.env.STRIPE_SECRET_KEY;
 
-  // Real Stripe Checkout when a key is configured.
-  if (stripeKey) {
+  // Real Stripe Checkout when configured.
+  if (stripeKey && customer?.method !== "mpesa") {
     try {
       const { default: Stripe } = await import("stripe");
       const stripe = new Stripe(stripeKey);
@@ -23,24 +63,20 @@ export async function POST(req: Request) {
         mode: "payment",
         line_items: items.map((i) => ({
           quantity: i.qty,
-          price_data: {
-            currency: "usd",
-            unit_amount: Math.round(i.price * 100),
-            product_data: { name: `${i.name} — ${i.breedName}` },
-          },
+          price_data: { currency: "usd", unit_amount: Math.round(i.price * 100), product_data: { name: `${i.name} — ${i.breedName}` } },
         })),
         success_url: `${origin}/checkout/success?order=${orderId}`,
         cancel_url: `${origin}/checkout`,
-        metadata: { orderId, customer: JSON.stringify(customer ?? {}) },
+        metadata: { orderId },
       });
+      await persistOrder(orderId, items, customer ?? {}, total, method, session.id);
       return NextResponse.json({ url: session.url, orderId });
     } catch (err) {
       console.error("[checkout] stripe error", err);
-      // fall through to mock
+      // fall through to persist + mock success
     }
   }
 
-  // Demo/mock success (no Stripe key configured yet).
-  console.log(`[checkout] mock order ${orderId} — $${total}`, customer);
-  return NextResponse.json({ orderId, total, mock: true });
+  await persistOrder(orderId, items, customer ?? {}, total, method);
+  return NextResponse.json({ orderId, total, mock: !stripeKey });
 }

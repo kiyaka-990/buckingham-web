@@ -26,7 +26,7 @@ export function Testimonials() {
 
   return (
     <div className="relative mx-auto max-w-3xl">
-      <Quote className="mx-auto mb-6 text-gold-400" size={48} />
+      <Quote className="mx-auto mb-6 text-brass-400" size={48} />
       <div className="relative min-h-[220px]">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.blockquote
@@ -39,7 +39,7 @@ export function Testimonials() {
           >
             <div className="mb-4 flex justify-center gap-1">
               {Array.from({ length: t.rating }).map((_, s) => (
-                <Star key={s} size={18} className="fill-gold-400 text-gold-400" />
+                <Star key={s} size={18} className="fill-brass-400 text-brass-400" />
               ))}
             </div>
             <p className="font-display text-xl leading-relaxed sm:text-2xl">“{t.text}”</p>
@@ -52,7 +52,7 @@ export function Testimonials() {
       </div>
 
       <div className="mt-8 flex items-center justify-center gap-4">
-        <button onClick={() => go(-1)} aria-label="Previous testimonial" className="grid h-10 w-10 place-items-center rounded-full border border-border transition hover:border-gold-400 hover:text-gold-500">
+        <button onClick={() => go(-1)} aria-label="Previous testimonial" className="grid h-10 w-10 place-items-center rounded-full border border-border transition hover:border-brass-400 hover:text-brass-500">
           <ChevronLeft size={16} />
         </button>
         <div className="flex gap-1.5">
@@ -61,11 +61,11 @@ export function Testimonials() {
               key={idx}
               onClick={() => { setDir(idx > i ? 1 : -1); setI(idx); }}
               aria-label={`Testimonial ${idx + 1}`}
-              className={`h-2 rounded-full transition-all ${idx === i ? "w-6 bg-gold-400" : "w-2 bg-muted/40"}`}
+              className={`h-2 rounded-full transition-all ${idx === i ? "w-6 bg-brass-400" : "w-2 bg-muted/40"}`}
             />
           ))}
         </div>
-        <button onClick={() => go(1)} aria-label="Next testimonial" className="grid h-10 w-10 place-items-center rounded-full border border-border transition hover:border-gold-400 hover:text-gold-500">
+        <button onClick={() => go(1)} aria-label="Next testimonial" className="grid h-10 w-10 place-items-center rounded-full border border-border transition hover:border-brass-400 hover:text-brass-500">
           <ChevronRight size={16} />
         </button>
       </div>

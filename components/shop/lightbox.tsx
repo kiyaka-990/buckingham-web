@@ -116,7 +116,7 @@ export function Lightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[95] flex flex-col bg-navy-950/95 backdrop-blur-sm"
+          className="fixed inset-0 z-[95] flex flex-col bg-forest-950/95 backdrop-blur-sm"
         >
           {/* Top bar */}
           <div className="flex items-center justify-between px-4 py-3 text-white sm:px-6">
@@ -166,7 +166,7 @@ export function Lightbox({
 
             {scale === 1 && (
               <span className="pointer-events-none absolute bottom-24 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full glass px-3 py-1.5 text-xs text-white">
-                <Maximize2 size={12} className="text-gold-400" /> Pinch, scroll or double-tap to zoom
+                <Maximize2 size={12} className="text-brass-400" /> Pinch, scroll or double-tap to zoom
               </span>
             )}
           </div>
@@ -178,7 +178,7 @@ export function Lightbox({
                 <button
                   key={i}
                   onClick={() => onIndexChange(i)}
-                  className={cn("relative h-14 w-14 overflow-hidden rounded-lg border-2 transition", i === index ? "border-gold-400" : "border-transparent opacity-50 hover:opacity-100")}
+                  className={cn("relative h-14 w-14 overflow-hidden rounded-lg border-2 transition", i === index ? "border-brass-400" : "border-transparent opacity-50 hover:opacity-100")}
                 >
                   <Image src={src} alt="" fill sizes="56px" className="object-cover" />
                 </button>

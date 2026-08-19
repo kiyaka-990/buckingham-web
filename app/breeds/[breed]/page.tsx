@@ -1,16 +1,15 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { FadeImage } from "@/components/ui/fade-image";
 import { Ruler, Weight, Clock, MapPin } from "lucide-react";
-import { breeds, getBreed } from "@/lib/data/breeds";
-import { dogs } from "@/lib/data/catalog";
+import { getBreed } from "@/lib/data/breeds";
+import { getDogsByBreed } from "@/lib/queries";
 import { DogCard } from "@/components/shop/dog-card";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
 
-export function generateStaticParams() {
-  return breeds.map((b) => ({ breed: b.slug }));
-}
+export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ breed: string }> };
 
@@ -34,16 +33,16 @@ export default async function BreedPage({ params }: Params) {
   const b = getBreed(breed);
   if (!b) notFound();
 
-  const breedDogs = dogs.filter((d) => d.breedSlug === b.slug);
+  const breedDogs = await getDogsByBreed(b.slug);
 
   return (
     <>
       {/* Hero */}
       <section className="relative flex min-h-[60vh] items-end overflow-hidden">
-        <Image src={b.heroImage} alt={b.name} fill priority className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
+        <FadeImage src={b.heroImage} alt={b.name} fill priority className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/70 to-forest-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pb-14 pt-32 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">{b.group}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brass-400">{b.group}</p>
           <h1 className="mt-2 font-display text-5xl font-bold sm:text-6xl">{b.name}</h1>
           <p className="mt-3 max-w-xl text-lg text-white/85">{b.tagline}</p>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
@@ -68,7 +67,7 @@ export default async function BreedPage({ params }: Params) {
           </div>
           <div className="flex flex-wrap gap-2">
             {b.temperament.map((t) => (
-              <span key={t} className="rounded-full bg-gold-400/10 px-4 py-1.5 text-sm font-medium text-gold-600 dark:text-gold-400">{t}</span>
+              <span key={t} className="rounded-full bg-brass-400/10 px-4 py-1.5 text-sm font-medium text-brass-600 dark:text-brass-400">{t}</span>
             ))}
           </div>
         </div>
@@ -85,7 +84,7 @@ export default async function BreedPage({ params }: Params) {
                     <span className="font-medium">{val}/5</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                    <div className="h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-300" style={{ width: `${(val / 5) * 100}%` }} />
+                    <div className="h-full rounded-full bg-gradient-to-r from-brass-500 to-brass-300" style={{ width: `${(val / 5) * 100}%` }} />
                   </div>
                 </div>
               ))}
@@ -113,7 +112,7 @@ export default async function BreedPage({ params }: Params) {
 function Spec({ icon: Icon, label }: { icon: React.ComponentType<{ size?: number; className?: string }>; label: string }) {
   return (
     <span className="flex items-center gap-2 rounded-full glass px-3 py-1.5">
-      <Icon size={14} className="text-gold-400" /> {label}
+      <Icon size={14} className="text-brass-400" /> {label}
     </span>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Crest } from "@/components/brand/crest";
 import Image from "next/image";
+import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -62,24 +64,24 @@ export function Navbar() {
   return (
     <>
       {/* Announcement bar */}
-      <div className="hidden bg-navy-900 text-navy-50 md:block">
+      <div className="hidden bg-forest-900 text-forest-50 md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
           <p className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold-400" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brass-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-brass-400" />
             </span>
-            <RotatingText words={announcements} interval={3500} className="h-4 text-navy-50" />
+            <RotatingText words={announcements} interval={3500} className="h-4 text-forest-50" />
           </p>
           <div className="flex items-center gap-4">
-            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-gold-400 transition">
+            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-brass-400 transition">
               <Phone size={12} /> {site.contact.phoneDisplay}
             </a>
             <a
               href={`https://wa.me/${site.contact.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-gold-400 transition"
+              className="hover:text-brass-400 transition"
             >
               WhatsApp
             </a>
@@ -96,17 +98,10 @@ export function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <Image
-              src="/brand/logo.png"
-              alt={site.name}
-              width={48}
-              height={48}
-              className="h-11 w-11 rounded-full ring-1 ring-gold-400/40"
-              priority
-            />
+            <Crest className="h-11" title={site.name} />
             <span className="hidden leading-none sm:block">
               <span className="block font-display text-base font-bold tracking-tight">Buckingham</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-500">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-brass-500">
                 Kennel Ltd
               </span>
             </span>
@@ -125,8 +120,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-gold-500",
-                      pathname.startsWith("/breeds") && "text-gold-500"
+                      "flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-brass-500",
+                      pathname.startsWith("/breeds") && "text-brass-500"
                     )}
                   >
                     {item.label}
@@ -148,7 +143,7 @@ export function Navbar() {
                               href={`/breeds/${b.slug}`}
                               className="flex items-center gap-3 rounded-xl p-2 transition hover:bg-foreground/5"
                             >
-                              <Image
+                              <FadeImage
                                 src={b.heroImage}
                                 alt={b.name}
                                 width={48}
@@ -171,8 +166,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-gold-500",
-                      pathname === item.href && "text-gold-500"
+                      "rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-brass-500",
+                      pathname === item.href && "text-brass-500"
                     )}
                   >
                     {item.label}
@@ -289,7 +284,7 @@ function IconBtn({
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-gold-400 px-1 text-[10px] font-bold text-navy-900">
+    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-brass-400 px-1 text-[10px] font-bold text-forest-900">
       {children}
     </span>
   );

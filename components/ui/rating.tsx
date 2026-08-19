@@ -20,7 +20,7 @@ export function Rating({
             key={i}
             size={size}
             className={cn(
-              i < Math.round(value) ? "fill-gold-400 text-gold-400" : "text-muted/40"
+              i < Math.round(value) ? "fill-brass-400 text-brass-400" : "text-muted/40"
             )}
           />
         ))}

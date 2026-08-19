@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "gold" | "navy" | "outline" | "ghost" | "glass" | "gradient";
+type Variant = "brass" | "forest" | "outline" | "ghost" | "glass" | "gradient";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  gold: "btn-gold",
-  navy: "bg-navy-800 text-white hover:bg-navy-700 dark:bg-navy-600 dark:hover:bg-navy-500",
+  brass: "btn-brass",
+  forest: "bg-forest-800 text-white hover:bg-forest-700 dark:bg-forest-600 dark:hover:bg-forest-500",
   gradient:
-    "bg-[linear-gradient(120deg,var(--color-navy-700),var(--color-navy-500)_50%,var(--color-gold-500))] bg-[length:200%_auto] bg-left text-white hover:bg-right transition-[background-position] duration-500 shadow-soft",
+    "bg-[linear-gradient(120deg,var(--color-forest-800),var(--color-forest-600)_45%,var(--color-brass-500))] bg-[length:200%_auto] bg-left text-white hover:bg-right transition-[background-position] duration-500 shadow-soft",
   outline:
-    "border border-gold-400/60 text-foreground hover:bg-gold-400/10 hover:border-gold-400",
+    "border border-brass-400/60 text-foreground hover:bg-brass-400/10 hover:border-brass-400",
   ghost: "text-foreground hover:bg-foreground/5",
   glass: "glass text-foreground hover:bg-foreground/5",
 };
@@ -32,7 +32,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 focus-visible:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] whitespace-nowrap";
 
 export function Button({
-  variant = "gold",
+  variant = "brass",
   size = "md",
   className,
   ...props
@@ -43,7 +43,7 @@ export function Button({
 }
 
 export function ButtonLink({
-  variant = "gold",
+  variant = "brass",
   size = "md",
   className,
   href,

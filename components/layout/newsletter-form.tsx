@@ -15,7 +15,7 @@ export function NewsletterForm() {
       }}
       className="pt-1"
     >
-      <p className="mb-2 text-sm text-navy-100/80">Join for new litters &amp; offers</p>
+      <p className="mb-2 text-sm text-forest-100/80">Join for new litters &amp; offers</p>
       <div className="flex overflow-hidden rounded-full glass">
         <input
           type="email"
@@ -23,13 +23,13 @@ export function NewsletterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
-          className="h-10 flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-navy-100/50"
+          className="h-10 flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-forest-100/50"
         />
-        <button className="btn-gold grid h-10 w-11 place-items-center" aria-label="Subscribe">
+        <button className="btn-brass grid h-10 w-11 place-items-center" aria-label="Subscribe">
           {done ? <Check size={16} /> : <Send size={15} />}
         </button>
       </div>
-      {done && <p className="mt-2 text-xs text-gold-400">You&apos;re on the list! 🐾</p>}
+      {done && <p className="mt-2 text-xs text-brass-400">You&apos;re on the list! 🐾</p>}
     </form>
   );
 }

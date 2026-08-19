@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Crest } from "@/components/brand/crest";
 import Image from "next/image";
 import { X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,7 +22,7 @@ export function MobileNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[70] bg-navy-950/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[70] bg-forest-950/60 backdrop-blur-sm lg:hidden"
           />
           <motion.div
             initial={{ x: "-100%" }}
@@ -32,7 +33,7 @@ export function MobileNav() {
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <Link href="/" onClick={close} className="flex items-center gap-2">
-                <Image src="/brand/logo.png" alt={site.name} width={40} height={40} className="h-10 w-10 rounded-full" />
+                <Crest className="h-10" />
                 <span className="font-display font-bold">Buckingham</span>
               </Link>
               <button onClick={close} aria-label="Close menu" className="grid h-9 w-9 place-items-center rounded-full hover:bg-foreground/5">
@@ -52,7 +53,7 @@ export function MobileNav() {
                     <Link
                       href={item.href}
                       onClick={close}
-                      className="block rounded-xl px-4 py-3 font-display text-lg transition hover:bg-foreground/5 hover:text-gold-500"
+                      className="block rounded-xl px-4 py-3 font-display text-lg transition hover:bg-foreground/5 hover:text-brass-500"
                     >
                       {item.label}
                     </Link>

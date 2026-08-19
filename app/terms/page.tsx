@@ -1,3 +1,4 @@
+import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
 import { site } from "@/lib/site";
@@ -7,7 +8,7 @@ export const metadata: Metadata = { title: "Terms & Conditions" };
 export default function TermsPage() {
   return (
     <>
-      <PageHero title="Terms & Conditions" eyebrow="Legal" image="/images/dog-25.jpg" crumbs={[{ label: "Terms" }]} />
+      <PageHero title="Terms & Conditions" eyebrow="Legal" image={heroImages.legal} crumbs={[{ label: "Terms" }]} />
       <article className="mx-auto max-w-3xl space-y-5 px-6 py-16 text-muted leading-relaxed">
         <p>These terms govern the sale of dogs and services by {site.name} (Reg. {site.registration}).</p>
         <h2 className="font-display text-xl font-bold text-foreground">Reservations & deposits</h2>

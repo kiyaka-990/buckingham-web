@@ -3,14 +3,14 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, Search } from "lucide-react";
-import { dogs, categoryList, priceRange, type Category } from "@/lib/data/catalog";
+import { categoryList, type Category, type Dog } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
 import { DogCard } from "@/components/shop/dog-card";
 import { formatPrice, cn } from "@/lib/utils";
 
 type Sort = "featured" | "price-asc" | "price-desc" | "rating";
 
-export function ShopView() {
+export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min: number; max: number } }) {
   const params = useSearchParams();
   const [q, setQ] = useState("");
   const [breed, setBreed] = useState<string>("all");
@@ -45,7 +45,7 @@ export function ShopView() {
       default: list = [...list].sort((a, b) => Number(b.featured) - Number(a.featured)); break;
     }
     return list;
-  }, [q, breed, category, maxPrice, sort, availableOnly]);
+  }, [dogs, q, breed, category, maxPrice, sort, availableOnly]);
 
   const reset = () => {
     setQ(""); setBreed("all"); setCategory("all"); setMaxPrice(priceRange.max); setAvailableOnly(false); setSort("featured");
@@ -84,7 +84,7 @@ export function ShopView() {
           step={100}
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full accent-gold-400"
+          className="w-full accent-brass-400"
         />
         <div className="flex justify-between text-xs text-muted">
           <span>{formatPrice(priceRange.min)}</span>
@@ -93,11 +93,11 @@ export function ShopView() {
       </div>
 
       <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-gold-400 h-4 w-4" />
+        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-brass-400 h-4 w-4" />
         Available only
       </label>
 
-      <button onClick={reset} className="text-sm text-gold-500 hover:underline">Reset filters</button>
+      <button onClick={reset} className="text-sm text-brass-500 hover:underline">Reset filters</button>
     </div>
   );
 
@@ -126,7 +126,7 @@ export function ShopView() {
 
         {filtered.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-border py-24 text-center text-muted">
-            No dogs match your filters. <button onClick={reset} className="text-gold-500 hover:underline">Reset</button>
+            No dogs match your filters. <button onClick={reset} className="text-brass-500 hover:underline">Reset</button>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
@@ -140,14 +140,14 @@ export function ShopView() {
       {/* Mobile filter drawer */}
       {mobileFilters && (
         <div className="fixed inset-0 z-[80] lg:hidden">
-          <div className="absolute inset-0 bg-navy-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
+          <div className="absolute inset-0 bg-forest-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
           <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-surface p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">Filters</h3>
               <button onClick={() => setMobileFilters(false)} aria-label="Close"><X /></button>
             </div>
             {Filters}
-            <button onClick={() => setMobileFilters(false)} className="btn-gold mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
+            <button onClick={() => setMobileFilters(false)} className="btn-brass mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
           </div>
         </div>
       )}
@@ -170,7 +170,7 @@ function Pill({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={cn(
         "rounded-full border px-3 py-1.5 text-xs transition",
-        active ? "border-gold-400 bg-gold-400/10 text-gold-600 dark:text-gold-400" : "border-border hover:border-gold-400"
+        active ? "border-brass-400 bg-brass-400/10 text-brass-600 dark:text-brass-400" : "border-border hover:border-brass-400"
       )}
     >
       {children}
