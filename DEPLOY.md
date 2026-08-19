@@ -19,7 +19,7 @@ next build
 1. Sign up at [neon.tech](https://neon.tech) (or use Vercel → Storage → Postgres) and create a database.
 2. Copy **two** connection strings:
    - **Pooled** (has `-pooler`, add `?sslmode=require&pgbouncer=true&connection_limit=1`) → `DATABASE_URL`
-   - **Direct** (no `-pooler`, `?sslmode=require`) → `DIRECT_URL` (used only for migrations)
+   - **Direct** (no `-pooler`, `?sslmode=require`) → `DATABASE_URL_UNPOOLED` (used only for migrations)
 
 ## 2. Push the project to GitHub
 
@@ -41,7 +41,7 @@ git push -u origin main
    | Variable | Value |
    | --- | --- |
    | `DATABASE_URL` | Neon **pooled** URL |
-   | `DIRECT_URL` | Neon **direct** URL |
+   | `DATABASE_URL_UNPOOLED` | Neon **direct** URL |
    | `AUTH_SECRET` | `openssl rand -base64 32` (or `npx auth secret`) |
    | `NEXT_PUBLIC_SITE_URL` | your production URL, e.g. `https://buckingham.vercel.app` |
    | `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | Google OAuth (optional) |
@@ -73,7 +73,7 @@ From your machine, pointed at Neon:
 
 ```bash
 # generates the Postgres client, then seeds dogs + admin + demo data
-DATABASE_URL="<neon-pooled-url>" DIRECT_URL="<neon-direct-url>" npm run db:seed:prod
+DATABASE_URL="<neon-pooled-url>" DATABASE_URL_UNPOOLED="<neon-direct-url>" npm run db:seed:prod
 # restore your local SQLite client afterwards:
 npm run db:push
 ```
