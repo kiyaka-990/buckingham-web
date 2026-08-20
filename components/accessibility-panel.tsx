@@ -52,7 +52,7 @@ export function AccessibilityPanel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setA11y(false)}
-            className="fixed inset-0 z-[85] bg-forest-950/50 backdrop-blur-sm"
+            className="fixed inset-0 z-[85] bg-leaf-950/50 backdrop-blur-sm"
           />
           <motion.aside
             initial={{ x: "100%" }}
@@ -65,7 +65,7 @@ export function AccessibilityPanel() {
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <h2 className="flex items-center gap-2 font-display text-lg font-bold">
-                <Accessibility size={18} className="text-brass-500" /> Accessibility
+                <Accessibility size={18} className="text-accent-ink" /> Accessibility
               </h2>
               <button onClick={() => setA11y(false)} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full hover:bg-foreground/5">
                 <X size={18} />
@@ -82,7 +82,7 @@ export function AccessibilityPanel() {
                       onClick={() => setTheme(t)}
                       className={cn(
                         "flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm capitalize transition",
-                        theme === t ? "border-brass-400 bg-brass-400/10 text-brass-500" : "border-border hover:bg-foreground/5"
+                        theme === t ? "border-sun-400 bg-sun-400/10 text-accent-ink" : "border-border hover:bg-foreground/5"
                       )}
                     >
                       {t === "light" ? <Sun size={16} /> : <Moon size={16} />} {t}
@@ -103,7 +103,7 @@ export function AccessibilityPanel() {
                       step={0.1}
                       value={fontScale}
                       onChange={(e) => setFontScale(Number(e.target.value))}
-                      className="w-full accent-brass-400"
+                      className="w-full accent-sun-400"
                       aria-label="Text size"
                     />
                     <p className="text-center text-xs text-muted">{Math.round(fontScale * 100)}%</p>
@@ -124,7 +124,7 @@ export function AccessibilityPanel() {
                   onClick={speak}
                   className={cn(
                     "flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm transition",
-                    speaking ? "border-brass-400 bg-brass-400/10 text-brass-500" : "border-border hover:bg-foreground/5"
+                    speaking ? "border-sun-400 bg-sun-400/10 text-accent-ink" : "border-border hover:bg-foreground/5"
                   )}
                 >
                   {speaking ? <Pause size={16} /> : <Volume2 size={16} />}
@@ -157,7 +157,7 @@ function Toggle({ label, icon, active, onClick }: { label: string; icon: React.R
   return (
     <button onClick={onClick} className="flex w-full items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition hover:bg-foreground/5">
       <span className="flex items-center gap-2">{icon} {label}</span>
-      <span className={cn("relative h-6 w-11 rounded-full transition", active ? "bg-brass-400" : "bg-muted/30")}>
+      <span className={cn("relative h-6 w-11 rounded-full transition", active ? "bg-sun-400" : "bg-muted/30")}>
         <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all", active ? "left-[22px]" : "left-0.5")} />
       </span>
     </button>

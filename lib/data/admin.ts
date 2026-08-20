@@ -38,10 +38,10 @@ export type Activity = { who: string; action: string; time: string; kind: "order
 export const activity: Activity[] = [
   { who: "David Kimani", action: "placed an order for Maximus (GSD)", time: "12 min ago", kind: "order" },
   { who: "Aisha Mohammed", action: "sent a WhatsApp enquiry", time: "40 min ago", kind: "message" },
-  { who: "System", action: "Kaiser (Malinois) marked delivered", time: "2 hrs ago", kind: "stock" },
+  { who: "System", action: "Kaiser (Sable Shepherd) marked delivered", time: "2 hrs ago", kind: "stock" },
   { who: "Grace Wanjiru", action: "left a 5★ review for Sunny", time: "5 hrs ago", kind: "review" },
   { who: "Peter Mwangi", action: "started M-Pesa checkout for Titan", time: "8 hrs ago", kind: "order" },
-  { who: "System", action: "Low stock alert: French Bulldog puppies", time: "1 day ago", kind: "stock" },
+  { who: "System", action: "Low stock alert: Boerboel puppies", time: "1 day ago", kind: "stock" },
 ];
 
 export type Message = {
@@ -56,9 +56,9 @@ export type Message = {
 };
 
 export const messages: Message[] = [
-  { id: "m1", name: "Aisha Mohammed", email: "aisha.m@email.com", channel: "WhatsApp", subject: "French Bulldog availability", preview: "Hi, do you have any lilac Frenchie puppies available this month? I'm in Mombasa…", time: "40 min ago", unread: true },
-  { id: "m2", name: "Brian Ketto", email: "brian.k@email.com", channel: "Web Form", subject: "Protection dog for compound", preview: "Looking for a fully trained Malinois or GSD for a residential compound in Karen…", time: "2 hrs ago", unread: true },
-  { id: "m3", name: "Njeri Kamau", email: "njeri@email.com", channel: "Email", subject: "Delivery to Kisumu", preview: "What are the delivery options and costs to Kisumu for a Golden Retriever puppy?", time: "6 hrs ago", unread: true },
+  { id: "m1", name: "Aisha Mohammed", email: "aisha.m@email.com", channel: "WhatsApp", subject: "Akita availability", preview: "Hi, do you have any American Akita puppies available this month? I'm in Mombasa…", time: "40 min ago", unread: true },
+  { id: "m2", name: "Brian Ketto", email: "brian.k@email.com", channel: "Web Form", subject: "Protection dog for compound", preview: "Looking for a fully trained Kangal or black shepherd for a residential compound in Karen…", time: "2 hrs ago", unread: true },
+  { id: "m3", name: "Njeri Kamau", email: "njeri@email.com", channel: "Email", subject: "Delivery to Kisumu", preview: "What are the delivery options and costs to Kisumu for a Caucasian Shepherd puppy?", time: "6 hrs ago", unread: true },
   { id: "m4", name: "Omar Said", email: "omar.s@email.com", channel: "WhatsApp", subject: "Boerboel price", preview: "Habari, bei ya Boerboel puppy ni ngapi? Na mnakubali M-Pesa?", time: "1 day ago", unread: false },
-  { id: "m5", name: "Cynthia Auma", email: "cynthia@email.com", channel: "Web Form", subject: "Stud service enquiry", preview: "I have a female Rottweiler and I'm interested in your stud services…", time: "2 days ago", unread: false },
+  { id: "m5", name: "Cynthia Auma", email: "cynthia@email.com", channel: "Web Form", subject: "Stud service enquiry", preview: "I have a female Boerboel and I'm interested in your stud services…", time: "2 days ago", unread: false },
 ];

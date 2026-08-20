@@ -45,12 +45,16 @@ export type NavItem = { label: string; href: string; description?: string };
 
 export const mainNav: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Shop Dogs", href: "/shop" },
+  { label: "Shop", href: "/shop" },
   { label: "Puppies", href: "/puppies" },
   { label: "Breeds", href: "/breeds" },
-  { label: "Services", href: "/services" },
-  { label: "3D Showroom", href: "/showroom" },
-  { label: "Gallery", href: "/gallery" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+];
+
+/** Kept reachable by footer and deep links, but off the main navigation. */
+export const secondaryNav: NavItem[] = [
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "3D Showroom", href: "/showroom" },
 ];

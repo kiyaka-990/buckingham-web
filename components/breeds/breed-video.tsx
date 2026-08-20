@@ -48,7 +48,7 @@ export function BreedVideo({
 
   return (
     <figure className="overflow-hidden rounded-3xl border border-border bg-surface">
-      <div className="group relative aspect-video bg-forest-950">
+      <div className="group relative aspect-video bg-leaf-950">
         <video
           ref={ref}
           src={src}
@@ -68,9 +68,9 @@ export function BreedVideo({
           <button
             onClick={toggle}
             aria-label={`Play video of ${breedName}`}
-            className="absolute inset-0 grid place-items-center bg-forest-950/35 transition group-hover:bg-forest-950/45"
+            className="absolute inset-0 grid place-items-center bg-leaf-950/35 transition group-hover:bg-leaf-950/45"
           >
-            <span className="grid h-16 w-16 place-items-center rounded-full btn-brass shadow-lift transition group-hover:scale-105">
+            <span className="grid h-16 w-16 place-items-center rounded-full btn-leaf shadow-lift transition group-hover:scale-105">
               <Play size={24} className="ml-1 fill-current" />
             </span>
           </button>

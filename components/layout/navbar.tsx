@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Crest } from "@/components/brand/crest";
-import Image from "next/image";
 import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -59,29 +58,37 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Escape closes the account menu; on touch there is no mouse-leave to do it.
+  useEffect(() => {
+    if (!acctOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setAcctOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [acctOpen]);
+
   const isAdmin = session?.user?.role === "admin";
 
   return (
     <>
       {/* Announcement bar */}
-      <div className="hidden bg-forest-900 text-forest-50 md:block">
+      <div className="hidden bg-leaf-900 text-leaf-50 md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
           <p className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brass-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-brass-400" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sun-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-sun-400" />
             </span>
-            <RotatingText words={announcements} interval={3500} className="h-4 text-forest-50" />
+            <RotatingText words={announcements} interval={3500} className="h-4 text-leaf-50" />
           </p>
           <div className="flex items-center gap-4">
-            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-brass-400 transition">
+            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-sun-400 transition">
               <Phone size={12} /> {site.contact.phoneDisplay}
             </a>
             <a
               href={`https://wa.me/${site.contact.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brass-400 transition"
+              className="hover:text-sun-400 transition"
             >
               WhatsApp
             </a>
@@ -101,7 +108,7 @@ export function Navbar() {
             <Crest className="h-11" title={site.name} />
             <span className="hidden leading-none sm:block">
               <span className="block font-display text-base font-bold tracking-tight">Buckingham</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-brass-500">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.3em] text-accent-ink">
                 Kennel Ltd
               </span>
             </span>
@@ -120,8 +127,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-brass-500",
-                      pathname.startsWith("/breeds") && "text-brass-500"
+                      "flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-accent-ink",
+                      pathname.startsWith("/breeds") && "text-accent-ink"
                     )}
                   >
                     {item.label}
@@ -166,8 +173,8 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-brass-500",
-                      pathname === item.href && "text-brass-500"
+                      "rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-accent-ink",
+                      pathname === item.href && "text-accent-ink"
                     )}
                   >
                     {item.label}
@@ -200,7 +207,11 @@ export function Navbar() {
 
             {/* Account */}
             <div className="relative hidden sm:block" onMouseEnter={() => setAcctOpen(true)} onMouseLeave={() => setAcctOpen(false)}>
-              <IconBtn label="Account">
+              <IconBtn
+                label="Account"
+                expanded={acctOpen}
+                onClick={() => setAcctOpen((o) => !o)}
+              >
                 <User size={18} />
               </IconBtn>
               <AnimatePresence>
@@ -210,6 +221,7 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     className="absolute right-0 top-full w-56 pt-2"
+                    onClick={() => setAcctOpen(false)}
                   >
                     <div className="rounded-2xl glass-strong p-2 shadow-soft">
                       {session ? (
@@ -265,15 +277,18 @@ function IconBtn({
   children,
   label,
   onClick,
+  expanded,
 }: {
   children: React.ReactNode;
   label: string;
   onClick?: () => void;
+  expanded?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       aria-label={label}
+      aria-expanded={expanded}
       title={label}
       className="relative grid h-10 w-10 place-items-center rounded-full transition hover:bg-foreground/5"
     >
@@ -284,7 +299,7 @@ function IconBtn({
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-brass-400 px-1 text-[10px] font-bold text-forest-900">
+    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-sun-400 px-1 text-[10px] font-bold text-leaf-900">
       {children}
     </span>
   );

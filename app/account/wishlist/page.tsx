@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useWishlist } from "@/lib/store/wishlist";
 import { dogs } from "@/lib/data/catalog";
@@ -14,7 +13,7 @@ export default function WishlistPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 pb-24 pt-28">
       <div className="flex items-center gap-3">
-        <Heart className="text-brass-500" />
+        <Heart className="text-accent-ink" />
         <h1 className="font-display text-4xl font-bold">My Wishlist</h1>
       </div>
 

@@ -28,19 +28,19 @@ export default async function AdminCustomers() {
         {customers.map((c) => (
           <div key={c.email} className="rounded-3xl border border-border bg-surface p-5">
             <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-brass-400/15 font-display text-lg font-bold text-brass-500">{c.name.charAt(0)}</div>
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-sun-400/15 font-display text-lg font-bold text-accent-ink">{c.name.charAt(0)}</div>
               <div className="min-w-0">
                 <p className="font-semibold">{c.name}</p>
                 <p className="flex items-center gap-1 truncate text-xs text-muted"><Mail size={11} /> {c.email}</p>
               </div>
             </div>
             <div className="mt-4 flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1 text-muted"><MapPin size={13} className="text-brass-500" /> {c.location}</span>
+              <span className="flex items-center gap-1 text-muted"><MapPin size={13} className="text-accent-ink" /> {c.location}</span>
               <span className="rounded-full bg-surface-2 px-2.5 py-1 text-xs">{c.orders} order{c.orders > 1 ? "s" : ""}</span>
             </div>
             <div className="mt-3 border-t border-border pt-3">
               <p className="text-xs text-muted">Lifetime value</p>
-              <p className="font-display text-xl font-bold text-brass-500">{formatPrice(c.spent)}</p>
+              <p className="font-display text-xl font-bold text-accent-ink">{formatPrice(c.spent)}</p>
             </div>
           </div>
         ))}

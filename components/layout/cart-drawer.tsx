@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
@@ -22,7 +21,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[60] bg-forest-950/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-leaf-950/60 backdrop-blur-sm"
           />
           <motion.aside
             initial={{ x: "100%" }}
@@ -33,7 +32,7 @@ export function CartDrawer() {
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <h2 className="flex items-center gap-2 font-display text-lg font-bold">
-                <ShoppingBag size={18} className="text-brass-500" /> Your Kennel Cart
+                <ShoppingBag size={18} className="text-accent-ink" /> Your Kennel Cart
               </h2>
               <button onClick={close} aria-label="Close cart" className="grid h-9 w-9 place-items-center rounded-full hover:bg-foreground/5">
                 <X size={18} />
@@ -57,7 +56,7 @@ export function CartDrawer() {
                       <div className="flex flex-1 flex-col">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <Link href={`/dogs/${item.slug}`} onClick={close} className="font-semibold leading-tight hover:text-brass-500">
+                            <Link href={`/dogs/${item.slug}`} onClick={close} className="font-semibold leading-tight hover:text-accent-ink">
                               {item.name}
                             </Link>
                             <p className="text-xs text-muted">{item.breedName}</p>

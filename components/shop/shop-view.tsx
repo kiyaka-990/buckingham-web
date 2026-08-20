@@ -84,7 +84,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
           step={100}
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full accent-brass-400"
+          className="w-full accent-sun-400"
         />
         <div className="flex justify-between text-xs text-muted">
           <span>{formatPrice(priceRange.min)}</span>
@@ -93,11 +93,11 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       </div>
 
       <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-brass-400 h-4 w-4" />
+        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-sun-400 h-4 w-4" />
         Available only
       </label>
 
-      <button onClick={reset} className="text-sm text-brass-500 hover:underline">Reset filters</button>
+      <button onClick={reset} className="text-sm text-accent-ink hover:underline">Reset filters</button>
     </div>
   );
 
@@ -126,7 +126,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
 
         {filtered.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-border py-24 text-center text-muted">
-            No dogs match your filters. <button onClick={reset} className="text-brass-500 hover:underline">Reset</button>
+            No dogs match your filters. <button onClick={reset} className="text-accent-ink hover:underline">Reset</button>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
@@ -140,14 +140,14 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       {/* Mobile filter drawer */}
       {mobileFilters && (
         <div className="fixed inset-0 z-[80] lg:hidden">
-          <div className="absolute inset-0 bg-forest-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
+          <div className="absolute inset-0 bg-leaf-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
           <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-surface p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">Filters</h3>
               <button onClick={() => setMobileFilters(false)} aria-label="Close"><X /></button>
             </div>
             {Filters}
-            <button onClick={() => setMobileFilters(false)} className="btn-brass mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
+            <button onClick={() => setMobileFilters(false)} className="btn-leaf mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
           </div>
         </div>
       )}
@@ -170,7 +170,7 @@ function Pill({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={cn(
         "rounded-full border px-3 py-1.5 text-xs transition",
-        active ? "border-brass-400 bg-brass-400/10 text-brass-600 dark:text-brass-400" : "border-border hover:border-brass-400"
+        active ? "border-sun-400 bg-sun-400/10 text-accent-ink" : "border-border hover:border-sun-400"
       )}
     >
       {children}

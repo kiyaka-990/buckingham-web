@@ -14,7 +14,7 @@ export default function SuccessPage() {
         <h1 className="font-display text-3xl font-bold">Thank you! 🐾</h1>
         <p className="mt-3 text-muted">
           Your reservation is confirmed. Your order reference is{" "}
-          <Suspense fallback={<span className="font-semibold text-brass-500">…</span>}>
+          <Suspense fallback={<span className="font-semibold text-accent-ink">…</span>}>
             <SuccessOrderId />
           </Suspense>
           . Our team will contact you within 24 hours to arrange health checks, paperwork and delivery.
@@ -23,7 +23,7 @@ export default function SuccessPage() {
           <ButtonLink href="/account">View My Orders</ButtonLink>
           <ButtonLink href="/shop" variant="outline">Continue Browsing</ButtonLink>
         </div>
-        <Link href="/" className="mt-6 inline-flex items-center gap-1 text-sm text-muted hover:text-brass-500">
+        <Link href="/" className="mt-6 inline-flex items-center gap-1 text-sm text-muted hover:text-accent-ink">
           <PawPrint size={14} /> Back to home
         </Link>
       </div>

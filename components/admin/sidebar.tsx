@@ -2,12 +2,10 @@
 
 import Link from "next/link";
 import { Crest } from "@/components/brand/crest";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { LayoutDashboard, ShoppingCart, Boxes, Users, BarChart3, MessageSquare, Settings, LogOut, Home, Search, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { site } from "@/lib/site";
 
 const nav = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -27,7 +25,7 @@ export function AdminSidebar() {
         <Crest className="h-10" />
         <span>
           <span className="block font-display text-sm font-bold leading-tight">Buckingham</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-brass-500">Admin</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-accent-ink">Admin</span>
         </span>
       </Link>
 
@@ -40,7 +38,7 @@ export function AdminSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
-                active ? "bg-brass-400/12 text-brass-600 dark:text-brass-400" : "text-muted hover:bg-foreground/5 hover:text-foreground"
+                active ? "bg-sun-400/12 text-accent-ink" : "text-muted hover:bg-foreground/5 hover:text-foreground"
               )}
             >
               <item.icon size={18} /> {item.label}
@@ -72,12 +70,12 @@ export function AdminHeader({ name, email }: { name?: string | null; email?: str
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2 sm:flex-none">
-        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-brass-400" aria-label="Notifications">
+        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-sun-400" aria-label="Notifications">
           <Bell size={17} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-brass-400" />
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-sun-400" />
         </button>
         <div className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-brass-400/15 font-display text-sm font-bold text-brass-500">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-sun-400/15 font-display text-sm font-bold text-accent-ink">
             {(name || email || "A").charAt(0).toUpperCase()}
           </span>
           <span className="hidden text-left sm:block">
@@ -97,7 +95,7 @@ export function AdminMobileNav() {
       {nav.map((item) => {
         const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
-          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-brass-400/12 text-brass-500" : "text-muted")}>
+          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-sun-400/12 text-accent-ink" : "text-muted")}>
             <item.icon size={14} /> {item.label}
           </Link>
         );

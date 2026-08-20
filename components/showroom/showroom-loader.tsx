@@ -7,10 +7,10 @@ import { dogs, isPhotoPending } from "@/lib/data/catalog";
 const Showroom3D = dynamic(() => import("./showroom-3d"), {
   ssr: false,
   loading: () => (
-    <div className="grid h-[75vh] min-h-[520px] w-full place-items-center rounded-[2rem] border border-border bg-forest-950">
-      <div className="flex flex-col items-center gap-3 text-white/70">
-        <Loader2 className="animate-spin text-brass-400" size={32} />
-        <p className="text-sm">Entering the 3D showroom…</p>
+    <div className="grid h-[70vh] min-h-[460px] w-full place-items-center rounded-3xl border border-border bg-surface-2">
+      <div className="flex flex-col items-center gap-3 text-muted">
+        <Loader2 className="animate-spin text-leaf-600" size={32} />
+        <p className="text-sm">Opening the showroom…</p>
       </div>
     </div>
   ),

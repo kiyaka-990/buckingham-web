@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ShieldCheck } from "lucide-react";
@@ -32,7 +31,7 @@ export default function CartPage() {
                 <div className="flex flex-1 flex-col">
                   <div className="flex items-start justify-between">
                     <div>
-                      <Link href={`/dogs/${item.slug}`} className="font-display text-lg font-semibold hover:text-brass-500">{item.name}</Link>
+                      <Link href={`/dogs/${item.slug}`} className="font-display text-lg font-semibold hover:text-accent-ink">{item.name}</Link>
                       <p className="text-sm text-muted">{item.breedName}</p>
                     </div>
                     <button onClick={() => remove(item.id)} aria-label="Remove" className="text-muted hover:text-red-500"><Trash2 size={18} /></button>
@@ -60,7 +59,7 @@ export default function CartPage() {
                 <Row label="Total" value={formatPrice(subtotal)} bold />
               </div>
               <ButtonLink href="/checkout" size="lg" className="mt-6 w-full">Proceed to Checkout <ArrowRight size={18} /></ButtonLink>
-              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted"><ShieldCheck size={14} className="text-brass-500" /> Secure checkout · Deposit reserves your dog</p>
+              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted"><ShieldCheck size={14} className="text-accent-ink" /> Secure checkout · Deposit reserves your dog</p>
             </div>
           </aside>
         </div>

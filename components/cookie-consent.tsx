@@ -31,7 +31,7 @@ export function CookieConsent() {
           className="fixed bottom-4 left-4 right-4 z-[75] mx-auto max-w-md rounded-3xl glass-strong p-5 shadow-soft sm:left-6 sm:right-auto"
         >
           <div className="flex items-start gap-3">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brass-400/15 text-brass-500">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sun-400/15 text-accent-ink">
               <Cookie size={20} />
             </div>
             <div className="flex-1">

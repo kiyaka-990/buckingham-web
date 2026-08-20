@@ -18,7 +18,7 @@ export function FAQ() {
             aria-expanded={open === i}
           >
             <span className="font-display text-lg font-medium">{f.q}</span>
-            <Plus size={20} className={cn("shrink-0 text-brass-500 transition-transform", open === i && "rotate-45")} />
+            <Plus size={20} className={cn("shrink-0 text-accent-ink transition-transform", open === i && "rotate-45")} />
           </button>
           <AnimatePresence initial={false}>
             {open === i && (

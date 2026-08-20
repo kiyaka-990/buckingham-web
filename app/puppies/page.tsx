@@ -38,7 +38,7 @@ export default async function PuppiesPage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {perks.map((p, i) => (
             <Reveal key={p.title} delay={i} className="rounded-3xl border border-border bg-surface p-5">
-              <p.icon className="mb-3 text-brass-500" />
+              <p.icon className="mb-3 text-accent-ink" />
               <h3 className="font-display font-semibold">{p.title}</h3>
               <p className="mt-1 text-sm text-muted">{p.desc}</p>
             </Reveal>

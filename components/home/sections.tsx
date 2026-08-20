@@ -1,7 +1,5 @@
-import { kennel } from "@/lib/data/media";
-import Image from "next/image";
 import Link from "next/link";
-import { ShieldCheck, Dna, Stethoscope, HeartHandshake, ArrowRight, Box, PawPrint } from "lucide-react";
+import { ShieldCheck, Dna, Stethoscope, HeartHandshake, ArrowRight, PawPrint } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { FadeImage } from "@/components/ui/fade-image";
 import { ButtonLink } from "@/components/ui/button";
@@ -23,11 +21,11 @@ export function CategoryTiles() {
           <Link href={c.href} className="group relative block h-72 overflow-hidden rounded-3xl">
             <FadeImage src={c.image} alt={c.title} fill sizes="(max-width:768px) 100vw, 25vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
             <span className="shine-hover absolute inset-0 z-10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-forest-950/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-leaf-950/90 via-leaf-950/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-white">
               <h3 className="font-display text-xl font-bold">{c.title}</h3>
               <p className="text-sm text-white/75">{c.desc}</p>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brass-400 opacity-0 transition-all group-hover:opacity-100">
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-sun-400 opacity-0 transition-all group-hover:opacity-100">
                 Browse <ArrowRight size={14} />
               </span>
             </div>
@@ -43,7 +41,7 @@ export function StatsBand() {
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {stats.map((s, i) => (
         <Reveal key={s.label} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-          <p className="font-display text-4xl font-bold text-gradient-brass sm:text-5xl">{s.value}</p>
+          <p className="font-display text-4xl font-bold text-gradient-sun sm:text-5xl">{s.value}</p>
           <p className="mt-2 text-sm text-muted">{s.label}</p>
         </Reveal>
       ))}
@@ -63,7 +61,7 @@ export function WhyUs() {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {pillars.map((p, i) => (
         <Reveal key={p.title} delay={i} className="group rounded-3xl border border-border bg-surface p-6 card-hover">
-          <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-brass-400/12 text-brass-500 transition group-hover:bg-brass-400 group-hover:text-forest-900">
+          <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-sun-400/12 text-accent-ink transition group-hover:bg-sun-400 group-hover:text-leaf-900">
             <p.icon size={26} />
           </div>
           <h3 className="font-display text-lg font-semibold">{p.title}</h3>
@@ -86,11 +84,11 @@ export function ProcessSteps() {
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((s, i) => (
         <Reveal key={s.n} delay={i} className="relative">
-          <span className="font-display text-6xl font-bold text-brass-400/25">{s.n}</span>
+          <span className="font-display text-6xl font-bold text-sun-400/25">{s.n}</span>
           <h3 className="mt-2 font-display text-lg font-semibold">{s.title}</h3>
           <p className="mt-1 text-sm text-muted">{s.desc}</p>
           {i < steps.length - 1 && (
-            <PawPrint className="absolute -right-3 top-6 hidden text-brass-400/40 lg:block" size={20} />
+            <PawPrint className="absolute -right-3 top-6 hidden text-sun-400/40 lg:block" size={20} />
           )}
         </Reveal>
       ))}
@@ -98,41 +96,15 @@ export function ProcessSteps() {
   );
 }
 
-export function ShowroomTease() {
-  return (
-    <div className="relative overflow-hidden rounded-[2rem] border border-border">
-      <Image src={kennel.facility[0]} alt="3D showroom" fill sizes="100vw" className="object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-r from-forest-950/95 via-forest-950/70 to-forest-950/30" />
-      <div className="relative grid gap-6 p-8 sm:p-14 lg:grid-cols-2 lg:items-center">
-        <div className="text-white">
-          <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-xs font-medium">
-            <Box size={14} className="text-brass-400" /> Immersive Experience
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl md:text-5xl">
-            Step Inside Our <span className="text-gradient-brass">3D Virtual Showroom</span>
-          </h2>
-          <p className="mt-4 max-w-lg text-forest-50/80">
-            Walk through an interactive gallery of our finest dogs in real-time 3D. Spin, explore and meet
-            your next companion from anywhere in the world.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink href="/showroom" size="lg">Enter Showroom</ButtonLink>
-            <ButtonLink href="/gallery" variant="glass" size="lg">View Gallery</ButtonLink>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function CtaBand() {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-forest-900 p-10 text-center text-white sm:p-16">
+    <div className="relative overflow-hidden rounded-[2rem] bg-leaf-900 p-10 text-center text-white sm:p-16">
       <div className="aurora absolute inset-0 opacity-50" />
       <div className="relative mx-auto max-w-2xl">
-        <PawPrint className="mx-auto mb-4 text-brass-400" size={36} />
+        <PawPrint className="mx-auto mb-4 text-sun-400" size={36} />
         <h2 className="font-display text-3xl font-bold sm:text-4xl md:text-5xl">Ready to meet your royal companion?</h2>
-        <p className="mx-auto mt-4 max-w-xl text-forest-50/80">
+        <p className="mx-auto mt-4 max-w-xl text-leaf-50/80">
           Join hundreds of happy families across Kenya and beyond. Our concierge is ready to help you find the perfect match today.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

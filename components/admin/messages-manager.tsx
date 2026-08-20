@@ -54,8 +54,8 @@ export function MessagesManager({ messages }: { messages: AdminMessage[] }) {
               const Icon = channelIcon[m.channel] ?? Mail;
               return (
                 <li key={m.id}>
-                  <button onClick={() => open(m)} className={cn("flex w-full gap-3 border-b border-border p-4 text-left transition hover:bg-foreground/[0.03]", selected?.id === m.id && "bg-brass-400/5")}>
-                    <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-surface-2 text-brass-500"><Icon size={15} /></span>
+                  <button onClick={() => open(m)} className={cn("flex w-full gap-3 border-b border-border p-4 text-left transition hover:bg-foreground/[0.03]", selected?.id === m.id && "bg-sun-400/5")}>
+                    <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-surface-2 text-accent-ink"><Icon size={15} /></span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
                         <p className={cn("truncate text-sm", m.unread ? "font-bold" : "font-medium")}>{m.name}</p>
@@ -64,7 +64,7 @@ export function MessagesManager({ messages }: { messages: AdminMessage[] }) {
                       <p className="truncate text-xs font-medium">{m.subject}</p>
                       <p className="truncate text-xs text-muted">{m.body}</p>
                     </div>
-                    {m.unread && <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brass-400" />}
+                    {m.unread && <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-sun-400" />}
                   </button>
                 </li>
               );
@@ -78,7 +78,7 @@ export function MessagesManager({ messages }: { messages: AdminMessage[] }) {
             <>
               <div className="flex items-start justify-between gap-3 border-b border-border pb-4">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-brass-400/15 font-display text-lg font-bold text-brass-500">{selected.name.charAt(0)}</span>
+                  <span className="grid h-12 w-12 place-items-center rounded-full bg-sun-400/15 font-display text-lg font-bold text-accent-ink">{selected.name.charAt(0)}</span>
                   <div><p className="font-semibold">{selected.name}</p><p className="text-sm text-muted">{selected.email} · via {selected.channel}</p></div>
                 </div>
                 <span className="text-xs text-muted">{selected.date}</span>
@@ -89,7 +89,7 @@ export function MessagesManager({ messages }: { messages: AdminMessage[] }) {
                 <textarea rows={3} placeholder={`Reply to ${selected.name}…`} className="w-full resize-none bg-transparent text-sm outline-none" />
                 <div className="mt-2 flex items-center justify-between">
                   <button className="flex items-center gap-2 text-sm text-muted hover:text-foreground"><Archive size={15} /> Archive</button>
-                  <button onClick={sendReply} disabled={pending} className="btn-brass flex items-center gap-2 rounded-full px-5 py-2 text-sm">
+                  <button onClick={sendReply} disabled={pending} className="btn-leaf flex items-center gap-2 rounded-full px-5 py-2 text-sm">
                     {pending ? <Loader2 size={15} className="animate-spin" /> : <Reply size={15} />} Send reply
                   </button>
                 </div>

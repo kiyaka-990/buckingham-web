@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Crest } from "@/components/brand/crest";
-import Image from "next/image";
 import { X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mainNav, site } from "@/lib/site";
@@ -22,7 +21,7 @@ export function MobileNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[70] bg-forest-950/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[70] bg-leaf-950/60 backdrop-blur-sm lg:hidden"
           />
           <motion.div
             initial={{ x: "-100%" }}
@@ -53,7 +52,7 @@ export function MobileNav() {
                     <Link
                       href={item.href}
                       onClick={close}
-                      className="block rounded-xl px-4 py-3 font-display text-lg transition hover:bg-foreground/5 hover:text-brass-500"
+                      className="block rounded-xl px-4 py-3 font-display text-lg transition hover:bg-foreground/5 hover:text-accent-ink"
                     >
                       {item.label}
                     </Link>

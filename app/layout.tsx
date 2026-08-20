@@ -38,7 +38,10 @@ export const metadata: Metadata = {
     "dog breeder Kenya",
     "puppies for sale Kenya",
     "German Shepherd Kenya",
-    "Belgian Malinois",
+    "Boerboel Kenya",
+    "Kangal Kenya",
+    "Caucasian Shepherd Kenya",
+    "American Akita Kenya",
     "trained guard dogs",
     "Buckingham Kennel",
   ],
@@ -67,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <Providers>
-          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brass-400 focus:px-4 focus:py-2 focus:text-forest-900">
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-sun-400 focus:px-4 focus:py-2 focus:text-leaf-900">
             Skip to content
           </a>
           <Chrome><Navbar /></Chrome>

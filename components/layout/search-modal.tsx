@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
 import { FadeImage } from "@/components/ui/fade-image";
 import { useRouter } from "next/navigation";
 import { Search, X, TrendingUp } from "lucide-react";
@@ -11,7 +10,7 @@ import { breeds } from "@/lib/data/breeds";
 import { useUI } from "@/lib/store/ui";
 import { formatPrice } from "@/lib/utils";
 
-const trending = ["German Shepherd", "Puppies", "Belgian Malinois", "Trained", "Golden Retriever"];
+const trending = ["Boerboel", "Puppies", "Kangal", "Trained", "Caucasian Shepherd"];
 
 export function SearchModal() {
   const { searchOpen, setSearch } = useUI();
@@ -57,7 +56,7 @@ export function SearchModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] flex items-start justify-center bg-forest-950/60 p-4 pt-[12vh] backdrop-blur-sm"
+          className="fixed inset-0 z-[80] flex items-start justify-center bg-leaf-950/60 p-4 pt-[12vh] backdrop-blur-sm"
           onClick={() => setSearch(false)}
         >
           <motion.div
@@ -68,7 +67,7 @@ export function SearchModal() {
             className="w-full max-w-xl overflow-hidden rounded-3xl glass-strong shadow-soft"
           >
             <div className="flex items-center gap-3 border-b border-border px-5">
-              <Search size={20} className="text-brass-500" />
+              <Search size={20} className="text-accent-ink" />
               <input
                 autoFocus
                 value={q}
@@ -95,7 +94,7 @@ export function SearchModal() {
                       <button
                         key={t}
                         onClick={() => setQ(t)}
-                        className="rounded-full border border-border px-3 py-1.5 text-sm transition hover:border-brass-400 hover:text-brass-500"
+                        className="rounded-full border border-border px-3 py-1.5 text-sm transition hover:border-sun-400 hover:text-accent-ink"
                       >
                         {t}
                       </button>
@@ -122,7 +121,7 @@ export function SearchModal() {
                         <span className="block font-medium">{d.name}</span>
                         <span className="text-xs text-muted">{d.breedName} · {d.ageLabel}</span>
                       </span>
-                      <span className="font-display font-semibold text-brass-500">{formatPrice(d.price)}</span>
+                      <span className="font-display font-semibold text-accent-ink">{formatPrice(d.price)}</span>
                     </button>
                   ))}
                 </div>

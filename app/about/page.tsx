@@ -67,7 +67,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-brass-400/12 text-brass-500">
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-sun-400/12 text-accent-ink">
                 <v.icon size={24} />
               </div>
               <h3 className="font-display text-lg font-semibold">{v.title}</h3>
@@ -80,7 +80,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-4xl px-6 py-16 text-center">
         <Reveal>
           <p className="font-display text-2xl italic leading-relaxed text-muted sm:text-3xl">“{site.quote.text}”</p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-brass-500">— {site.quote.author}</p>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-accent-ink">— {site.quote.author}</p>
         </Reveal>
       </section>
 

@@ -22,13 +22,13 @@ type PrefState = {
 export const usePreferences = create<PrefState>()(
   persist(
     (set) => ({
-      theme: "dark",
+      theme: "light",
       fontScale: 1,
       highContrast: false,
       reduceMotion: false,
       hydrated: false,
       setTheme: (theme) => set({ theme }),
-      toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
+      toggleTheme: () => set((s) => ({ theme: s.theme === "light" ? "dark" : "light" })),
       setFontScale: (fontScale) => set({ fontScale: Math.min(1.4, Math.max(0.9, fontScale)) }),
       toggleContrast: () => set((s) => ({ highContrast: !s.highContrast })),
       toggleReduceMotion: () => set((s) => ({ reduceMotion: !s.reduceMotion })),

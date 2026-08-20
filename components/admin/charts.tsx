@@ -63,7 +63,7 @@ export function DonutChart({
 }
 
 /* ---------------- Sparkline ---------------- */
-export function Sparkline({ data, color = "var(--color-brass-400)", width = 120, height = 36 }: { data: number[]; color?: string; width?: number; height?: number }) {
+export function Sparkline({ data, color = "var(--color-sun-400)", width = 120, height = 36 }: { data: number[]; color?: string; width?: number; height?: number }) {
   const max = Math.max(...data);
   const min = Math.min(...data);
   const range = max - min || 1;
@@ -102,17 +102,17 @@ export function AreaChart({ data, labels, height = 240 }: { data: number[]; labe
     <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
       <defs>
         <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--color-brass-400)" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="var(--color-brass-400)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--color-sun-400)" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="var(--color-sun-400)" stopOpacity="0" />
         </linearGradient>
       </defs>
       {[0.25, 0.5, 0.75, 1].map((f) => (
         <line key={f} x1={pad} x2={width - pad} y1={y(max * f)} y2={y(max * f)} stroke="var(--surface-2)" strokeWidth="1" />
       ))}
       <polygon points={area} fill="url(#area-grad)" />
-      <polyline points={line} fill="none" stroke="var(--color-brass-400)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points={line} fill="none" stroke="var(--color-sun-400)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       {data.map((d, i) => (
-        <circle key={i} cx={pad + i * step} cy={y(d)} r="3.5" fill="var(--surface)" stroke="var(--color-brass-400)" strokeWidth="2" />
+        <circle key={i} cx={pad + i * step} cy={y(d)} r="3.5" fill="var(--surface)" stroke="var(--color-sun-400)" strokeWidth="2" />
       ))}
       {labels.map((l, i) => (
         <text key={l} x={pad + i * step} y={height - 6} textAnchor="middle" className="fill-muted text-[10px]">{l}</text>
@@ -126,7 +126,7 @@ export function ProgressBar({ value, max, className }: { value: number; max: num
   const pct = Math.min(100, (value / max) * 100);
   return (
     <div className={cn("h-2.5 overflow-hidden rounded-full bg-surface-2", className)}>
-      <div className="h-full rounded-full bg-gradient-to-r from-brass-500 to-brass-300" style={{ width: `${pct}%` }} />
+      <div className="h-full rounded-full bg-gradient-to-r from-sun-500 to-sun-300" style={{ width: `${pct}%` }} />
     </div>
   );
 }

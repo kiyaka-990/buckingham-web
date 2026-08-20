@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
         {overview.map((o) => (
           <div key={o.label} className="rounded-3xl border border-border bg-surface p-5">
             <div className="flex items-center justify-between">
-              <o.icon className="text-brass-500" size={20} />
+              <o.icon className="text-accent-ink" size={20} />
               <span className="flex items-center gap-1 text-xs text-emerald-500"><TrendingUp size={12} /> {o.delta}</span>
             </div>
             <p className="mt-3 font-display text-2xl font-bold">{o.value}</p>
@@ -64,7 +64,7 @@ export default function AnalyticsPage() {
                   <span className="text-muted">{f.value.toLocaleString()}</span>
                 </div>
                 <div className="h-7 overflow-hidden rounded-lg bg-surface-2">
-                  <div className="flex h-full items-center justify-end rounded-lg bg-gradient-to-r from-forest-600 to-brass-400 px-2 text-[11px] font-medium text-white" style={{ width: `${(f.value / maxFunnel) * 100}%` }}>
+                  <div className="flex h-full items-center justify-end rounded-lg bg-gradient-to-r from-leaf-600 to-sun-400 px-2 text-[11px] font-medium text-white" style={{ width: `${(f.value / maxFunnel) * 100}%` }}>
                     {((f.value / maxFunnel) * 100).toFixed(0)}%
                   </div>
                 </div>

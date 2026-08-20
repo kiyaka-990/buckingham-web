@@ -31,7 +31,7 @@ export function PhotoPending({
       aria-label={`${label} — no photograph available yet`}
       style={style}
       className={cn(
-        "flex flex-col items-center justify-center gap-3 overflow-hidden bg-estate text-center",
+        "flex flex-col items-center justify-center gap-3 overflow-hidden bg-deep text-center",
         fill ? "absolute inset-0" : "relative",
         className
       )}
@@ -40,8 +40,8 @@ export function PhotoPending({
       <Crest tone="invert" className={cn("relative", compact ? "h-2/3 max-h-8" : "h-14")} />
       {!compact && (
         <span className="relative max-w-[85%] px-3">
-          <span className="block font-display text-sm text-bone-100">{label}</span>
-          <span className="mt-1 block text-[11px] leading-snug text-bone-100/60">
+          <span className="block font-display text-sm text-cream-100">{label}</span>
+          <span className="mt-1 block text-[11px] leading-snug text-cream-100/60">
             Ask us for video — we send footage the same day.
           </span>
         </span>

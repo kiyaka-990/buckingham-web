@@ -80,50 +80,50 @@ export const testimonials = [
   {
     name: "David Kimani",
     location: "Nairobi, Kenya",
-    dog: "German Shepherd — Maximus",
+    dog: "Royal Black Shepherd — Maximus",
     rating: 5,
     text: "Buckingham delivered beyond every expectation. Maximus is confident, healthy and incredible with my children. The pedigree paperwork was immaculate.",
   },
   {
     name: "Aisha Mohammed",
     location: "Mombasa, Kenya",
-    dog: "French Bulldog — Coco",
+    dog: "American Akita — Coco",
     rating: 5,
     text: "The whole process felt premium from the first message. Coco arrived vaccinated, microchipped and clearly loved. World-class service.",
   },
   {
     name: "James Otieno",
     location: "Kisumu, Kenya",
-    dog: "Belgian Malinois — Kaiser",
+    dog: "Sable Shepherd — Kaiser",
     rating: 5,
     text: "As a security professional I have high standards. Kaiser's training and drive are exceptional. This is a truly elite kennel.",
   },
   {
     name: "Grace Wanjiru",
     location: "Nakuru, Kenya",
-    dog: "Golden Retriever — Sunny",
+    dog: "White Swiss Shepherd — Sunny",
     rating: 5,
     text: "Sunny is the heart of our home now. The team's after-sale mentorship has been amazing — they answer every question.",
   },
   {
     name: "Peter Mwangi",
     location: "Eldoret, Kenya",
-    dog: "Rottweiler — Titan",
+    dog: "Boerboel — Titan",
     rating: 5,
     text: "Massive, calm and beautifully tempered. You can see the quality of the bloodline. Highly recommend Buckingham Kennel.",
   },
   {
     name: "Linda Achieng",
     location: "Nairobi, Kenya",
-    dog: "Doberman — Onyx",
+    dog: "Caucasian Shepherd — Bear",
     rating: 5,
-    text: "Onyx is elegant, obedient and utterly devoted. The 3D showroom and online process made buying effortless and safe.",
+    text: "Bear is enormous, watchful and utterly devoted to the family. Buying online felt effortless and safe from the first message to delivery.",
   },
 ];
 
 export const stats = [
   { value: "500+", label: "Happy Families" },
-  { value: "9", label: "Elite Breeds" },
+  { value: "7", label: "Elite Breeds" },
   { value: "15+", label: "Years of Expertise" },
   { value: "100%", label: "Health Guaranteed" },
 ];

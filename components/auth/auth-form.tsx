@@ -151,7 +151,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
               }}
               className={cn(
                 "flex items-center justify-center gap-1.5 rounded-full py-2 text-sm font-medium transition",
-                method === t.key ? "bg-forest-800 text-white" : "text-muted hover:text-foreground"
+                method === t.key ? "bg-leaf-800 text-white" : "text-muted hover:text-foreground"
               )}
             >
               {t.icon}
@@ -175,7 +175,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
-            <button disabled={loading !== null} className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full">
+            <button disabled={loading !== null} className="btn-leaf flex h-12 w-full items-center justify-center gap-2 rounded-full">
               {loading === "credentials" ? (
                 <Loader2 className="animate-spin" size={18} />
               ) : isLogin ? (
@@ -203,7 +203,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
-            <button disabled={loading !== null} className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full">
+            <button disabled={loading !== null} className="btn-leaf flex h-12 w-full items-center justify-center gap-2 rounded-full">
               {loading === "otp-send" ? <Loader2 className="animate-spin" size={18} /> : "Send me a code"}
             </button>
           </form>
@@ -237,11 +237,11 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
               onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
               required
               aria-label="Six-digit sign-in code"
-              className="h-14 w-full rounded-xl border border-border bg-background text-center font-display text-2xl tracking-[0.6em] outline-none focus:border-brass-400"
+              className="h-14 w-full rounded-xl border border-border bg-background text-center font-display text-2xl tracking-[0.6em] outline-none focus:border-sun-400"
             />
 
             {devCode && (
-              <p className="rounded-xl border border-brass-400/40 bg-brass-400/10 px-3 py-2 text-xs text-muted">
+              <p className="rounded-xl border border-sun-400/40 bg-sun-400/10 px-3 py-2 text-xs text-muted">
                 No mail provider configured, so here is the code for testing:{" "}
                 <strong className="font-mono text-foreground">{devCode}</strong>
               </p>
@@ -251,7 +251,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             <button
               disabled={loading !== null || otpCode.length !== 6}
-              className="btn-brass flex h-12 w-full items-center justify-center gap-2 rounded-full disabled:opacity-50"
+              className="btn-leaf flex h-12 w-full items-center justify-center gap-2 rounded-full disabled:opacity-50"
             >
               {loading === "otp-verify" ? <Loader2 className="animate-spin" size={18} /> : "Verify & sign in"}
             </button>
@@ -260,14 +260,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
         <p className="mt-5 text-center text-sm text-muted">
           {isLogin ? "New to Buckingham?" : "Already have an account?"}{" "}
-          <Link href={isLogin ? "/register" : "/login"} className="font-medium text-brass-500 hover:underline">
+          <Link href={isLogin ? "/register" : "/login"} className="font-medium text-accent-ink hover:underline">
             {isLogin ? "Create an account" : "Sign in"}
           </Link>
         </p>
       </div>
 
       <div className="mt-4 flex items-start gap-2 rounded-2xl border border-border bg-surface-2/50 p-4 text-xs text-muted">
-        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-brass-500" />
+        <ShieldCheck size={16} className="mt-0.5 shrink-0 text-accent-ink" />
         <span>
           <strong className="text-foreground">Three ways in:</strong> Google, a password, or a
           one-time code emailed to you. Admin demo: <code>{site.admin.demoEmail}</code> /{" "}
@@ -283,7 +283,7 @@ function IconInput({
   ...props
 }: { icon: React.ReactNode } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-brass-400">
+    <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 focus-within:border-sun-400">
       <span className="text-muted">{icon}</span>
       <input {...props} className="h-12 flex-1 bg-transparent text-sm outline-none" />
     </div>

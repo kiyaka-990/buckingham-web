@@ -43,7 +43,7 @@ export function RotatingText({
           animate={{ opacity: 1, [axis]: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, [axis]: offset.exit, filter: "blur(6px)" }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className={cn("absolute inset-0 whitespace-nowrap", gradient && "text-gradient-brass")}
+          className={cn("absolute inset-0 whitespace-nowrap", gradient && "text-gradient-sun")}
         >
           {words[i]}
         </motion.span>

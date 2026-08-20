@@ -38,7 +38,7 @@ export default function SettingsPage() {
       <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
         <nav className="flex gap-2 lg:flex-col">
           {tabs.map((t) => (
-            <button key={t.id} onClick={() => setTab(t.id)} className={cn("flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition", tab === t.id ? "bg-brass-400/12 text-brass-600 dark:text-brass-400" : "text-muted hover:bg-foreground/5")}>
+            <button key={t.id} onClick={() => setTab(t.id)} className={cn("flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition", tab === t.id ? "bg-sun-400/12 text-accent-ink" : "text-muted hover:bg-foreground/5")}>
               <t.icon size={16} /> {t.label}
             </button>
           ))}
@@ -73,7 +73,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          <button type="submit" disabled={pending} className="btn-brass mt-6 flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
+          <button type="submit" disabled={pending} className="btn-leaf mt-6 flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
             {pending ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : saved ? <><Check size={16} /> Saved</> : <><Save size={16} /> Save changes</>}
           </button>
         </form>
@@ -88,7 +88,7 @@ function Field({ label, defaultValue }: { label: string; defaultValue?: string }
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium">{label}</label>
-      <input name={nameOf(label)} defaultValue={defaultValue} className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none focus:border-brass-400" />
+      <input name={nameOf(label)} defaultValue={defaultValue} className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none focus:border-sun-400" />
     </div>
   );
 }
@@ -102,7 +102,7 @@ function Toggle({ label, desc, defaultOn }: { label: string; desc: string; defau
         <span className="block text-sm font-medium">{label}</span>
         <span className="text-xs text-muted">{desc}</span>
       </span>
-      <span className={cn("relative h-6 w-11 shrink-0 rounded-full transition", on ? "bg-brass-400" : "bg-muted/30")}>
+      <span className={cn("relative h-6 w-11 shrink-0 rounded-full transition", on ? "bg-sun-400" : "bg-muted/30")}>
         <span className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all", on ? "left-[22px]" : "left-0.5")} />
       </span>
     </button>

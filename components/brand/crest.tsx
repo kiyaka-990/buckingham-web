@@ -23,16 +23,16 @@ export function Crest({
 }) {
   const shield =
     tone === "brand"
-      ? "var(--color-forest-700)"
+      ? "var(--color-leaf-700)"
       : tone === "invert"
-        ? "var(--color-bone-100)"
+        ? "var(--color-cream-100)"
         : "currentColor";
-  const hairline = tone === "mono" ? "currentColor" : "var(--color-brass-400)";
+  const hairline = tone === "mono" ? "currentColor" : "var(--color-sun-400)";
   const dog =
     tone === "brand"
-      ? "var(--color-bone-100)"
+      ? "var(--color-cream-100)"
       : tone === "invert"
-        ? "var(--color-forest-700)"
+        ? "var(--color-leaf-700)"
         : "currentColor";
 
   return (
@@ -104,7 +104,7 @@ export function Logo({
           <span className="font-display text-[1.0625rem] font-semibold tracking-tight">
             BUCKINGHAM
           </span>
-          <span className="mt-[3px] text-[0.5rem] font-semibold uppercase tracking-[0.34em] text-brass-600 dark:text-brass-300">
+          <span className="mt-[3px] text-[0.5rem] font-semibold uppercase tracking-[0.34em] text-accent-ink">
             Kennel Ltd
           </span>
         </span>

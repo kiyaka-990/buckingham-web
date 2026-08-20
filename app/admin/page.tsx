@@ -1,7 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { FadeImage } from "@/components/ui/fade-image";
-import { DollarSign, ShoppingCart, Dog, Users, TrendingUp, TrendingDown, ArrowUpRight, Target, Package, MessageSquare, Star, AlertTriangle } from "lucide-react";
+import { DollarSign, ShoppingCart, Users, TrendingUp, TrendingDown, ArrowUpRight, Target, Package, MessageSquare, Star, AlertTriangle } from "lucide-react";
 import { db } from "@/lib/db";
 import { getDogs } from "@/lib/queries";
 import { statusStyles, type OrderStatus } from "@/lib/data/orders";
@@ -22,7 +21,6 @@ export default async function AdminDashboard() {
   const paidCount = orderRows.filter((o) => o.status !== "cancelled").length || 1;
   const aov = Math.round(revenue / paidCount);
   const pending = orderRows.filter((o) => o.status === "pending" || o.status === "confirmed").length;
-  const availableCount = dogs.filter((d) => d.status === "available").length;
   const target = 40000;
 
   const kpis = [
@@ -49,7 +47,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">{pending} orders need attention</span>
-          <Link href="/admin/orders" className="btn-brass rounded-full px-4 py-2 text-sm">View orders</Link>
+          <Link href="/admin/orders" className="btn-leaf rounded-full px-4 py-2 text-sm">View orders</Link>
         </div>
       </div>
 
@@ -57,7 +55,7 @@ export default async function AdminDashboard() {
         {kpis.map((k) => (
           <div key={k.label} className="gradient-border rounded-3xl p-5">
             <div className="flex items-center justify-between">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-brass-400/12 text-brass-500"><k.icon size={20} /></div>
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-sun-400/12 text-accent-ink"><k.icon size={20} /></div>
               <span className={`flex items-center gap-1 text-xs font-medium ${k.up ? "text-emerald-500" : "text-red-500"}`}>
                 {k.up ? <TrendingUp size={13} /> : <TrendingDown size={13} />} {k.delta}
               </span>
@@ -89,7 +87,7 @@ export default async function AdminDashboard() {
         <div className="rounded-3xl border border-border bg-royal p-6 text-white">
           <h2 className="font-display text-lg font-bold">Monthly Target</h2>
           <p className="mt-1 text-sm text-white/70">Revenue goal</p>
-          <p className="mt-5 font-display text-3xl font-bold text-gradient-brass">{formatPrice(revenue)}</p>
+          <p className="mt-5 font-display text-3xl font-bold text-gradient-sun">{formatPrice(revenue)}</p>
           <p className="text-sm text-white/60">of {formatPrice(target)}</p>
           <div className="mt-4"><ProgressBar value={revenue} max={target} /></div>
           <p className="mt-2 text-xs text-white/70">{Math.round((revenue / target) * 100)}% achieved · {formatPrice(Math.max(0, target - revenue))} to go</p>
@@ -98,7 +96,7 @@ export default async function AdminDashboard() {
         <div className="rounded-3xl border border-border bg-surface p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-display text-lg font-bold">Top Performers</h2>
-            <Link href="/admin/inventory" className="text-xs font-medium text-brass-500 hover:underline">All</Link>
+            <Link href="/admin/inventory" className="text-xs font-medium text-accent-ink hover:underline">All</Link>
           </div>
           <div className="space-y-3">
             {topDogs.map((d, i) => (
@@ -106,7 +104,7 @@ export default async function AdminDashboard() {
                 <span className="w-4 text-sm font-bold text-muted">{i + 1}</span>
                 <FadeImage src={d.images[0]} alt={d.name} width={36} height={36} className="h-9 w-9 rounded-lg object-cover" />
                 <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{d.name}</p><p className="truncate text-xs text-muted">{d.breedName}</p></div>
-                <span className="text-sm font-semibold text-brass-500">{formatPrice(d.price)}</span>
+                <span className="text-sm font-semibold text-accent-ink">{formatPrice(d.price)}</span>
               </div>
             ))}
             {topDogs.length === 0 && <p className="text-sm text-muted">No bestsellers flagged.</p>}
@@ -120,7 +118,7 @@ export default async function AdminDashboard() {
               const Icon = activityIcon[a.kind];
               return (
                 <li key={i} className="flex gap-3">
-                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-2 text-brass-500"><Icon size={14} /></span>
+                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-2 text-accent-ink"><Icon size={14} /></span>
                   <div><p className="text-sm"><span className="font-medium">{a.who}</span> <span className="text-muted">{a.action}</span></p><p className="text-xs text-muted">{a.time}</p></div>
                 </li>
               );
@@ -134,7 +132,7 @@ export default async function AdminDashboard() {
           <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold"><AlertTriangle size={18} className="text-amber-500" /> Low Stock Alerts</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {lowStock.map((d) => (
-              <Link key={d.id} href={`/dogs/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-brass-400">
+              <Link key={d.id} href={`/dogs/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-sun-400">
                 <FadeImage src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                 <div><p className="text-sm font-medium">{d.name}</p><p className="text-xs text-amber-600 dark:text-amber-400">Only {d.stock} left</p></div>
               </Link>
@@ -146,7 +144,7 @@ export default async function AdminDashboard() {
       <div className="rounded-3xl border border-border bg-surface p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-lg font-bold">Recent Orders</h2>
-          <Link href="/admin/orders" className="flex items-center gap-1 text-sm font-medium text-brass-500 hover:underline">View all <ArrowUpRight size={14} /></Link>
+          <Link href="/admin/orders" className="flex items-center gap-1 text-sm font-medium text-accent-ink hover:underline">View all <ArrowUpRight size={14} /></Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
