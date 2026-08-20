@@ -67,7 +67,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-sun-400/12 text-accent-ink">
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-ochre-400/12 text-accent-ink">
                 <v.icon size={24} />
               </div>
               <h3 className="font-display text-lg font-semibold">{v.title}</h3>

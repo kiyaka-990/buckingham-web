@@ -22,10 +22,10 @@ export default function ShowroomPage() {
       <section className="mx-auto max-w-7xl px-6">
         <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-xs font-medium">
-            <Sparkles size={14} className="text-sun-400" /> Immersive Experience
+            <Sparkles size={14} className="text-ochre-400" /> Immersive Experience
           </span>
           <h1 className="mt-4 font-display text-4xl font-bold sm:text-5xl md:text-6xl">
-            The <span className="text-gradient-sun">3D Showroom</span>
+            The <span className="text-gradient-ochre">3D Showroom</span>
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-muted">
             Wander through a living gallery of our champions in real-time 3D. Meet your next companion from anywhere.

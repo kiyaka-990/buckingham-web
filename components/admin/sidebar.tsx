@@ -38,7 +38,7 @@ export function AdminSidebar() {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
-                active ? "bg-sun-400/12 text-accent-ink" : "text-muted hover:bg-foreground/5 hover:text-foreground"
+                active ? "bg-ochre-400/12 text-accent-ink" : "text-muted hover:bg-foreground/5 hover:text-foreground"
               )}
             >
               <item.icon size={18} /> {item.label}
@@ -70,12 +70,12 @@ export function AdminHeader({ name, email }: { name?: string | null; email?: str
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end gap-2 sm:flex-none">
-        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-sun-400" aria-label="Notifications">
+        <button className="relative grid h-10 w-10 place-items-center rounded-full border border-border hover:border-ochre-400" aria-label="Notifications">
           <Bell size={17} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-sun-400" />
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-ochre-400" />
         </button>
         <div className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-sun-400/15 font-display text-sm font-bold text-accent-ink">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-ochre-400/15 font-display text-sm font-bold text-accent-ink">
             {(name || email || "A").charAt(0).toUpperCase()}
           </span>
           <span className="hidden text-left sm:block">
@@ -95,7 +95,7 @@ export function AdminMobileNav() {
       {nav.map((item) => {
         const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
-          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-sun-400/12 text-accent-ink" : "text-muted")}>
+          <Link key={item.href} href={item.href} className={cn("flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium", active ? "bg-ochre-400/12 text-accent-ink" : "text-muted")}>
             <item.icon size={14} /> {item.label}
           </Link>
         );

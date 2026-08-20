@@ -59,8 +59,8 @@ export default function ContactPage() {
 
 function InfoCard({ icon: Icon, title, lines, href }: { icon: React.ComponentType<{ size?: number; className?: string }>; title: string; lines: string[]; href?: string }) {
   const inner = (
-    <div className="flex gap-4 rounded-2xl border border-border bg-surface p-5 transition hover:border-sun-400">
-      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sun-400/12 text-accent-ink">
+    <div className="flex gap-4 rounded-2xl border border-border bg-surface p-5 transition hover:border-ochre-400">
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-ochre-400/12 text-accent-ink">
         <Icon size={22} />
       </div>
       <div>

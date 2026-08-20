@@ -11,12 +11,12 @@ export async function SpecialOffers() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 pt-10">
-      <div className="relative overflow-hidden rounded-[2rem] border border-sun-400/30 bg-royal p-6 sm:p-8">
+      <div className="relative overflow-hidden rounded-[2rem] border border-ochre-400/30 bg-royal p-6 sm:p-8">
         <div className="aurora pointer-events-none absolute inset-0 opacity-40" />
         <div className="relative">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3 text-white">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-red-500 to-sun-400 text-leaf-900">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-red-500 to-ochre-400 text-clay-900">
                 <Flame size={22} />
               </span>
               <div>
@@ -25,7 +25,7 @@ export async function SpecialOffers() {
               </div>
             </div>
             <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white">
-              <Tag size={13} className="text-sun-400" /> {deals.length} on sale
+              <Tag size={13} className="text-ochre-400" /> {deals.length} on sale
             </span>
           </div>
 
@@ -36,7 +36,7 @@ export async function SpecialOffers() {
                 <Link
                   key={d.id}
                   href={`/dogs/${d.slug}`}
-                  className="group relative w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-white/10 bg-leaf-900/40 backdrop-blur"
+                  className="group relative w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-white/10 bg-clay-900/40 backdrop-blur"
                 >
                   <div className="relative h-40 overflow-hidden">
                     <FadeImage src={d.images[0]} alt={d.name} fill sizes="224px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -44,13 +44,13 @@ export async function SpecialOffers() {
                     <span className="shine-hover absolute inset-0 z-10" />
                   </div>
                   <div className="p-3 text-white">
-                    <p className="text-[11px] uppercase tracking-wide text-sun-400">{d.breedName}</p>
+                    <p className="text-[11px] uppercase tracking-wide text-ochre-400">{d.breedName}</p>
                     <p className="font-display font-semibold leading-tight">{d.name}</p>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <span className="font-display text-lg font-bold text-sun-400">{formatPrice(d.price)}</span>
+                      <span className="font-display text-lg font-bold text-ochre-400">{formatPrice(d.price)}</span>
                       <span className="text-xs text-white/50 line-through">{formatPrice(d.compareAt as number)}</span>
                     </div>
-                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-white/80 transition-all group-hover:gap-2 group-hover:text-sun-400">
+                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-white/80 transition-all group-hover:gap-2 group-hover:text-ochre-400">
                       Grab the deal <ArrowRight size={12} />
                     </span>
                   </div>

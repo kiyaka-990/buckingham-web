@@ -18,7 +18,7 @@ export function SectionHeading({
     <Reveal className={cn("space-y-3", center && "text-center mx-auto max-w-2xl", className)}>
       {eyebrow && (
         <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-accent-ink">
-          <span className="h-px w-6 bg-sun-400" />
+          <span className="h-px w-6 bg-ochre-400" />
           {eyebrow}
         </span>
       )}

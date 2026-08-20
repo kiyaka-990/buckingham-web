@@ -43,7 +43,7 @@ export function ContactForm() {
       <Field label="Email" name="email" type="email" required placeholder="you@email.com" />
       <div>
         <label className="mb-1.5 block text-sm font-medium">Interested in</label>
-        <select name="interest" className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-sun-400">
+        <select name="interest" className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-ochre-400">
           <option value="">Select a breed / service…</option>
           {breeds.map((b) => <option key={b.slug} value={b.name}>{b.name}</option>)}
           <option value="Training">Training</option>
@@ -53,9 +53,9 @@ export function ContactForm() {
       </div>
       <div>
         <label className="mb-1.5 block text-sm font-medium">Message</label>
-        <textarea name="message" rows={4} required placeholder="Tell us what you're looking for…" className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-sun-400" />
+        <textarea name="message" rows={4} required placeholder="Tell us what you're looking for…" className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-ochre-400" />
       </div>
-      <button disabled={status === "sending"} className="btn-leaf flex h-13 w-full items-center justify-center gap-2 rounded-full py-3.5 text-base">
+      <button disabled={status === "sending"} className="btn-clay flex h-13 w-full items-center justify-center gap-2 rounded-full py-3.5 text-base">
         {status === "sending" ? "Sending…" : <>Send Message <Send size={18} /></>}
       </button>
     </form>
@@ -66,7 +66,7 @@ function Field({ label, name, type = "text", required, placeholder }: { label: s
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium">{label}</label>
-      <input name={name} type={type} required={required} placeholder={placeholder} className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-sun-400" />
+      <input name={name} type={type} required={required} placeholder={placeholder} className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-ochre-400" />
     </div>
   );
 }

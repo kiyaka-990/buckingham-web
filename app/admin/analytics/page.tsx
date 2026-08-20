@@ -64,7 +64,7 @@ export default function AnalyticsPage() {
                   <span className="text-muted">{f.value.toLocaleString()}</span>
                 </div>
                 <div className="h-7 overflow-hidden rounded-lg bg-surface-2">
-                  <div className="flex h-full items-center justify-end rounded-lg bg-gradient-to-r from-leaf-600 to-sun-400 px-2 text-[11px] font-medium text-white" style={{ width: `${(f.value / maxFunnel) * 100}%` }}>
+                  <div className="flex h-full items-center justify-end rounded-lg bg-gradient-to-r from-clay-600 to-ochre-400 px-2 text-[11px] font-medium text-white" style={{ width: `${(f.value / maxFunnel) * 100}%` }}>
                     {((f.value / maxFunnel) * 100).toFixed(0)}%
                   </div>
                 </div>

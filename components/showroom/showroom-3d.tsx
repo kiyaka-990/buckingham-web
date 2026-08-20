@@ -7,13 +7,13 @@ import * as THREE from "three";
 import type { Dog } from "@/lib/data/catalog";
 import { ShowroomOverlay } from "./overlay";
 
-/* ---- Fresh Meadow, in 3D ------------------------------------------- */
+/* ---- Warm Clay, in 3D ---------------------------------------------- */
 const WALL = "#ffffff";
-const WALL_SHADE = "#eef2ec";
-const FLOOR = "#e8ece6";
-const LEAF = "#16a34a";
-const LEAF_DEEP = "#15803d";
-const INK = "#14201a";
+const WALL_SHADE = "#f6efe8";
+const FLOOR = "#efe4d9";
+const CLAY = "#a8442a";
+const CLAY_DEEP = "#8f3a24";
+const INK = "#2a1d18";
 
 /**
  * A bright, straight gallery wall — not a carousel of floating frames.
@@ -102,7 +102,7 @@ function Frame({
       </Text>
       <mesh position={[0, -1.36, 0.03]}>
         <planeGeometry args={[hover ? 0.9 : 0.34, 0.012]} />
-        <meshBasicMaterial color={LEAF} />
+        <meshBasicMaterial color={CLAY} />
       </mesh>
     </group>
   );
@@ -188,7 +188,7 @@ function Scene({ dogs, onSelect }: { dogs: Dog[]; onSelect: (d: Dog) => void }) 
       {/* Green datum line running the length of the wall */}
       <mesh position={[0, 2.15, -0.09]}>
         <planeGeometry args={[span + 14, 0.03]} />
-        <meshBasicMaterial color={LEAF_DEEP} />
+        <meshBasicMaterial color={CLAY_DEEP} />
       </mesh>
 
       {/* Floor */}

@@ -23,16 +23,16 @@ export function Crest({
 }) {
   const shield =
     tone === "brand"
-      ? "var(--color-leaf-700)"
+      ? "var(--color-clay-700)"
       : tone === "invert"
         ? "var(--color-cream-100)"
         : "currentColor";
-  const hairline = tone === "mono" ? "currentColor" : "var(--color-sun-400)";
+  const hairline = tone === "mono" ? "currentColor" : "var(--color-ochre-400)";
   const dog =
     tone === "brand"
       ? "var(--color-cream-100)"
       : tone === "invert"
-        ? "var(--color-leaf-700)"
+        ? "var(--color-clay-700)"
         : "currentColor";
 
   return (

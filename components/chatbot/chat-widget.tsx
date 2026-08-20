@@ -74,11 +74,11 @@ export function ChatWidget() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setChat(true)}
             aria-label="Open the sales agent chat"
-            className="fixed bottom-5 right-5 z-[70] grid h-15 w-15 place-items-center rounded-full btn-leaf shadow-soft animate-pulse-ring"
+            className="fixed bottom-5 right-5 z-[70] grid h-15 w-15 place-items-center rounded-full btn-clay shadow-soft animate-pulse-ring"
             style={{ height: 60, width: 60 }}
           >
             <MessageCircle size={26} />
-            <span className="absolute -left-1 -top-1 grid h-6 w-6 place-items-center rounded-full bg-leaf-900 text-sun-400">
+            <span className="absolute -left-1 -top-1 grid h-6 w-6 place-items-center rounded-full bg-clay-900 text-ochre-400">
               <Sparkles size={12} />
             </span>
           </motion.button>
@@ -96,14 +96,14 @@ export function ChatWidget() {
             className="fixed bottom-4 right-4 z-[70] flex h-[70vh] max-h-[600px] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-surface shadow-soft"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 bg-leaf-900 px-4 py-3 text-leaf-50">
-              <div className="relative grid h-10 w-10 place-items-center rounded-full bg-sun-400 text-leaf-900">
+            <div className="flex items-center gap-3 bg-clay-900 px-4 py-3 text-clay-50">
+              <div className="relative grid h-10 w-10 place-items-center rounded-full bg-ochre-400 text-clay-900">
                 <Crown size={20} />
-                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-leaf-900 bg-emerald-400" />
+                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-clay-900 bg-emerald-400" />
               </div>
               <div className="flex-1">
                 <p className="font-display font-semibold leading-tight">Duke · Sales Agent</p>
-                <p className="text-xs text-leaf-100/70">Online · sees live stock</p>
+                <p className="text-xs text-clay-100/70">Online · sees live stock</p>
               </div>
               <button onClick={() => setChat(false)} aria-label="Close chat" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/10">
                 <X size={18} />
@@ -119,7 +119,7 @@ export function ChatWidget() {
                       className={cn(
                         "rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
                         m.role === "user"
-                          ? "rounded-br-sm bg-leaf-800 text-white"
+                          ? "rounded-br-sm bg-clay-800 text-white"
                           : "rounded-bl-sm glass-strong"
                       )}
                     >
@@ -132,7 +132,7 @@ export function ChatWidget() {
                             key={s.slug}
                             href={`/dogs/${s.slug}`}
                             onClick={() => setChat(false)}
-                            className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-2 transition hover:border-sun-400"
+                            className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-2 transition hover:border-ochre-400"
                           >
                             {s.image ? (
                               <Image src={s.image} alt={s.label} width={44} height={44} className="h-11 w-11 shrink-0 rounded-lg object-cover" />
@@ -173,7 +173,7 @@ export function ChatWidget() {
             {messages.length <= 1 && (
               <div className="flex flex-wrap gap-2 border-t border-border px-3 py-2">
                 {starters.map((s) => (
-                  <button key={s} onClick={() => send(s)} className="rounded-full border border-border px-3 py-1.5 text-xs transition hover:border-sun-400 hover:text-accent-ink">
+                  <button key={s} onClick={() => send(s)} className="rounded-full border border-border px-3 py-1.5 text-xs transition hover:border-ochre-400 hover:text-accent-ink">
                     {s}
                   </button>
                 ))}
@@ -192,9 +192,9 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask Duke anything…"
-                className="h-11 flex-1 rounded-full border border-border bg-surface px-4 text-sm outline-none focus:border-sun-400"
+                className="h-11 flex-1 rounded-full border border-border bg-surface px-4 text-sm outline-none focus:border-ochre-400"
               />
-              <button type="submit" disabled={loading} className="btn-leaf grid h-11 w-11 shrink-0 place-items-center rounded-full" aria-label="Send">
+              <button type="submit" disabled={loading} className="btn-clay grid h-11 w-11 shrink-0 place-items-center rounded-full" aria-label="Send">
                 <Send size={16} />
               </button>
             </form>

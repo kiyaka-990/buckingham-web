@@ -42,7 +42,7 @@ export function ScrollToTop() {
             <circle cx="24" cy="24" r={R} fill="none" stroke="currentColor" strokeOpacity="0.15" strokeWidth="2.5" />
             <circle
               cx="24" cy="24" r={R} fill="none"
-              stroke="var(--color-sun-400)" strokeWidth="2.5" strokeLinecap="round"
+              stroke="var(--color-ochre-400)" strokeWidth="2.5" strokeLinecap="round"
               strokeDasharray={C} strokeDashoffset={C * (1 - progress)}
             />
           </svg>

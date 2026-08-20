@@ -40,9 +40,9 @@ export default async function BreedPage({ params }: Params) {
       {/* Hero */}
       <section className="relative flex min-h-[60vh] items-end overflow-hidden">
         <FadeImage src={b.heroImage} alt={b.name} fill priority className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-leaf-950 via-leaf-950/70 to-leaf-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-clay-950 via-clay-950/70 to-clay-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pb-14 pt-32 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-sun-400">{b.group}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ochre-400">{b.group}</p>
           <h1 className="mt-2 font-display text-5xl font-bold sm:text-6xl">{b.name}</h1>
           <p className="mt-3 max-w-xl text-lg text-white/85">{b.tagline}</p>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
@@ -75,7 +75,7 @@ export default async function BreedPage({ params }: Params) {
           </div>
           <div className="flex flex-wrap gap-2">
             {b.temperament.map((t) => (
-              <span key={t} className="rounded-full bg-sun-400/10 px-4 py-1.5 text-sm font-medium text-accent-ink">{t}</span>
+              <span key={t} className="rounded-full bg-ochre-400/10 px-4 py-1.5 text-sm font-medium text-accent-ink">{t}</span>
             ))}
           </div>
         </div>
@@ -92,7 +92,7 @@ export default async function BreedPage({ params }: Params) {
                     <span className="font-medium">{val}/5</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                    <div className="h-full rounded-full bg-gradient-to-r from-sun-500 to-sun-300" style={{ width: `${(val / 5) * 100}%` }} />
+                    <div className="h-full rounded-full bg-gradient-to-r from-ochre-500 to-ochre-300" style={{ width: `${(val / 5) * 100}%` }} />
                   </div>
                 </div>
               ))}
@@ -120,7 +120,7 @@ export default async function BreedPage({ params }: Params) {
 function Spec({ icon: Icon, label }: { icon: React.ComponentType<{ size?: number; className?: string }>; label: string }) {
   return (
     <span className="flex items-center gap-2 rounded-full glass px-3 py-1.5">
-      <Icon size={14} className="text-sun-400" /> {label}
+      <Icon size={14} className="text-ochre-400" /> {label}
     </span>
   );
 }

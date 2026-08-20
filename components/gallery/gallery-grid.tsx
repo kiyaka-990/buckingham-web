@@ -34,7 +34,7 @@ export function GalleryGrid({ images }: { images: string[] }) {
               className="h-auto w-full object-cover duotone transition-transform duration-500 group-hover:scale-105"
             />
             <span className="shine-hover absolute inset-0 z-10" />
-            <span className="absolute inset-0 bg-leaf-950/0 transition group-hover:bg-leaf-950/20" />
+            <span className="absolute inset-0 bg-clay-950/0 transition group-hover:bg-clay-950/20" />
           </motion.button>
         ))}
       </div>
@@ -45,7 +45,7 @@ export function GalleryGrid({ images }: { images: string[] }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-leaf-950/90 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-clay-950/90 p-4 backdrop-blur-sm"
             onClick={() => setOpen(null)}
           >
             <button className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full glass text-white" onClick={() => setOpen(null)} aria-label="Close">

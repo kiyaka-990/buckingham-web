@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Truck, BadgeCheck, Search } from "lucide-react";
 import { FadeImage } from "@/components/ui/fade-image";
+import { ShopFrontHeadline } from "@/components/home/headline";
 import { ButtonLink } from "@/components/ui/button";
 import type { Dog } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
@@ -22,17 +23,7 @@ export function ShopFront({ dogs, availableCount }: { dogs: Dog[]; availableCoun
     <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
       {/* Counter line — the greeting you get on walking in */}
       <div className="flex flex-col gap-5 pb-7 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p className="eyebrow">Buckingham Kennel · Webuye, Kenya</p>
-          <h1 className="mt-2 max-w-2xl font-display text-4xl font-bold leading-[1.06] sm:text-5xl lg:text-6xl">
-            Guardian dogs, raised here
-            <span className="text-leaf-600 dark:text-leaf-400"> and ready to go home.</span>
-          </h1>
-          <p className="mt-3 max-w-lg text-base text-muted">
-            {availableCount} dogs and puppies available today, from {formatPrice(from)}. Every one
-            health-checked, papered and photographed at our own kennel.
-          </p>
-        </div>
+        <ShopFrontHeadline availableCount={availableCount} from={formatPrice(from)} />
 
         <div className="flex shrink-0 flex-wrap items-center gap-3">
           <ButtonLink href="/shop" size="lg" className="shadow-lift">
@@ -61,7 +52,7 @@ export function ShopFront({ dogs, availableCount }: { dogs: Dog[]; availableCoun
           <Link
             key={b.slug}
             href={`/breeds/${b.slug}`}
-            className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:border-leaf-500 hover:bg-leaf-50 hover:text-leaf-700 dark:hover:bg-leaf-900/40 dark:hover:text-leaf-300"
+            className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:border-clay-500 hover:bg-clay-50 hover:text-clay-700 dark:hover:bg-clay-900/40 dark:hover:text-clay-300"
           >
             {b.shortName}
           </Link>
@@ -79,7 +70,7 @@ export function ShopFront({ dogs, availableCount }: { dogs: Dog[]; availableCoun
             key={text}
             className="flex items-center gap-2.5 rounded-2xl bg-surface-2 px-4 py-3 text-sm font-medium"
           >
-            <Icon size={17} className="shrink-0 text-leaf-600 dark:text-leaf-400" />
+            <Icon size={17} className="shrink-0 text-clay-600 dark:text-clay-400" />
             {text}
           </li>
         ))}
@@ -104,10 +95,10 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
         sizes={large ? "(max-width:1024px) 100vw, 50vw" : "(max-width:640px) 100vw, 25vw"}
         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
       />
-      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-leaf-950/80 via-leaf-950/10 to-transparent" />
+      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-clay-950/80 via-clay-950/10 to-transparent" />
 
       {dog.status !== "available" && (
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-leaf-900">
+        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-clay-900">
           {dog.status}
         </span>
       )}
@@ -121,7 +112,7 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
             {dog.breedName} · {dog.ageLabel}
           </span>
         </span>
-        <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-sm font-bold text-leaf-800">
+        <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-sm font-bold text-clay-800">
           {formatPrice(dog.price)}
         </span>
       </div>

@@ -84,7 +84,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
           step={100}
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full accent-sun-400"
+          className="w-full accent-ochre-400"
         />
         <div className="flex justify-between text-xs text-muted">
           <span>{formatPrice(priceRange.min)}</span>
@@ -93,7 +93,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       </div>
 
       <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-sun-400 h-4 w-4" />
+        <input type="checkbox" checked={availableOnly} onChange={(e) => setAvailableOnly(e.target.checked)} className="accent-ochre-400 h-4 w-4" />
         Available only
       </label>
 
@@ -140,14 +140,14 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       {/* Mobile filter drawer */}
       {mobileFilters && (
         <div className="fixed inset-0 z-[80] lg:hidden">
-          <div className="absolute inset-0 bg-leaf-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
+          <div className="absolute inset-0 bg-clay-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
           <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-surface p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">Filters</h3>
               <button onClick={() => setMobileFilters(false)} aria-label="Close"><X /></button>
             </div>
             {Filters}
-            <button onClick={() => setMobileFilters(false)} className="btn-leaf mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
+            <button onClick={() => setMobileFilters(false)} className="btn-clay mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
           </div>
         </div>
       )}
@@ -170,7 +170,7 @@ function Pill({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={cn(
         "rounded-full border px-3 py-1.5 text-xs transition",
-        active ? "border-sun-400 bg-sun-400/10 text-accent-ink" : "border-border hover:border-sun-400"
+        active ? "border-ochre-400 bg-ochre-400/10 text-accent-ink" : "border-border hover:border-ochre-400"
       )}
     >
       {children}

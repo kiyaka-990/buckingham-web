@@ -26,7 +26,7 @@ export default async function AccountPage() {
     <div className="mx-auto max-w-5xl px-6 pb-24 pt-28">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="grid h-16 w-16 place-items-center rounded-full bg-sun-400/15 text-accent-ink">
+          <div className="grid h-16 w-16 place-items-center rounded-full bg-ochre-400/15 text-accent-ink">
             <User size={28} />
           </div>
           <div>
@@ -36,12 +36,12 @@ export default async function AccountPage() {
         </div>
         <div className="flex gap-2">
           {user.role === "admin" && (
-            <Link href="/admin" className="flex items-center gap-2 rounded-full bg-leaf-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-leaf-700">
+            <Link href="/admin" className="flex items-center gap-2 rounded-full bg-clay-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-clay-700">
               <LayoutDashboard size={16} /> Admin
             </Link>
           )}
           <form action={async () => { "use server"; await signOut({ redirectTo: "/" }); }}>
-            <button className="flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium hover:border-sun-400">
+            <button className="flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium hover:border-ochre-400">
               <LogOut size={16} /> Sign out
             </button>
           </form>
@@ -80,7 +80,7 @@ export default async function AccountPage() {
 
 function StatCard({ icon: Icon, label, value, href }: { icon: React.ComponentType<{ size?: number; className?: string }>; label: string; value: string; href?: string }) {
   const inner = (
-    <div className="rounded-3xl border border-border bg-surface p-6 transition hover:border-sun-400">
+    <div className="rounded-3xl border border-border bg-surface p-6 transition hover:border-ochre-400">
       <Icon className="mb-3 text-accent-ink" />
       <p className="text-sm text-muted">{label}</p>
       <p className="font-display text-xl font-bold">{value}</p>

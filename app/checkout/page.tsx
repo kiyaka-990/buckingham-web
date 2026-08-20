@@ -112,7 +112,7 @@ export default function CheckoutPage() {
               <CheckCircle2 className="mx-auto mb-4 text-emerald-500" size={48} />
               <h1 className="font-display text-2xl font-bold">Payment received! 🎉</h1>
               <p className="mt-2 text-muted">Your reservation is confirmed{receipt ? <> — M-Pesa ref <span className="font-semibold text-foreground">{receipt}</span></> : ""}.</p>
-              <button onClick={() => router.push(`/checkout/success?order=${orderRef}`)} className="btn-leaf mt-6 h-12 w-full rounded-full">View order</button>
+              <button onClick={() => router.push(`/checkout/success?order=${orderRef}`)} className="btn-clay mt-6 h-12 w-full rounded-full">View order</button>
             </>
           )}
           {(stk === "failed" || stk === "timeout") && (
@@ -120,7 +120,7 @@ export default function CheckoutPage() {
               <XCircle className="mx-auto mb-4 text-red-500" size={48} />
               <h1 className="font-display text-2xl font-bold">{stk === "timeout" ? "Still waiting…" : "Payment not completed"}</h1>
               <p className="mt-2 text-muted">{stk === "timeout" ? "We haven't received your payment yet. If you paid, it will confirm shortly." : stkMsg}</p>
-              <button onClick={() => { setStk("idle"); setMpesaRef(null); }} className="btn-leaf mt-6 h-12 w-full rounded-full">Try again</button>
+              <button onClick={() => { setStk("idle"); setMpesaRef(null); }} className="btn-clay mt-6 h-12 w-full rounded-full">Try again</button>
             </>
           )}
         </div>
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
           <p className="mt-4 text-xs text-muted">
             Send your M-Pesa confirmation to WhatsApp {site.contact.phoneDisplay} and we&apos;ll confirm your reservation.
           </p>
-          <button onClick={() => { clear(); router.push("/"); }} className="btn-leaf mt-6 h-12 w-full rounded-full">Done</button>
+          <button onClick={() => { clear(); router.push("/"); }} className="btn-clay mt-6 h-12 w-full rounded-full">Done</button>
         </div>
       </div>
     );
@@ -210,7 +210,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between"><span className="text-muted">Deposit today (30%)</span><span className="font-semibold text-accent-ink">{formatPrice(deposit)}</span></div>
               <div className="flex justify-between"><span className="text-muted">Balance on delivery</span><span>{formatPrice(subtotal - deposit)}</span></div>
             </div>
-            <button disabled={loading} className="btn-leaf mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full text-base">
+            <button disabled={loading} className="btn-clay mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full text-base">
               {loading ? <><Loader2 className="animate-spin" size={18} /> Processing…</> : <>Pay {formatPrice(deposit)} Deposit</>}
             </button>
             <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted"><ShieldCheck size={14} className="text-accent-ink" /> Secure &amp; encrypted checkout</p>
@@ -225,15 +225,15 @@ function Input({ name, label, type = "text", required }: { name: string; label: 
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium">{label}</label>
-      <input name={name} type={type} required={required} className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-sun-400" />
+      <input name={name} type={type} required={required} className="h-12 w-full rounded-xl border border-border bg-background px-4 outline-none focus:border-ochre-400" />
     </div>
   );
 }
 
 function MethodCard({ active, onClick, icon, title, desc }: { active: boolean; onClick: () => void; icon: React.ReactNode; title: string; desc: string }) {
   return (
-    <button type="button" onClick={onClick} className={cn("flex items-center gap-3 rounded-2xl border p-4 text-left transition", active ? "border-sun-400 bg-sun-400/10" : "border-border hover:border-sun-400")}>
-      <span className={cn("grid h-11 w-11 place-items-center rounded-xl", active ? "bg-sun-400 text-leaf-900" : "bg-surface-2 text-accent-ink")}>{icon}</span>
+    <button type="button" onClick={onClick} className={cn("flex items-center gap-3 rounded-2xl border p-4 text-left transition", active ? "border-ochre-400 bg-ochre-400/10" : "border-border hover:border-ochre-400")}>
+      <span className={cn("grid h-11 w-11 place-items-center rounded-xl", active ? "bg-ochre-400 text-clay-900" : "bg-surface-2 text-accent-ink")}>{icon}</span>
       <span>
         <span className="block font-semibold">{title}</span>
         <span className="text-xs text-muted">{desc}</span>

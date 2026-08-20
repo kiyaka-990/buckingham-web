@@ -28,7 +28,7 @@ export default async function AdminCustomers() {
         {customers.map((c) => (
           <div key={c.email} className="rounded-3xl border border-border bg-surface p-5">
             <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-sun-400/15 font-display text-lg font-bold text-accent-ink">{c.name.charAt(0)}</div>
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-ochre-400/15 font-display text-lg font-bold text-accent-ink">{c.name.charAt(0)}</div>
               <div className="min-w-0">
                 <p className="font-semibold">{c.name}</p>
                 <p className="flex items-center gap-1 truncate text-xs text-muted"><Mail size={11} /> {c.email}</p>

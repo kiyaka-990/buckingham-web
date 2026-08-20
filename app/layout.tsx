@@ -13,6 +13,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { ChatWidget } from "@/components/chatbot/chat-widget";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { Chrome } from "@/components/layout/chrome";
 
 const display = Sora({
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a1533",
+  themeColor: "#fffdfb",
   width: "device-width",
   initialScale: 1,
 };
@@ -70,9 +71,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <Providers>
-          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-sun-400 focus:px-4 focus:py-2 focus:text-leaf-900">
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ochre-400 focus:px-4 focus:py-2 focus:text-clay-900">
             Skip to content
           </a>
+          <Chrome><ScrollProgress /></Chrome>
           <Chrome><Navbar /></Chrome>
           <main id="main" className="flex-1">{children}</main>
           <Chrome>

@@ -21,7 +21,7 @@ export function MobileNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 z-[70] bg-leaf-950/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[70] bg-clay-950/60 backdrop-blur-sm lg:hidden"
           />
           <motion.div
             initial={{ x: "-100%" }}

@@ -54,7 +54,7 @@ export function OrdersManager({ orders }: { orders: AdminOrder[] }) {
         <div className="flex items-center gap-1.5 overflow-x-auto">
           <Filter size={16} className="text-muted" />
           {["all", ...STATUSES].map((s) => (
-            <button key={s} onClick={() => setFilter(s)} className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-medium capitalize transition", filter === s ? "bg-sun-400 text-leaf-900" : "border border-border hover:border-sun-400")}>{s}</button>
+            <button key={s} onClick={() => setFilter(s)} className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-medium capitalize transition", filter === s ? "bg-ochre-400 text-clay-900" : "border border-border hover:border-ochre-400")}>{s}</button>
           ))}
         </div>
       </div>
@@ -86,7 +86,7 @@ export function OrdersManager({ orders }: { orders: AdminOrder[] }) {
                         value={o.status}
                         onChange={(e) => changeStatus(o.id, e.target.value)}
                         disabled={pendingId === o.id}
-                        className="rounded-lg border border-border bg-background px-2 py-1 text-xs outline-none focus:border-sun-400"
+                        className="rounded-lg border border-border bg-background px-2 py-1 text-xs outline-none focus:border-ochre-400"
                       >
                         {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
