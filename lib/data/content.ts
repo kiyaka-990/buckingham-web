@@ -92,13 +92,6 @@ export const testimonials = [
     text: "The whole process felt premium from the first message. Coco arrived vaccinated, microchipped and clearly loved. World-class service.",
   },
   {
-    name: "James Otieno",
-    location: "Kisumu, Kenya",
-    dog: "Royal Black Shepherd — Kaiser",
-    rating: 5,
-    text: "As a security professional I have high standards. Kaiser's training and drive are exceptional. This is a truly elite kennel.",
-  },
-  {
     name: "Grace Wanjiru",
     location: "Nakuru, Kenya",
     dog: "White Swiss Shepherd — Sunny",

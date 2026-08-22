@@ -159,7 +159,7 @@ function build(seed: Seed, i: number): Dog {
     reviews: seed.reviews ?? 8 + ((i * 7) % 90),
     images: seed.images,
     pedigree: {
-      sire: `Ch. ${["Titan", "Baron", "Maximus", "Zeus", "Kaiser", "Rex"][i % 6]} von Buckingham`,
+      sire: `Ch. ${["Titan", "Baron", "Maximus", "Zeus"][i % 4]} von Buckingham`,
       dam: `Ch. ${["Nala", "Athena", "Duchess", "Sasha", "Freya", "Zara"][i % 6]} of Webuye`,
       grandSire: `GCh. ${["Apollo", "Thor", "Cyrus", "Odin"][i % 4]} vom Königshaus`,
       grandDam: `Ch. ${["Aria", "Luna", "Cleo", "Roxy"][i % 4]} Royal Line`,
@@ -213,52 +213,9 @@ const seeds: Seed[] = [
     description:
       "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Rocco are, and they start at $1,600.",
   },
-  {
-    name: "Kazbek", breedSlug: "caucasian-shepherd", category: "trained", sex: "Male",
-    ageLabel: "20 months", color: "Red Fawn", weightKg: 70,
-    hipScore: "OFA Good", guarantee: 24,
-    traits: ["Perimeter trained", "Night patrol", "Steady nerves"],
-    images: pics("caucasian", "adult", 7, 8, 9),
-  },
-  {
-    name: "Lada", breedSlug: "caucasian-shepherd", category: "adult", sex: "Female",
-    ageLabel: "3 years", color: "Fawn", weightKg: 58,
-    traits: ["Family guardian", "Patient with children", "Quiet"],
-    images: pics("caucasian", "adult", 10, 11),
-  },
 
-  /* ---- White Long Coat Swiss Shepherd — breeding stock ---------- */
-  {
-    name: "Alba", breedSlug: "white-swiss-shepherd", category: "adult", sex: "Female",
-    ageLabel: "2 years", color: "Pure White", featured: true, weightKg: 32,
-    traits: ["Gentle with children", "Therapy temperament", "Foundation dam"],
-    images: pics("white-shepherd", "adult", 2, 1, 3),
-  },
-  {
-    name: "Aspen", breedSlug: "white-swiss-shepherd", category: "trained", sex: "Male",
-    ageLabel: "18 months", color: "Pure White", weightKg: 38,
-    hipScore: "OFA Good", guarantee: 24,
-    traits: ["Obedience titled", "Off-lead reliable", "Foundation sire"],
-    images: pics("white-shepherd", "adult", 4, 5, 6),
-  },
-  {
-    name: "Neve", breedSlug: "white-swiss-shepherd", category: "adult", sex: "Female",
-    ageLabel: "16 months", color: "Cream White", weightKg: 30,
-    traits: ["Soft natured", "Great with kids", "Young dam"],
-    images: pics("white-shepherd", "adult", 7, 8, 9),
-  },
 
   /* ---- Royal Black German Shepherd — breeding stock ------------- */
-  {
-    name: "Kaiser", breedSlug: "royal-black-shepherd", category: "elite", sex: "Male",
-    ageLabel: "2 years", color: "Solid Black, Long Coat",
-    featured: true, weightKg: 40, hipScore: "OFA Excellent", guarantee: 36,
-    traits: ["Solid black long coat", "Straight back", "Head stud"],
-    champions: ["Working Line Sieger 2025", "Best of Breed — Nairobi"],
-    images: pics("gsd-black", "adult", 1, 2, 3, 7),
-    description:
-      "Kaiser is the dog people ring us about. A solid-black long-coated German Shepherd of genuinely royal stamp — heavy bone, level topline, and the calm, switched-on temperament that separates a working shepherd from a nervous one. He is our head stud and the reference point for every black litter we plan, and he is not for sale.",
-  },
   {
     name: "Felly Atlas", breedSlug: "royal-black-shepherd", category: "trained", sex: "Female",
     born: "2024-09-21", color: "Solid Black", featured: true, weightKg: 32,
@@ -270,42 +227,7 @@ const seeds: Seed[] = [
       "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her litters with Kaiser are, and they start at $1,600.",
   },
 
-  /* ---- American Akita — breeding stock -------------------------- */
-  {
-    name: "Kenji", breedSlug: "american-akita", category: "elite", sex: "Male",
-    ageLabel: "2 years", color: "Brindle & White", featured: true, weightKg: 52,
-    hipScore: "OFA Excellent", guarantee: 36,
-    traits: ["Bear-head type", "Heavy coat", "Foundation sire"],
-    champions: ["Best of Breed — East Africa 2025"],
-    images: pics("akita", "adult", 2, 1, 3),
-  },
-  {
-    name: "Yuki", breedSlug: "american-akita", category: "adult", sex: "Female",
-    ageLabel: "22 months", color: "White & Fawn", weightKg: 42,
-    traits: ["Dignified", "Silent guardian", "Foundation dam"],
-    images: pics("akita", "adult", 4, 5, 6),
-  },
 
-  /* ---- Kangal — breeding stock ---------------------------------- */
-  {
-    name: "Sivas", breedSlug: "kangal", category: "elite", sex: "Male",
-    ageLabel: "2 years", color: "Fawn with Black Mask",
-    featured: true, weightKg: 62, hipScore: "OFA Good", guarantee: 36,
-    traits: ["Turkish import type", "Livestock guardian", "Foundation sire"],
-    champions: ["Sivas Regional Type — 2025"],
-    images: pics("kangal", "adult", 1),
-    description:
-      "Sivas is a true Turkish-type Kangal — heavy fawn coat, the deep black mask the breed is judged on, and the high-set curled tail carried over the back. Long-legged and built to cover a boundary all night, he is unhurried with stock and children and completely immovable at a gate. Our foundation Kangal sire, and not for sale.",
-  },
-  {
-    name: "Aslan", breedSlug: "kangal", category: "trained", sex: "Male",
-    ageLabel: "2 years", color: "Fawn with Black Mask", weightKg: 58,
-    hipScore: "OFA Good", guarantee: 24,
-    traits: ["Night patrol", "Stock-safe", "Composed with strangers"],
-    images: pics("kangal", "adult", 2),
-    description:
-      "Photographed on the range he was raised to work, Aslan is a full-size Kangal male trained to hold a perimeter and to leave livestock, children and invited guests entirely alone. He is our working demonstration dog — come and meet him, but he is not for sale.",
-  },
 
   /* ================================================================
      PUPPIES — the only listings we sell. From $1,600.
@@ -313,13 +235,13 @@ const seeds: Seed[] = [
   {
     name: "Nyota", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Female",
     ageLabel: "10 weeks", color: "Solid Black", price: 1600, bestseller: true, weightKg: 7,
-    traits: ["Kaiser × Felly Atlas litter", "Confident", "Early socialised"],
+    traits: ["Confident", "Early socialised"],
     images: pics("gsd-black", "pup", 4, 5, 6),
   },
   {
     name: "Obsidian", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Male",
     ageLabel: "10 weeks", color: "Solid Black", price: 1700, featured: true, weightKg: 8,
-    traits: ["Kaiser × Felly Atlas litter", "Long coat carrier", "ENS raised"],
+    traits: ["Long coat carrier", "ENS raised"],
     images: pics("gsd-black", "pup", 1, 2, 3),
   },
   {
@@ -337,7 +259,7 @@ const seeds: Seed[] = [
   {
     name: "Bora", breedSlug: "kangal", category: "puppy", sex: "Male",
     ageLabel: "10 weeks", color: "Fawn with Black Mask", price: 2100, weightKg: 11,
-    traits: ["Sivas son", "Heavy bone", "Steady temperament"],
+    traits: ["Heavy bone", "Steady temperament"],
     images: pics("kangal", "pup", 2),
   },
   {
