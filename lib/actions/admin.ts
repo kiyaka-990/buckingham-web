@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { breeds } from "@/lib/data/breeds";
+import { breeds, PHOTO_PENDING } from "@/lib/data/breeds";
 import { slugify } from "@/lib/utils";
 
 async function requireAdmin() {
@@ -19,15 +19,21 @@ function revalidateStore() {
   revalidatePath("/admin/inventory");
 }
 
+/**
+ * A new dog starts with an empty pedigree, not a flattering one. The detail
+ * page hides whatever is blank, so an unrecorded ancestry simply does not
+ * appear — the alternative is publishing championship lines for a puppy nobody
+ * has papers for.
+ */
 const defaultPedigree = {
-  sire: "Ch. Baron von Buckingham",
-  dam: "Ch. Duchess of Webuye",
-  grandSire: "GCh. Apollo vom Königshaus",
-  grandDam: "Ch. Luna Royal Line",
-  champions: ["Best of Breed"],
-  generations: 5,
-  registry: "KUC / FCI Registered",
-  inbreedingCoefficient: "3.0%",
+  sire: "",
+  dam: "",
+  grandSire: "",
+  grandDam: "",
+  champions: [] as string[],
+  generations: 0,
+  registry: "",
+  inbreedingCoefficient: "",
 };
 const defaultHealth = {
   vaccinated: true, dewormed: true, vetChecked: true, microchipped: true,
@@ -35,9 +41,9 @@ const defaultHealth = {
 };
 
 function parseForm(fd: FormData) {
-  const breedSlug = String(fd.get("breedSlug") || "german-shepherd");
+  const breedSlug = String(fd.get("breedSlug") || breeds[0].slug);
   const breed = breeds.find((b) => b.slug === breedSlug);
-  const image = String(fd.get("image") || "").trim() || "/media/gsd-black/adult-01.jpg";
+  const image = String(fd.get("image") || "").trim() || PHOTO_PENDING;
   const traits = String(fd.get("traits") || "").split(",").map((t) => t.trim()).filter(Boolean);
   return {
     name: String(fd.get("name") || "Unnamed").trim(),

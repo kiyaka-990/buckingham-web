@@ -257,21 +257,44 @@ export function DogDetail({ dog }: { dog: Dog }) {
             <div className="pt-5 text-sm leading-relaxed text-muted">
               {tab === "overview" && <p>{dog.description}</p>}
 
+              {/* Only state what the dog's papers actually record. A listing
+                  with no pedigree on file says so and invites the question,
+                  rather than filling the tab with a line nobody verified. */}
               {tab === "pedigree" && (
                 <div className="space-y-4">
-                  <p className="text-foreground">A verified {dog.pedigree.generations}-generation pedigree — {dog.pedigree.registry}. Inbreeding coefficient {dog.pedigree.inbreedingCoefficient}.</p>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <PedigreeCard label="Sire" name={dog.pedigree.sire} sub={dog.pedigree.grandSire} />
-                    <PedigreeCard label="Dam" name={dog.pedigree.dam} sub={dog.pedigree.grandDam} />
-                  </div>
-                  <div>
-                    <p className="mb-2 font-semibold text-foreground">Titles &amp; Achievements</p>
-                    <ul className="space-y-1">
-                      {dog.pedigree.champions.map((c) => (
-                        <li key={c} className="flex items-center gap-2"><Award size={14} className="text-accent-ink" /> {c}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  {dog.pedigree.generations > 0 && dog.pedigree.registry && (
+                    <p className="text-foreground">
+                      A verified {dog.pedigree.generations}-generation pedigree — {dog.pedigree.registry}.
+                      {dog.pedigree.inbreedingCoefficient &&
+                        ` Inbreeding coefficient ${dog.pedigree.inbreedingCoefficient}.`}
+                    </p>
+                  )}
+                  {(dog.pedigree.sire || dog.pedigree.dam) && (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {dog.pedigree.sire && (
+                        <PedigreeCard label="Sire" name={dog.pedigree.sire} sub={dog.pedigree.grandSire} />
+                      )}
+                      {dog.pedigree.dam && (
+                        <PedigreeCard label="Dam" name={dog.pedigree.dam} sub={dog.pedigree.grandDam} />
+                      )}
+                    </div>
+                  )}
+                  {dog.pedigree.champions.length > 0 && (
+                    <div>
+                      <p className="mb-2 font-semibold text-foreground">Titles &amp; Achievements</p>
+                      <ul className="space-y-1">
+                        {dog.pedigree.champions.map((c) => (
+                          <li key={c} className="flex items-center gap-2"><Award size={14} className="text-accent-ink" /> {c}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {!dog.pedigree.sire && !dog.pedigree.dam && !dog.pedigree.champions.length && (
+                    <p>
+                      We haven&rsquo;t published a pedigree for {dog.name} yet. Ask us and we&rsquo;ll
+                      send whatever paperwork we hold for {dog.sex === "Male" ? "him" : "her"}.
+                    </p>
+                  )}
                 </div>
               )}
 
