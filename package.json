@@ -12,7 +12,9 @@
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate deploy --schema=prisma/schema.postgres.prisma",
     "db:generate:prod": "prisma generate --schema=prisma/schema.postgres.prisma",
-    "db:seed:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/seed.ts"
+    "db:seed:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/seed.ts",
+    "db:sync:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/sync-dogs.ts",
+    "db:sync:prod:dry": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/sync-dogs.ts --dry-run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.118.0",

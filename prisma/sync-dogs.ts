@@ -35,6 +35,7 @@ const dryRun = process.argv.includes("--dry-run");
  * a dog added through the admin portal is never caught by this script.
  */
 const RETIRED = [
+  // Unevidenced adults, removed from the catalogue on 22 Aug 2026.
   "kazbek-caucasian-shepherd",
   "lada-caucasian-shepherd",
   "alba-white-swiss-shepherd",
@@ -45,6 +46,22 @@ const RETIRED = [
   "yuki-american-akita",
   "sivas-kangal",
   "aslan-kangal",
+
+  // Breeds the kennel no longer lists. Production was last seeded before the
+  // register was cut to five, so it is still selling these to the public even
+  // though neither breed has a page, a photograph or a place in the register.
+  "titan-boerboel",
+  "duchess-boerboel",
+  "rafiki-sable-german-shepherd",
+  "nia-sable-german-shepherd",
+  "simba-sable-german-shepherd",
+  "tumaini-sable-german-shepherd",
+  "zuri-sable-german-shepherd",
+
+  // Same vintage, same problem as the ten above: no record names these dogs.
+  "bogatyr-caucasian-shepherd",
+  "zima-caucasian-shepherd",
+  "zara-royal-black-shepherd",
 ];
 
 async function main() {
