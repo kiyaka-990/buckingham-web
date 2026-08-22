@@ -5,6 +5,7 @@ import { Testimonials } from "@/components/home/testimonials";
 import { FAQ } from "@/components/home/faq";
 import { BreedRegister } from "@/components/home/breed-register";
 import { PuppySlide } from "@/components/home/puppy-slide";
+import { HealthRecords } from "@/components/home/health-records";
 import {
   CategoryTiles,
   StatsBand,
@@ -57,6 +58,21 @@ export default async function HomePage() {
       {/* The puppy slide — the only place on this page that carries a price. */}
       <section className="mx-auto max-w-7xl px-6 pb-20">
         <PuppySlide puppies={puppies} />
+      </section>
+
+      {/* The vaccination cards, shown rather than described — this is the
+          evidence behind the health guarantee the puppy slide promises. */}
+      <section className="bg-mesh py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHeading
+            eyebrow="Proof, Not Promises"
+            title="Our vaccination records"
+            subtitle="Every dog we keep is vaccinated, dewormed and vet-checked on a schedule, and we keep the card to prove it. Here are the originals — open any one to read it in full."
+            center
+            className="mb-12"
+          />
+          <HealthRecords />
+        </div>
       </section>
 
       {/* Categories */}

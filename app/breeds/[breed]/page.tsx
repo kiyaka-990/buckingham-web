@@ -8,6 +8,8 @@ import { DogCard } from "@/components/shop/dog-card";
 import { BreedVideo } from "@/components/breeds/breed-video";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
+import { HealthRecords } from "@/components/home/health-records";
+import { recordsForBreed } from "@/lib/data/records";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,7 @@ export default async function BreedPage({ params }: Params) {
   const breedDogs = await getDogsByBreed(b.slug);
   const breedPuppies = breedDogs.filter((d) => d.category === "puppy" && d.status !== "sold");
   const breedParents = breedDogs.filter((d) => d.category !== "puppy");
+  const records = recordsForBreed(b.slug);
 
   return (
     <>
@@ -83,6 +86,12 @@ export default async function BreedPage({ params }: Params) {
               These are the {b.name}s living at our Webuye kennel. They are our breeding
               programme and are not for sale — their puppies are.
             </p>
+            {b.residents.length === 0 && (
+              <p className="mt-4 rounded-2xl border border-border bg-surface-2 p-4 text-sm text-muted">
+                We publish a dog&rsquo;s name and date of birth only once we hold its papers.
+                Call us and we&rsquo;ll talk you through this line and send footage the same day.
+              </p>
+            )}
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {b.residents.map((r) => (
                 <li key={r.name} className="rounded-2xl border border-border bg-surface-2 p-4">
@@ -99,6 +108,19 @@ export default async function BreedPage({ params }: Params) {
               ))}
             </ul>
           </div>
+          {/* Where we hold cards for this breed's dogs, show them here — the
+              proof sits next to the dogs it belongs to. */}
+          {records.length > 0 && (
+            <div className="rounded-3xl border border-border bg-surface p-6">
+              <h3 className="font-display text-lg font-semibold">Vaccination records</h3>
+              <p className="mt-1 text-sm text-muted">
+                The actual cards for our {b.shortName}s. Open any image to read it in full.
+              </p>
+              <div className="mt-4">
+                <HealthRecords records={records} />
+              </div>
+            </div>
+          )}
           <div className="flex flex-wrap gap-2">
             {b.temperament.map((t) => (
               <span key={t} className="rounded-full bg-ochre-400/10 px-4 py-1.5 text-sm font-medium text-accent-ink">{t}</span>

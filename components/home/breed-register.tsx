@@ -42,6 +42,14 @@ export function BreedRegister() {
               <p className="mt-4 text-[11px] font-semibold uppercase tracking-wider text-accent-ink">
                 Our {b.shortName}s
               </p>
+              {/* A breed can be in the programme before its dogs' papers reach
+                  us. We say so plainly rather than print a name we can't back. */}
+              {b.residents.length === 0 && (
+                <p className="mt-2 text-sm text-muted">
+                  Names and dates published once we have the papers in hand — call us and
+                  we&rsquo;ll walk you through this line today.
+                </p>
+              )}
               <ul className="mt-2 space-y-2">
                 {b.residents.map((r) => (
                   <li

@@ -103,11 +103,7 @@ export const breeds: Breed[] = [
       "A softer, more sensitive cousin of the working shepherd — the same brain and biddability, noticeably lower sharpness, carried in the long white coat the breed is known for. The Berger Blanc Suisse is the line we recommend to families who want a shepherd's intelligence and loyalty around children without a hard protection edge. Ours are raised underfoot from birth.",
     care:
       "Daily exercise plus training games; they are quick to bore. Brush the white double coat twice weekly. Sensitive to harsh handling — rewards patience enormously.",
-    residents: [
-      { name: "Alba", sex: "Female", role: "Foundation dam" },
-      { name: "Aspen", sex: "Male", role: "Foundation sire" },
-      { name: "Neve", sex: "Female", role: "Young dam" },
-    ],
+    residents: [{ name: "Simba", sex: "Male", role: "Foundation sire" }],
     mediaDir: "white-shepherd",
     photoPending: false,
     heroImage: m("white-shepherd", "adult-02.jpg"),
@@ -130,10 +126,7 @@ export const breeds: Breed[] = [
       "The solid black German Shepherd is the rarest and most striking expression of the breed — a recessive coat carried by both parents, paired here with straighter backs, heavy bone and the long plush coat our clients travel for. Every dog in this line comes from proven working stock with certified hips and the level, unshakeable temperament the breed is meant to have.",
     care:
       "Vigorous daily exercise and genuine mental work. Weekly brushing, daily through the seasonal coat blow. Thrives on structure, training and being close to its people.",
-    residents: [
-      { name: "Felly Atlas", sex: "Female", born: "2024-09-21", role: "Foundation dam" },
-      { name: "Kaiser", sex: "Male", role: "Head stud" },
-    ],
+    residents: [{ name: "Felly Atlas", sex: "Female", born: "2024-09-21", role: "Foundation dam" }],
     mediaDir: "gsd-black",
     photoPending: false,
     heroImage: m("gsd-black", "adult-01.jpg"),
@@ -156,10 +149,7 @@ export const breeds: Breed[] = [
       "The American Akita is a large, powerfully built spitz with a plush double coat, a broad bear-like head and a famously silent devotion to its household. It does not fuss, bark or beg for strangers — it simply attaches itself to its family for life and stands between them and anything unfamiliar.",
     care:
       "Two solid walks a day and firm, respectful training from puppyhood. Heavy shedding twice a year needs committed brushing. Happiest as the only dog, at the centre of its family.",
-    residents: [
-      { name: "Kenji", sex: "Male", role: "Foundation sire" },
-      { name: "Yuki", sex: "Female", role: "Foundation dam" },
-    ],
+    residents: [],
     mediaDir: "akita",
     photoPending: false,
     heroImage: m("akita", "adult-02.jpg"),
@@ -182,10 +172,7 @@ export const breeds: Breed[] = [
       "The Kangal is the livestock guardian other guardians are measured against — famed for the strongest bite in the canine world and, far more importantly, for the judgement to almost never use it. Calm, patient and astonishingly gentle with children and stock, it patrols a boundary all night and sleeps at the door all day.",
     care:
       "Room to patrol and a boundary worth patrolling. Early socialisation matters more than obedience drilling. Weekly brushing; heavier during the seasonal moult.",
-    residents: [
-      { name: "Sivas", sex: "Male", role: "Foundation sire" },
-      { name: "Aslan", sex: "Male", role: "Working guardian" },
-    ],
+    residents: [],
     mediaDir: "kangal",
     photoPending: false,
     heroImage: m("kangal", "adult-01.jpg"),
