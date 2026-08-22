@@ -38,12 +38,12 @@ export const metadata: Metadata = {
   keywords: [
     "dog breeder Kenya",
     "puppies for sale Kenya",
-    "German Shepherd Kenya",
-    "Boerboel Kenya",
-    "Kangal Kenya",
+    "Royal Black German Shepherd Kenya",
     "Caucasian Shepherd Kenya",
+    "White Long Coat Swiss Shepherd Kenya",
     "American Akita Kenya",
-    "trained guard dogs",
+    "Kangal Kenya",
+    "guard dog puppies Kenya",
     "Buckingham Kennel",
   ],
   openGraph: {

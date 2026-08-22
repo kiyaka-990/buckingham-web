@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { FadeImage } from "@/components/ui/fade-image";
-import { Ruler, Weight, Clock, MapPin } from "lucide-react";
-import { getBreed } from "@/lib/data/breeds";
+import { Ruler, Weight, Clock, MapPin, CakeSlice } from "lucide-react";
+import { formatBorn, getBreed } from "@/lib/data/breeds";
 import { getDogsByBreed } from "@/lib/queries";
 import { DogCard } from "@/components/shop/dog-card";
 import { BreedVideo } from "@/components/breeds/breed-video";
@@ -34,6 +34,8 @@ export default async function BreedPage({ params }: Params) {
   if (!b) notFound();
 
   const breedDogs = await getDogsByBreed(b.slug);
+  const breedPuppies = breedDogs.filter((d) => d.category === "puppy" && d.status !== "sold");
+  const breedParents = breedDogs.filter((d) => d.category !== "puppy");
 
   return (
     <>
@@ -73,6 +75,30 @@ export default async function BreedPage({ params }: Params) {
             <h3 className="font-display text-lg font-semibold">Care &amp; Living</h3>
             <p className="mt-2 leading-relaxed text-muted">{b.care}</p>
           </div>
+
+          {/* The dogs we keep, under the names on their own papers. */}
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="font-display text-lg font-semibold">Our {b.shortName}s</h3>
+            <p className="mt-1 text-sm text-muted">
+              These are the {b.name}s living at our Webuye kennel. They are our breeding
+              programme and are not for sale — their puppies are.
+            </p>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {b.residents.map((r) => (
+                <li key={r.name} className="rounded-2xl border border-border bg-surface-2 p-4">
+                  <p className="font-display text-lg font-semibold">{r.name}</p>
+                  <p className="text-sm text-muted">
+                    {r.sex} · {r.role}
+                  </p>
+                  {r.born && (
+                    <p className="mt-1 flex items-center gap-1.5 text-xs text-muted">
+                      <CakeSlice size={12} className="text-accent-ink" /> Born {formatBorn(r.born)}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="flex flex-wrap gap-2">
             {b.temperament.map((t) => (
               <span key={t} className="rounded-full bg-ochre-400/10 px-4 py-1.5 text-sm font-medium text-accent-ink">{t}</span>
@@ -97,17 +123,39 @@ export default async function BreedPage({ params }: Params) {
                 </div>
               ))}
             </div>
-            <ButtonLink href={`/shop?breed=${b.slug}`} className="mt-6 w-full">See available {b.name}s</ButtonLink>
+            <ButtonLink href="/puppies" className="mt-6 w-full">Puppies from $1,600</ButtonLink>
           </div>
         </aside>
       </div>
 
-      {/* Available dogs */}
-      {breedDogs.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 pb-20">
-          <SectionHeading eyebrow="Available Now" title={`${b.name}s at Buckingham`} className="mb-8" />
+      {/* Puppies — the only listings for sale */}
+      {breedPuppies.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <SectionHeading
+            eyebrow="For Sale"
+            title={`${b.shortName} puppies available now`}
+            subtitle="From $1,600, vaccinated, chipped, papered and health-guaranteed."
+            className="mb-8"
+          />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {breedDogs.map((d, i) => (
+            {breedPuppies.map((d, i) => (
+              <DogCard key={d.id} dog={d} index={i} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* The parents behind those puppies — shown, never priced */}
+      {breedParents.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 pb-20">
+          <SectionHeading
+            eyebrow="Not For Sale"
+            title="The parents behind the litters"
+            subtitle="Our breeding dogs. Come and meet them at the kennel before you choose a puppy."
+            className="mb-8"
+          />
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {breedParents.map((d, i) => (
               <DogCard key={d.id} dog={d} index={i} />
             ))}
           </div>

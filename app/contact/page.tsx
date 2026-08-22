@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/ui/page-hero";
 import { ContactForm } from "@/components/contact/contact-form";
-import { site } from "@/lib/site";
+import { phones, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -25,7 +25,12 @@ export default function ContactPage() {
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[1fr_1.2fr]">
         {/* Info */}
         <div className="space-y-4">
-          <InfoCard icon={Phone} title="Call / WhatsApp" lines={[site.contact.phoneDisplay]} href={`tel:${site.contact.phone}`} />
+          <InfoCard
+            icon={Phone}
+            title="Call / WhatsApp"
+            lines={phones.map((p) => p.display)}
+            href={`tel:${site.contact.phone}`}
+          />
           <InfoCard icon={Mail} title="Email" lines={[site.contact.email]} href={`mailto:${site.contact.email}`} />
           <InfoCard icon={MapPin} title="Visit Us" lines={[a.building, `${a.street}, ${a.locality}`, `${a.county}, ${a.country}`, a.poBox]} />
           <InfoCard icon={Clock} title="Hours" lines={["Mon–Sat: 8:00 – 18:00", "Sun: By appointment"]} />

@@ -50,7 +50,8 @@ export default function SettingsPage() {
               <h2 className="font-display text-lg font-bold">Store Details</h2>
               <Field label="Store name" defaultValue={site.name} />
               <Field label="Contact email" defaultValue={site.contact.email} />
-              <Field label="Phone" defaultValue={site.contact.phoneDisplay} />
+              <Field label="Phone (primary)" defaultValue={site.contact.phoneDisplay} />
+              <Field label="Phone (second line)" defaultValue={site.contact.phoneAltDisplay} />
               <Field label="Address" defaultValue={`${site.contact.address.building}, ${site.contact.address.county}`} />
             </div>
           )}

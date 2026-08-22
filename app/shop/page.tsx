@@ -9,8 +9,9 @@ import { getDogs, getPriceRange } from "@/lib/queries";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Shop Dogs & Puppies",
-  description: "Browse our full collection of champion-bred dogs and puppies. Filter by breed, category and price.",
+  title: "Shop Puppies",
+  description:
+    "Browse the puppies we have for sale, from $1,600, alongside the parent dogs behind every litter. Filter by breed, category and price.",
 };
 
 export default async function ShopPage() {
@@ -19,8 +20,8 @@ export default async function ShopPage() {
     <>
       <PageHero
         eyebrow="The Collection"
-        title="Shop Our Dogs"
-        subtitle="Champion bloodlines, health-guaranteed and ready to become the pride of your home."
+        title="Shop Our Puppies"
+        subtitle="Puppies for sale from $1,600, shown alongside the parent dogs behind them. The adults are our breeding programme and are not for sale."
         image={heroImages.shop}
         crumbs={[{ label: "Shop" }]}
       />

@@ -1,16 +1,29 @@
 /**
  * Buckingham Kennel breed register.
  *
- * The five breeds the kennel actually sells, plus two lines it already keeps
- * on the ground (White Swiss Shepherd and the sable German Shepherd litters).
+ * The five breeds the kennel keeps and breeds from, in the order the owner
+ * lists them. Adult dogs are never sold — they are the breeding programme —
+ * so this register carries each breed's *residents*: the dogs on the ground,
+ * under the birth names on their own papers.
  *
- * `mediaDir` points at the kennel's own photography under /public/media.
- * One breed — the Boerboel — has no photographs supplied yet, so it
- * carries `photoPending` and renders a branded crest plate instead. We never
- * substitute stock imagery for the client's dogs.
+ * Where we hold a vaccination record for a dog, `born` is transcribed from it.
+ * Dogs without a record on file carry a name only; we never invent a date.
+ *
+ * `mediaDir` points at the kennel's own photography under /public/media. We
+ * never substitute stock imagery for the client's dogs.
  */
 
 export type BreedGroup = "Estate Guardian" | "Working Shepherd" | "Spitz & Companion";
+
+/** A dog living at the kennel, under the name on its papers. */
+export type Resident = {
+  name: string;
+  sex: "Male" | "Female";
+  /** ISO date, transcribed from the dog's own vaccination record. */
+  born?: string;
+  /** What the dog does here — sire, dam, guardian. */
+  role: string;
+};
 
 export type Breed = {
   slug: string;
@@ -27,6 +40,8 @@ export type Breed = {
   tagline: string;
   description: string;
   care: string;
+  /** The dogs of this breed we keep — shown by birth name on the cover page. */
+  residents: Resident[];
   /** Folder under /public/media holding this breed's photography. */
   mediaDir: string;
   /** True when the kennel has not supplied photographs of this breed yet. */
@@ -46,26 +61,57 @@ export const PHOTO_PENDING = "photo-pending";
 
 export const breeds: Breed[] = [
   {
-    slug: "boerboel",
-    name: "Boerboel",
-    shortName: "Boerboel",
+    slug: "caucasian-shepherd",
+    name: "Caucasian Shepherd",
+    shortName: "Caucasian Shepherd",
     group: "Estate Guardian",
-    origin: "South Africa",
+    origin: "Caucasus Mountains",
     size: "Giant",
-    lifespan: "9–11 years",
-    weight: "50–90 kg",
-    height: "59–70 cm",
-    temperament: ["Fearless", "Devoted", "Territorial", "Steady"],
-    stats: { energy: 3, trainability: 4, family: 4, guarding: 5, shedding: 2 },
-    tagline: "The African farm protector.",
+    lifespan: "10–12 years",
+    weight: "45–90 kg",
+    height: "64–75 cm",
+    temperament: ["Formidable", "Independent", "Protective", "Calm"],
+    stats: { energy: 3, trainability: 3, family: 4, guarding: 5, shedding: 5 },
+    tagline: "A mountain that decided to guard you.",
     description:
-      "Bred on the South African veld to hold a homestead against anything that came for it, the Boerboel is a giant of surprising agility and deep family devotion. Immense in the yard and tender in the house, it is the definitive estate guardian for an owner who can lead it.",
+      "Bred for centuries in the Caucasus to face wolves alone through the night, the Ovcharka is the heaviest guardian we raise. It is slow to rouse and impossible to move — profoundly bonded to its own family, utterly indifferent to persuasion from anyone else. For a compound, a farm or a serious estate, nothing else reads the same at the gate.",
     care:
-      "Moderate daily exercise, firm early training and real space to patrol. Almost no grooming. Wants a job, a boundary and a family to sit with at the end of it.",
-    mediaDir: "boerboel",
-    photoPending: true,
-    heroImage: PHOTO_PENDING,
-    gallery: [],
+      "Steady daily walking rather than sprinting, plus early and continuous socialisation. Serious weekly grooming for the double coat. Needs secure fencing and an owner who is comfortable being the decision-maker.",
+    residents: [
+      { name: "Rocco", sex: "Male", born: "2024-10-10", role: "Foundation sire" },
+      { name: "Maya", sex: "Female", born: "2024-10-19", role: "Foundation dam" },
+    ],
+    mediaDir: "caucasian",
+    photoPending: false,
+    heroImage: m("caucasian", "adult-04.jpg"),
+    gallery: [...set("caucasian", "adult", 11), ...set("caucasian", "pup", 2)],
+  },
+  {
+    slug: "white-swiss-shepherd",
+    name: "White Long Coat Swiss Shepherd",
+    shortName: "White Swiss Shepherd",
+    group: "Working Shepherd",
+    origin: "Switzerland",
+    size: "Large",
+    lifespan: "12–14 years",
+    weight: "25–40 kg",
+    height: "55–66 cm",
+    temperament: ["Gentle", "Alert", "Sensitive", "Eager"],
+    stats: { energy: 4, trainability: 5, family: 5, guarding: 3, shedding: 4 },
+    tagline: "The shepherd, in snow.",
+    description:
+      "A softer, more sensitive cousin of the working shepherd — the same brain and biddability, noticeably lower sharpness, carried in the long white coat the breed is known for. The Berger Blanc Suisse is the line we recommend to families who want a shepherd's intelligence and loyalty around children without a hard protection edge. Ours are raised underfoot from birth.",
+    care:
+      "Daily exercise plus training games; they are quick to bore. Brush the white double coat twice weekly. Sensitive to harsh handling — rewards patience enormously.",
+    residents: [
+      { name: "Alba", sex: "Female", role: "Foundation dam" },
+      { name: "Aspen", sex: "Male", role: "Foundation sire" },
+      { name: "Neve", sex: "Female", role: "Young dam" },
+    ],
+    mediaDir: "white-shepherd",
+    photoPending: false,
+    heroImage: m("white-shepherd", "adult-02.jpg"),
+    gallery: set("white-shepherd", "adult", 9),
   },
   {
     slug: "royal-black-shepherd",
@@ -84,32 +130,14 @@ export const breeds: Breed[] = [
       "The solid black German Shepherd is the rarest and most striking expression of the breed — a recessive coat carried by both parents, paired here with straighter backs, heavy bone and the long plush coat our clients travel for. Every dog in this line comes from proven working stock with certified hips and the level, unshakeable temperament the breed is meant to have.",
     care:
       "Vigorous daily exercise and genuine mental work. Weekly brushing, daily through the seasonal coat blow. Thrives on structure, training and being close to its people.",
+    residents: [
+      { name: "Felly Atlas", sex: "Female", born: "2024-09-21", role: "Foundation dam" },
+      { name: "Kaiser", sex: "Male", role: "Head stud" },
+    ],
     mediaDir: "gsd-black",
     photoPending: false,
     heroImage: m("gsd-black", "adult-01.jpg"),
     gallery: [...set("gsd-black", "adult", 7), ...set("gsd-black", "pup", 12)],
-  },
-  {
-    slug: "caucasian-shepherd",
-    name: "Caucasian Shepherd",
-    shortName: "Caucasian Shepherd",
-    group: "Estate Guardian",
-    origin: "Caucasus Mountains",
-    size: "Giant",
-    lifespan: "10–12 years",
-    weight: "45–90 kg",
-    height: "64–75 cm",
-    temperament: ["Formidable", "Independent", "Protective", "Calm"],
-    stats: { energy: 3, trainability: 3, family: 4, guarding: 5, shedding: 5 },
-    tagline: "A mountain that decided to guard you.",
-    description:
-      "Bred for centuries in the Caucasus to face wolves alone through the night, the Ovcharka is the heaviest guardian we raise. It is slow to rouse and impossible to move — profoundly bonded to its own family, utterly indifferent to persuasion from anyone else. For a compound, a farm or a serious estate, nothing else reads the same at the gate.",
-    care:
-      "Steady daily walking rather than sprinting, plus early and continuous socialisation. Serious weekly grooming for the double coat. Needs secure fencing and an owner who is comfortable being the decision-maker.",
-    mediaDir: "caucasian",
-    photoPending: false,
-    heroImage: m("caucasian", "adult-04.jpg"),
-    gallery: [...set("caucasian", "adult", 11), ...set("caucasian", "pup", 2)],
   },
   {
     slug: "american-akita",
@@ -128,6 +156,10 @@ export const breeds: Breed[] = [
       "The American Akita is a large, powerfully built spitz with a plush double coat, a broad bear-like head and a famously silent devotion to its household. It does not fuss, bark or beg for strangers — it simply attaches itself to its family for life and stands between them and anything unfamiliar.",
     care:
       "Two solid walks a day and firm, respectful training from puppyhood. Heavy shedding twice a year needs committed brushing. Happiest as the only dog, at the centre of its family.",
+    residents: [
+      { name: "Kenji", sex: "Male", role: "Foundation sire" },
+      { name: "Yuki", sex: "Female", role: "Foundation dam" },
+    ],
     mediaDir: "akita",
     photoPending: false,
     heroImage: m("akita", "adult-02.jpg"),
@@ -150,6 +182,10 @@ export const breeds: Breed[] = [
       "The Kangal is the livestock guardian other guardians are measured against — famed for the strongest bite in the canine world and, far more importantly, for the judgement to almost never use it. Calm, patient and astonishingly gentle with children and stock, it patrols a boundary all night and sleeps at the door all day.",
     care:
       "Room to patrol and a boundary worth patrolling. Early socialisation matters more than obedience drilling. Weekly brushing; heavier during the seasonal moult.",
+    residents: [
+      { name: "Sivas", sex: "Male", role: "Foundation sire" },
+      { name: "Aslan", sex: "Male", role: "Working guardian" },
+    ],
     mediaDir: "kangal",
     photoPending: false,
     heroImage: m("kangal", "adult-01.jpg"),
@@ -159,50 +195,6 @@ export const breeds: Breed[] = [
       poster: m("kangal", "adult-02.jpg"),
       caption: "Filmed on the range where our Kangals are raised.",
     },
-  },
-  {
-    slug: "white-swiss-shepherd",
-    name: "White Swiss Shepherd",
-    shortName: "White Shepherd",
-    group: "Working Shepherd",
-    origin: "Switzerland",
-    size: "Large",
-    lifespan: "12–14 years",
-    weight: "25–40 kg",
-    height: "55–66 cm",
-    temperament: ["Gentle", "Alert", "Sensitive", "Eager"],
-    stats: { energy: 4, trainability: 5, family: 5, guarding: 3, shedding: 4 },
-    tagline: "The shepherd, in snow.",
-    description:
-      "A softer, more sensitive cousin of the working shepherd — same brain and biddability, noticeably lower sharpness. The Berger Blanc Suisse is the line we recommend to families who want a shepherd's intelligence and loyalty around children without a hard protection edge. Ours are raised underfoot from birth.",
-    care:
-      "Daily exercise plus training games; they are quick to bore. Brush the white double coat twice weekly. Sensitive to harsh handling — rewards patience enormously.",
-    mediaDir: "white-shepherd",
-    photoPending: false,
-    heroImage: m("white-shepherd", "adult-02.jpg"),
-    gallery: set("white-shepherd", "adult", 9),
-  },
-  {
-    slug: "sable-german-shepherd",
-    name: "Sable German Shepherd",
-    shortName: "Sable Shepherd",
-    group: "Working Shepherd",
-    origin: "Germany",
-    size: "Large",
-    lifespan: "9–13 years",
-    weight: "24–40 kg",
-    height: "55–65 cm",
-    temperament: ["Driven", "Confident", "Trainable", "Nervy-free"],
-    stats: { energy: 5, trainability: 5, family: 4, guarding: 5, shedding: 4 },
-    tagline: "The original working coat.",
-    description:
-      "Sable is the oldest coat pattern in the breed and still the one working kennels reach for. Our sable litters come from the same protection lines as our black dogs, with the drive, nerve strength and handler focus that make a shepherd worth owning. This is the line we put forward for security work and serious sport homes.",
-    care:
-      "High exercise and daily training — this coat comes with an engine. Weekly brushing. Needs a handler who will actually work the dog.",
-    mediaDir: "gsd-sable",
-    photoPending: false,
-    heroImage: m("gsd-sable", "adult-01.jpg"),
-    gallery: [...set("gsd-sable", "adult", 1), ...set("gsd-sable", "pup", 13)],
   },
 ];
 
@@ -216,3 +208,24 @@ export const getBreed = (slug: string) => breeds.find((b) => b.slug === slug);
 
 /** Breeds the client still owes us photographs for — surfaced in the admin portal. */
 export const breedsAwaitingPhotos = breeds.filter((b) => b.photoPending);
+
+/** Every dog on the ground, breed by breed — this is the cover-page register. */
+export const breedRegister = breeds.map((b) => ({
+  slug: b.slug,
+  name: b.name,
+  shortName: b.shortName,
+  tagline: b.tagline,
+  group: b.group,
+  heroImage: b.heroImage,
+  residents: b.residents,
+}));
+
+/** "21 September 2024", from the ISO date on a vaccination record. */
+export function formatBorn(iso: string) {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}

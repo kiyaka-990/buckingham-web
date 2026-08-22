@@ -48,6 +48,27 @@ export async function POST(req: Request) {
   const { items, customer } = (await req.json()) as { items: Item[]; customer?: Customer };
   if (!items?.length) return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
 
+  // The kennel sells puppies only. The UI never offers an adult, but the cart
+  // is client state — refuse here so a stale or hand-built cart cannot buy one.
+  const slugs = items.map((i) => i.slug).filter((s): s is string => Boolean(s));
+  if (slugs.length) {
+    const rows = await db.dog.findMany({
+      where: { slug: { in: slugs } },
+      select: { slug: true, name: true, category: true },
+    });
+    const notForSale = rows.filter((r) => r.category !== "puppy");
+    if (notForSale.length) {
+      return NextResponse.json(
+        {
+          error: `${notForSale
+            .map((r) => r.name)
+            .join(", ")} ${notForSale.length === 1 ? "is" : "are"} part of our breeding programme and not for sale. We sell puppies only.`,
+        },
+        { status: 400 }
+      );
+    }
+  }
+
   const total = items.reduce((n, i) => n + i.price * i.qty, 0);
   const orderId = "BK-" + Date.now().toString(36).toUpperCase();
   const method = customer?.method === "mpesa" ? "M-Pesa" : "Card (Stripe)";

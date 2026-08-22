@@ -4,7 +4,7 @@ import { FadeImage } from "@/components/ui/fade-image";
 import Link from "next/link";
 import { X, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import type { Dog } from "@/lib/data/catalog";
+import { isForSale, type Dog } from "@/lib/data/catalog";
 import { formatPrice } from "@/lib/utils";
 import { Rating } from "@/components/ui/rating";
 
@@ -26,7 +26,9 @@ export function ShowroomOverlay({ dog, onClose }: { dog: Dog; onClose: () => voi
         <h3 className="font-display text-xl font-bold">{dog.name}</h3>
         <div className="mt-1"><Rating value={dog.rating} reviews={dog.reviews} /></div>
         <div className="mt-3 flex items-center justify-between">
-          <span className="font-display text-lg font-bold text-accent-ink">{formatPrice(dog.price)}</span>
+          <span className="font-display text-lg font-bold text-accent-ink">
+            {isForSale(dog) ? formatPrice(dog.price) : "Not for sale"}
+          </span>
           <Link href={`/dogs/${dog.slug}`} className="btn-clay flex items-center gap-1 rounded-full px-4 py-2 text-sm">
             View <ArrowRight size={14} />
           </Link>

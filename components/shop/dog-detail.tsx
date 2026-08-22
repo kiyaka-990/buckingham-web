@@ -7,7 +7,7 @@ import {
   Check, Truck, Award, ChevronRight, Share2, Rotate3d, Expand,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { isPhotoPending, type Dog } from "@/lib/data/catalog";
+import { isForSale, isPhotoPending, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
 import { formatPrice, usdToKes, cn } from "@/lib/utils";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
@@ -27,6 +27,9 @@ export function DogDetail({ dog }: { dog: Dog }) {
   const toggleWish = useWishlist((s) => s.toggle);
   const wished = useWishlist((s) => s.ids.includes(dog.id));
   const soldOut = dog.status === "sold";
+  // Adults are the breeding programme — shown so buyers can see the parents
+  // behind a litter, never priced and never addable to a cart.
+  const forSale = isForSale(dog);
   // 360° needs enough frames to read as rotation rather than a flicker.
   const canSpin = dog.images.length >= 3 && !isPhotoPending(dog);
 
@@ -132,12 +135,25 @@ export function DogDetail({ dog }: { dog: Dog }) {
             <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">ID {dog.id}</span>
           </div>
 
-          {/* Price */}
-          <div className="mt-6 flex items-end gap-3">
-            <span className="font-display text-4xl font-bold text-gradient-ochre">{formatPrice(dog.price)}</span>
-            {dog.compareAt && <span className="mb-1 text-lg text-muted line-through">{formatPrice(dog.compareAt)}</span>}
-          </div>
-          <p className="mt-1 text-sm text-muted">≈ KES {usdToKes(dog.price).toLocaleString()} · M-Pesa &amp; card accepted · Deposit reserves</p>
+          {/* Price — puppies only. Adults are the breeding programme. */}
+          {forSale ? (
+            <>
+              <div className="mt-6 flex items-end gap-3">
+                <span className="font-display text-4xl font-bold text-gradient-ochre">{formatPrice(dog.price)}</span>
+                {dog.compareAt && <span className="mb-1 text-lg text-muted line-through">{formatPrice(dog.compareAt)}</span>}
+              </div>
+              <p className="mt-1 text-sm text-muted">≈ KES {usdToKes(dog.price).toLocaleString()} · M-Pesa &amp; card accepted · Deposit reserves</p>
+            </>
+          ) : (
+            <div className="mt-6 rounded-2xl border border-ochre-400/40 bg-ochre-400/8 p-5">
+              <p className="font-display text-2xl font-bold">Not for sale</p>
+              <p className="mt-1.5 text-sm text-muted">
+                {dog.name} is part of our breeding programme. We keep the parents and sell the
+                puppies — {dog.breedName} litters and everything else we raise start at{" "}
+                <strong className="text-foreground">{formatPrice(PUPPY_PRICE_FLOOR)}</strong>.
+              </p>
+            </div>
+          )}
 
           {/* Quick specs */}
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -163,23 +179,46 @@ export function DogDetail({ dog }: { dog: Dog }) {
 
           {/* Actions */}
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <button
-              onClick={addToCart}
-              disabled={soldOut}
-              className="btn-clay flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/60"
-            >
-              <ShoppingBag size={20} /> {soldOut ? "Sold Out" : "Add to Cart"}
-            </button>
-            <button
-              onClick={() => { if (!soldOut) { addToCart(); openCart(); } }}
-              disabled={soldOut}
-              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-ochre-400 text-base font-semibold text-accent-ink transition hover:bg-ochre-400/10 disabled:opacity-40"
-            >
-              Reserve Now
-            </button>
+            {forSale ? (
+              <>
+                <button
+                  onClick={addToCart}
+                  disabled={soldOut}
+                  className="btn-clay flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/60"
+                >
+                  <ShoppingBag size={20} /> {soldOut ? "Sold Out" : "Add to Cart"}
+                </button>
+                <button
+                  onClick={() => { if (!soldOut) { addToCart(); openCart(); } }}
+                  disabled={soldOut}
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-ochre-400 text-base font-semibold text-accent-ink transition hover:bg-ochre-400/10 disabled:opacity-40"
+                >
+                  Reserve Now
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/puppies"
+                  className="btn-clay flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base"
+                >
+                  <ShoppingBag size={20} /> See available puppies
+                </Link>
+                <Link
+                  href={`/breeds/${dog.breedSlug}`}
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-ochre-400 text-base font-semibold text-accent-ink transition hover:bg-ochre-400/10"
+                >
+                  About the breed
+                </Link>
+              </>
+            )}
           </div>
           <a
-            href={`https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(`Hi Buckingham Kennel, I'm interested in ${dog.name} (${dog.breedName}, ${dog.id}).`)}`}
+            href={`https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(
+              forSale
+                ? `Hi Buckingham Kennel, I'm interested in ${dog.name} (${dog.breedName}, ${dog.id}).`
+                : `Hi Buckingham Kennel, I'd like to know about puppies from ${dog.name} (${dog.breedName}).`
+            )}`}
             target="_blank" rel="noopener noreferrer"
             className="mt-3 flex h-12 items-center justify-center gap-2 rounded-full border border-border text-sm font-medium transition hover:border-ochre-400"
           >

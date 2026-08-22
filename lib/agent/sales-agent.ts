@@ -3,8 +3,8 @@ import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema";
 import { db } from "@/lib/db";
 import { getDogs } from "@/lib/queries";
 import { breeds } from "@/lib/data/breeds";
-import { isPhotoPending, type Dog } from "@/lib/data/catalog";
-import { site } from "@/lib/site";
+import { isForSale, isPhotoPending, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
+import { phones, site } from "@/lib/site";
 import { formatPrice, usdToKes } from "@/lib/utils";
 
 /**
@@ -36,10 +36,17 @@ const toSuggestion = (d: Dog): DogSuggestion => ({
   status: d.status,
 });
 
-/** Compact one-line inventory record for the model to read. */
+/**
+ * Compact one-line inventory record for the model to read.
+ *
+ * Adults are stored at price 0 because they are not for sale; the line says so
+ * in words rather than showing a number the agent could quote.
+ */
 const line = (d: Dog) =>
-  `${d.slug} | ${d.name} — ${d.breedName}, ${d.category}, ${d.sex}, ${d.ageLabel}, ${d.color}, ${d.weightKg}kg | ${formatPrice(d.price)}${
-    d.compareAt ? ` (was ${formatPrice(d.compareAt)})` : ""
+  `${d.slug} | ${d.name} — ${d.breedName}, ${d.category}, ${d.sex}, ${d.ageLabel}, ${d.color}, ${d.weightKg}kg | ${
+    isForSale(d)
+      ? `${formatPrice(d.price)}${d.compareAt ? ` (was ${formatPrice(d.compareAt)})` : ""}`
+      : "NOT FOR SALE — breeding stock, no price"
   } | ${d.status} | ${d.location} | ${d.traits.join(", ")}${
     isPhotoPending(d) ? " | NOTE: photographs not yet published — offer video instead" : ""
   }`;
@@ -55,7 +62,7 @@ function makeTools(seen: Map<string, Dog>) {
   const searchInventory = betaTool({
     name: "search_inventory",
     description:
-      "Search the kennel's live inventory of dogs and puppies. Use this before quoting any price or claiming anything is available. Returns matching listings with price, age, sex and status.",
+      "Search the kennel's live inventory. Use this before quoting any price or claiming anything is available. Only puppies are for sale — adults, trained and elite dogs are the breeding programme and come back marked NOT FOR SALE. Returns matching listings with price, age, sex and status.",
     inputSchema: {
       type: "object",
       properties: {
@@ -66,7 +73,8 @@ function makeTools(seen: Map<string, Dog>) {
         category: {
           type: "string",
           enum: ["puppy", "adult", "trained", "elite"],
-          description: "puppy = 8-16 weeks; trained = obedience/protection trained; elite = top bloodline",
+          description:
+            "puppy = 8-16 weeks and THE ONLY CATEGORY FOR SALE; adult/trained/elite = the parent dogs, shown but never sold",
         },
         sex: { type: "string", enum: ["Male", "Female"] },
         max_price_usd: { type: "number", description: "Only return dogs at or below this price in USD" },
@@ -93,8 +101,9 @@ function makeTools(seen: Map<string, Dog>) {
       });
       remember(matches);
       if (matches.length === 0) {
+        // Fall back to the cheapest puppies — never to an unsellable adult.
         const cheapest = [...all]
-          .filter((d) => d.status === "available")
+          .filter((d) => isForSale(d) && d.status === "available")
           .sort((a, b) => a.price - b.price)
           .slice(0, 3);
         remember(cheapest);
@@ -244,9 +253,14 @@ function makeTools(seen: Map<string, Dog>) {
 /*  System prompt                                                      */
 /* ------------------------------------------------------------------ */
 
-const SYSTEM = `You are Duke, the sales agent for ${site.name} — a kennel in ${site.contact.address.locality}, ${site.contact.address.county}, Kenya, breeding and selling guardian and working dogs.
+const SYSTEM = `You are Duke, the sales agent for ${site.name} — a kennel in ${site.contact.address.locality}, ${site.contact.address.county}, Kenya, breeding ${breeds.length} guardian and working breeds: ${breeds.map((b) => b.name).join(", ")}.
 
-Your job is to sell dogs well: understand what the visitor actually needs, match them to a real dog we hold, and move them toward reserving it or speaking to a handler. You are warm and direct, never pushy and never fawning.
+WHAT THE KENNEL SELLS
+- Puppies. Only puppies, and they start at ${formatPrice(PUPPY_PRICE_FLOOR)}.
+- The adult dogs — every listing whose category is adult, trained or elite — are the breeding programme and are NOT FOR SALE at any price. They are on the site so a buyer can see the parents behind a litter and come and meet them.
+- If someone asks to buy an adult, say plainly that it is not for sale, that it is one of our breeding dogs, and offer puppies from that same line instead. Never quote a figure for one, never negotiate on one, and never imply one might be sold "for the right price".
+
+Your job is to sell puppies well: understand what the visitor actually needs, match them to a real puppy we hold, and move them toward reserving it or speaking to a handler. You are warm and direct, never pushy and never fawning.
 
 HOW TO WORK
 - Never state a price, an age or availability from memory. Call search_inventory or get_dog_details first, every time.
@@ -262,10 +276,10 @@ STYLE
 - Never open with "Great question" or similar filler. Answer, then advance the sale.
 
 THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
-- Phone/WhatsApp ${site.contact.phoneDisplay}, email ${site.contact.email}.
+- Phone/WhatsApp ${phones.map((p) => p.display).join(" or ")}, email ${site.contact.email}.
 - Visits by appointment at ${site.contact.address.building}, ${site.contact.address.street}, ${site.contact.address.locality}.
 - Payment: international cards via Stripe, or M-Pesa for local buyers. A deposit reserves a dog; the balance falls due on delivery.
-- Every dog leaves vaccinated, dewormed, microchipped, vet-checked, with pedigree papers and a written health guarantee.
+- Every puppy leaves vaccinated, dewormed, microchipped, vet-checked, with pedigree papers and a written health guarantee.
 - Delivery nationwide across Kenya and internationally, with the paperwork handled.
 - There is a 3D showroom on the site if they want to look around before travelling.`;
 

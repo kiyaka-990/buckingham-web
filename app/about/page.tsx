@@ -42,13 +42,14 @@ export default function AboutPage() {
           <SectionHeading eyebrow="Who We Are" title="A legacy of loyalty" />
           <p className="leading-relaxed text-muted">
             Buckingham Kennel Limited was founded on a simple belief: that a great dog can transform a home, a family
-            and a life. From our facility in Webuye, Kenya, we breed and train some of the finest dogs in the region —
-            from gentle family companions to elite protectors trusted by security professionals.
+            and a life. From our facility in Webuye, Kenya, we keep five guardian and working breeds — the Caucasian
+            Shepherd, the White Long Coat Swiss Shepherd, the Royal Black German Shepherd, the American Akita and the
+            Kangal.
           </p>
           <p className="leading-relaxed text-muted">
-            With over 15 years of combined experience in showing, breeding and handling, our team pairs world-class
-            genetics with meticulous care. Every puppy is raised underfoot, health-tested and matched thoughtfully to
-            its new family — then supported for life.
+            Our adult dogs are not for sale. They are the breeding programme, and you are welcome to come and meet
+            them before you choose. What we sell is their puppies, from $1,600 — every one raised underfoot,
+            health-tested, matched thoughtfully to its new family, and supported for life.
           </p>
           <div className="flex flex-wrap gap-4 pt-2 text-sm">
             <span className="rounded-full bg-surface-2 px-4 py-1.5">Reg. No. {site.registration}</span>
@@ -85,7 +86,7 @@ export default function AboutPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24 text-center">
-        <ButtonLink href="/shop" size="lg">Meet Our Dogs</ButtonLink>
+        <ButtonLink href="/puppies" size="lg">See Our Puppies</ButtonLink>
       </section>
     </>
   );

@@ -7,9 +7,10 @@ import { PHOTO_PENDING } from "@/lib/data/breeds";
 import { cn } from "@/lib/utils";
 
 /**
- * Branded plate shown wherever the kennel has not supplied photography yet
- * (currently the Boerboel and Kangal lines). We never fill those slots with
- * stock imagery — these are the client's own dogs or nothing.
+ * Branded plate shown wherever the kennel has not supplied photography yet.
+ * Every breed in the register is photographed today, but new litters arrive
+ * ahead of their photo shoot. We never fill those slots with stock imagery —
+ * these are the client's own dogs or nothing.
  */
 export function PhotoPending({
   className,

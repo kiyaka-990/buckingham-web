@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Crest } from "@/components/brand/crest";
 import { Phone, Mail, MapPin, ShieldCheck, Truck, HeartHandshake } from "lucide-react";
-import { secondaryNav, site } from "@/lib/site";
+import { phones, secondaryNav, site } from "@/lib/site";
 import { breeds } from "@/lib/data/breeds";
 import { NewsletterForm } from "./newsletter-form";
 import { FacebookIcon, InstagramIcon, YoutubeIcon, TiktokIcon } from "@/components/ui/social-icons";
@@ -59,9 +59,11 @@ export function Footer() {
 
           <div className="space-y-3">
             <h4 className="font-display font-semibold text-ochre-400">Get in touch</h4>
-            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-2 text-sm text-clay-100/80 hover:text-ochre-400">
-              <Phone size={14} /> {site.contact.phoneDisplay}
-            </a>
+            {phones.map((p) => (
+              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-2 text-sm text-clay-100/80 hover:text-ochre-400">
+                <Phone size={14} /> {p.display}
+              </a>
+            ))}
             <a href={`mailto:${site.contact.email}`} className="flex items-start gap-2 text-sm text-clay-100/80 hover:text-ochre-400">
               <Mail size={14} className="mt-0.5" /> <span className="break-all">{site.contact.email}</span>
             </a>

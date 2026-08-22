@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import type { Dog } from "@/lib/data/catalog";
+import { PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
 
 type DbDog = {
   id: string; slug: string; name: string; breedSlug: string; breedName: string;
@@ -48,8 +48,11 @@ export async function getDogsByBreed(breedSlug: string): Promise<Dog[]> {
   return rows.map(toDog);
 }
 
+/** Offers only ever run on puppies — adults are breeding stock and unpriced. */
 export async function getDeals(): Promise<Dog[]> {
-  const rows = await db.dog.findMany({ where: { NOT: { compareAt: null }, status: { not: "sold" } } });
+  const rows = await db.dog.findMany({
+    where: { category: "puppy", NOT: { compareAt: null }, status: { not: "sold" } },
+  });
   return rows.map(toDog).filter((d) => d.compareAt && d.compareAt > d.price);
 }
 
@@ -65,7 +68,26 @@ export async function getAvailableCount(): Promise<number> {
   return db.dog.count({ where: { status: "available" } });
 }
 
+/**
+ * The price range shown in the shop filters.
+ *
+ * Puppies are the only thing we sell, so they are the only thing that has a
+ * price — adults are stored at 0 and would otherwise drag the floor down.
+ */
 export async function getPriceRange(): Promise<{ min: number; max: number }> {
-  const agg = await db.dog.aggregate({ _min: { price: true }, _max: { price: true } });
-  return { min: agg._min.price ?? 1600, max: agg._max.price ?? 7000 };
+  const agg = await db.dog.aggregate({
+    where: { category: "puppy" },
+    _min: { price: true },
+    _max: { price: true },
+  });
+  return { min: agg._min.price ?? PUPPY_PRICE_FLOOR, max: agg._max.price ?? 3000 };
+}
+
+/** The advertised "from" price — the cheapest puppy we actually hold. */
+export async function getPuppyPriceFrom(): Promise<number> {
+  const agg = await db.dog.aggregate({
+    where: { category: "puppy", status: { not: "sold" } },
+    _min: { price: true },
+  });
+  return agg._min.price ?? PUPPY_PRICE_FLOOR;
 }

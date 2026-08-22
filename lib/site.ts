@@ -3,7 +3,7 @@ export const site = {
   shortName: "Buckingham Kennel",
   tagline: "Royalty in Every Paw",
   description:
-    "Kenya's premier kennel for the breeding and sale of world-class dogs and puppies. Champion bloodlines, health-guaranteed, delivered with royal care.",
+    "Kenya's premier kennel for five world-class guardian and working breeds. We keep the parents and sell the puppies — champion bloodlines, health-guaranteed, from $1,600.",
   quote: {
     text: "A dog is the only thing on earth that loves you more than you love yourself.",
     author: "Josh Billings",
@@ -13,6 +13,9 @@ export const site = {
   contact: {
     phone: "+254720332626",
     phoneDisplay: "+254 720 332 626",
+    /** Second line the kennel answers on — published everywhere the first is. */
+    phoneAlt: "+254724789395",
+    phoneAltDisplay: "+254 724 789 395",
     whatsapp: "254720332626",
     email: "buckinghamkennellltd@gmail.com",
     address: {
@@ -40,6 +43,12 @@ export const site = {
     demoPassword: "buckingham2026",
   },
 } as const;
+
+/** Both kennel lines, in the order they should be offered to a caller. */
+export const phones = [
+  { tel: site.contact.phone, display: site.contact.phoneDisplay },
+  { tel: site.contact.phoneAlt, display: site.contact.phoneAltDisplay },
+] as const;
 
 export type NavItem = { label: string; href: string; description?: string };
 

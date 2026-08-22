@@ -6,11 +6,15 @@ import { ButtonLink } from "@/components/ui/button";
 import { stats } from "@/lib/data/content";
 import { site } from "@/lib/site";
 
+/**
+ * Only the first tile leads to something for sale — the rest introduce the
+ * parent dogs, which is exactly the distinction the kennel wants drawn.
+ */
 const categories = [
-  { title: "Puppies", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions from $2,300" },
-  { title: "Trained & Protection", href: "/shop?category=trained", image: "/media/gsd-sable/adult-01.jpg", desc: "Titled, handler-ready guardians" },
-  { title: "Elite Bloodlines", href: "/shop?category=elite", image: "/media/gsd-black/adult-01.jpg", desc: "Champion pedigree, show quality" },
-  { title: "Family Companions", href: "/shop?category=adult", image: "/media/white-shepherd/adult-02.jpg", desc: "Gentle, socialised, ready to love" },
+  { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions from $1,600" },
+  { title: "Our Breeds", href: "/breeds", image: "/media/kangal/adult-01.jpg", desc: "Five guardian and working lines" },
+  { title: "Elite Bloodlines", href: "/shop?category=elite", image: "/media/gsd-black/adult-01.jpg", desc: "The sires behind every litter" },
+  { title: "Meet the Parents", href: "/shop?category=adult", image: "/media/white-shepherd/adult-02.jpg", desc: "Our dams — visit before you buy" },
 ];
 
 export function CategoryTiles() {
@@ -73,8 +77,8 @@ export function WhyUs() {
 }
 
 const steps = [
-  { n: "01", title: "Browse & Discover", desc: "Explore breeds and dogs online or step into our 3D showroom." },
-  { n: "02", title: "Reserve with a Deposit", desc: "Secure your companion via Stripe or M-Pesa in minutes." },
+  { n: "01", title: "Meet the Parents", desc: "See the breed and the dogs behind the litter — online or at the kennel." },
+  { n: "02", title: "Reserve Your Puppy", desc: "Secure your puppy from $1,600 via Stripe or M-Pesa in minutes." },
   { n: "03", title: "Health & Handover", desc: "We finalise vet checks, papers and microchipping." },
   { n: "04", title: "Delivered with Care", desc: "Safe delivery to your door — plus lifetime support." },
 ];
@@ -105,10 +109,11 @@ export function CtaBand() {
         <PawPrint className="mx-auto mb-4 text-ochre-400" size={36} />
         <h2 className="font-display text-3xl font-bold sm:text-4xl md:text-5xl">Ready to meet your royal companion?</h2>
         <p className="mx-auto mt-4 max-w-xl text-clay-50/80">
-          Join hundreds of happy families across Kenya and beyond. Our concierge is ready to help you find the perfect match today.
+          Join hundreds of happy families across Kenya and beyond. Puppies start at $1,600 — call{" "}
+          {site.contact.phoneDisplay} or {site.contact.phoneAltDisplay} and we will match you today.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <ButtonLink href="/shop" size="lg">Find Your Dog</ButtonLink>
+          <ButtonLink href="/puppies" size="lg">Find Your Puppy</ButtonLink>
           <ButtonLink href={`https://wa.me/${site.contact.whatsapp}`} variant="outline" size="lg" className="border-white/40 text-white hover:bg-white/10">
             Chat on WhatsApp
           </ButtonLink>

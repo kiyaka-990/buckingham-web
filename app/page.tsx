@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Tilt } from "@/components/ui/tilt";
-import { FadeImage } from "@/components/ui/fade-image";
 import { ShopFront } from "@/components/home/shopfront";
 import { Marquee } from "@/components/home/marquee";
 import { Testimonials } from "@/components/home/testimonials";
 import { FAQ } from "@/components/home/faq";
+import { BreedRegister } from "@/components/home/breed-register";
+import { PuppySlide } from "@/components/home/puppy-slide";
 import {
   CategoryTiles,
   StatsBand,
@@ -16,20 +15,20 @@ import {
 import { SectionHeading } from "@/components/ui/section";
 import { ButtonLink } from "@/components/ui/button";
 import { DogCard } from "@/components/shop/dog-card";
-import { Reveal } from "@/components/ui/reveal";
-import { getFeaturedDogs, getDogs, getAvailableCount } from "@/lib/queries";
+import { getFeaturedDogs, getDogs, getPuppies } from "@/lib/queries";
 import { breeds } from "@/lib/data/breeds";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featuredList, all, availableCount] = await Promise.all([
+  const [featuredList, all, puppies] = await Promise.all([
     getFeaturedDogs(),
     getDogs(),
-    getAvailableCount(),
+    getPuppies(),
   ]);
   const featured = featuredList.length ? featuredList : all.slice(0, 8);
+  const puppiesAvailable = puppies.filter((d) => d.status === "available");
 
   // The window display leads with dogs we can actually show a photograph of.
   const displayDogs = [...featured, ...all]
@@ -38,70 +37,58 @@ export default async function HomePage() {
 
   return (
     <>
-      <ShopFront dogs={displayDogs} availableCount={availableCount} />
+      <ShopFront dogs={displayDogs} puppyCount={puppiesAvailable.length} />
 
-      <Marquee items={["Champion Bloodlines", "Health Guaranteed", "Global Delivery", "Elite Training", "Since " + site.established, "Royal Care"]} />
+      <Marquee items={["Champion Bloodlines", "Health Guaranteed", "Global Delivery", "Puppies from $1,600", "Since " + site.established, "Royal Care"]} />
 
-      {/* Categories */}
+      {/* The register — every breed we keep, and our dogs by birth name.
+          This is the client's cover-page requirement and leads the page. */}
       <section className="mx-auto max-w-7xl px-6 py-20">
         <SectionHeading
-          eyebrow="Shop by Purpose"
-          title="Find your perfect match"
-          subtitle="Whether you seek a devoted family friend or an elite protector, every Buckingham dog is bred for excellence."
+          eyebrow="Our Breeds"
+          title={`The ${breeds.length} breeds we raise — and the dogs behind them`}
+          subtitle="Guardians, working shepherds and one very dignified spitz. Every dog below lives at our Webuye kennel under the name on its own papers — these are the parents, not the puppies for sale."
           center
           className="mb-12"
         />
-        <CategoryTiles />
+        <BreedRegister />
+      </section>
+
+      {/* The puppy slide — the only place on this page that carries a price. */}
+      <section className="mx-auto max-w-7xl px-6 pb-20">
+        <PuppySlide puppies={puppies} />
+      </section>
+
+      {/* Categories */}
+      <section className="bg-mesh py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHeading
+            eyebrow="Shop by Purpose"
+            title="Find your perfect match"
+            subtitle="Whether you seek a devoted family friend or an elite protector, every Buckingham puppy is bred for excellence."
+            center
+            className="mb-12"
+          />
+          <CategoryTiles />
+        </div>
       </section>
 
       {/* Featured carousel */}
-      <section className="bg-mesh py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
-            <SectionHeading eyebrow="Handpicked" title="Featured Companions" />
-            <ButtonLink href="/shop" variant="outline">View all <ArrowRight size={16} /></ButtonLink>
-          </div>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {featured.slice(0, 8).map((d, i) => (
-              <DogCard key={d.id} dog={d} index={i} />
-            ))}
-          </div>
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading eyebrow="Handpicked" title="Featured Companions" />
+          <ButtonLink href="/shop" variant="outline">View all <ArrowRight size={16} /></ButtonLink>
+        </div>
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {featured.slice(0, 8).map((d, i) => (
+            <DogCard key={d.id} dog={d} index={i} />
+          ))}
         </div>
       </section>
 
       {/* Stats */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <StatsBand />
-      </section>
-
-      {/* Breeds */}
       <section className="mx-auto max-w-7xl px-6 pb-20">
-        <SectionHeading
-          eyebrow="Our Breeds"
-          title="Seven breeds we actually raise"
-          subtitle="Guardians, working shepherds and one very dignified spitz — every one bred and raised on our own grounds."
-          center
-          className="mb-12"
-        />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {breeds.map((b, i) => (
-            <Reveal key={b.slug} delay={i % 3}>
-              <Tilt className="rounded-3xl" max={8}>
-                <Link href={`/breeds/${b.slug}`} className="group relative block h-64 overflow-hidden rounded-3xl">
-                  <FadeImage src={b.heroImage} alt={b.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
-                  <span className="shine-hover absolute inset-0 z-10" />
-                  <span className="spotlight-overlay z-10" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-clay-950/90 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-5 text-white [transform:translateZ(40px)]">
-                    <p className="text-[11px] uppercase tracking-wider text-ochre-400">{b.group}</p>
-                    <h3 className="font-display text-xl font-bold">{b.name}</h3>
-                    <p className="text-sm text-white/70">{b.tagline}</p>
-                  </div>
-                </Link>
-              </Tilt>
-            </Reveal>
-          ))}
-        </div>
+        <StatsBand />
       </section>
 
       {/* Why us */}
@@ -128,12 +115,10 @@ export default async function HomePage() {
 
       {/* Quote */}
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <Reveal>
-          <p className="font-display text-2xl italic leading-relaxed text-muted sm:text-3xl">
-            “{site.quote.text}”
-          </p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-accent-ink">— {site.quote.author}</p>
-        </Reveal>
+        <p className="font-display text-2xl italic leading-relaxed text-muted sm:text-3xl">
+          &ldquo;{site.quote.text}&rdquo;
+        </p>
+        <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-accent-ink">— {site.quote.author}</p>
       </section>
 
       {/* FAQ */}

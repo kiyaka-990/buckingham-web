@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Heart, ShoppingBag, MapPin, BadgeCheck } from "lucide-react";
 import { FadeImage } from "@/components/ui/fade-image";
 import { motion } from "framer-motion";
-import type { Dog } from "@/lib/data/catalog";
+import { isForSale, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
 import { formatPrice, cn } from "@/lib/utils";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
@@ -22,6 +22,8 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
   const toggleWish = useWishlist((s) => s.toggle);
   const wished = useWishlist((s) => s.ids.includes(dog.id));
   const soldOut = dog.status === "sold";
+  // Adults are the breeding programme: named and photographed, never priced.
+  const forSale = isForSale(dog);
 
   return (
     <Tilt max={7} glare={false} className="h-full rounded-3xl">
@@ -48,8 +50,13 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
         <div className="absolute inset-0 bg-gradient-to-t from-clay-950/45 via-transparent to-transparent opacity-60" />
 
         <div className="absolute left-3 top-3 flex flex-col gap-2">
-          <span className={cn("rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide capitalize", statusStyles[dog.status])}>
-            {dog.status}
+          <span
+            className={cn(
+              "rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide capitalize",
+              forSale ? statusStyles[dog.status] : "bg-clay-900/85 text-white"
+            )}
+          >
+            {forSale ? dog.status : "Breeding stock"}
           </span>
           {dog.bestseller && (
             <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-clay-900">
@@ -96,35 +103,52 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
           <BadgeCheck size={13} className="text-emerald-500" /> Health guaranteed · KUC registered
         </p>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-2">
-          <div>
-            {dog.compareAt && (
-              <span className="mr-1.5 text-xs text-muted line-through">
-                {formatPrice(dog.compareAt)}
+        {forSale ? (
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2">
+            <div>
+              {dog.compareAt && (
+                <span className="mr-1.5 text-xs text-muted line-through">
+                  {formatPrice(dog.compareAt)}
+                </span>
+              )}
+              <span className="font-display text-xl font-bold text-foreground">
+                {formatPrice(dog.price)}
               </span>
-            )}
-            <span className="font-display text-xl font-bold text-foreground">
-              {formatPrice(dog.price)}
-            </span>
+            </div>
+            <button
+              disabled={soldOut}
+              onClick={() =>
+                add({
+                  id: dog.id,
+                  slug: dog.slug,
+                  name: dog.name,
+                  breedName: dog.breedName,
+                  price: dog.price,
+                  image: dog.images[0],
+                })
+              }
+              aria-label={`Add ${dog.name} to cart`}
+              className="btn-clay grid h-10 w-10 place-items-center rounded-full disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/50"
+            >
+              <ShoppingBag size={16} />
+            </button>
           </div>
-          <button
-            disabled={soldOut}
-            onClick={() =>
-              add({
-                id: dog.id,
-                slug: dog.slug,
-                name: dog.name,
-                breedName: dog.breedName,
-                price: dog.price,
-                image: dog.images[0],
-              })
-            }
-            aria-label={`Add ${dog.name} to cart`}
-            className="btn-clay grid h-10 w-10 place-items-center rounded-full disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/50"
-          >
-            <ShoppingBag size={16} />
-          </button>
-        </div>
+        ) : (
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2">
+            <div>
+              <span className="block font-display text-sm font-bold text-foreground">
+                Not for sale
+              </span>
+              <span className="block text-[11px] text-muted">Our breeding stock</span>
+            </div>
+            <Link
+              href="/puppies"
+              className="shrink-0 rounded-full border border-ochre-400 px-3 py-1.5 text-[11px] font-semibold text-accent-ink transition hover:bg-ochre-400/10"
+            >
+              Puppies from {formatPrice(PUPPY_PRICE_FLOOR)}
+            </Link>
+          </div>
+        )}
       </div>
     </motion.article>
     </Tilt>

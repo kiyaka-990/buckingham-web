@@ -3,34 +3,39 @@ import { ArrowRight, ShieldCheck, Truck, BadgeCheck, Search } from "lucide-react
 import { FadeImage } from "@/components/ui/fade-image";
 import { ShopFrontHeadline } from "@/components/home/headline";
 import { ButtonLink } from "@/components/ui/button";
-import type { Dog } from "@/lib/data/catalog";
+import { isForSale, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
 import { formatPrice } from "@/lib/utils";
 
 /**
  * The shop front.
  *
- * This replaces the old rotating-word hero. A visitor landing here should feel
- * they have walked through the door of a shop: the goods are the first thing
- * they see, priced, with a way in. No carousel, nothing auto-playing, no
- * waiting for a slide to change before the page means anything.
+ * A visitor landing here should feel they have walked through the door of a
+ * shop: the goods are the first thing they see, with a way in. The kennel
+ * sells puppies only, so puppies fill the window first and are the only panes
+ * that carry a price — the parent dogs behind them come after, unpriced.
  */
-export function ShopFront({ dogs, availableCount }: { dogs: Dog[]; availableCount: number }) {
-  const [lead, ...rest] = dogs.slice(0, 5);
-  const from = dogs.length ? Math.min(...dogs.map((d) => d.price)) : 2300;
+export function ShopFront({ dogs, puppyCount }: { dogs: Dog[]; puppyCount: number }) {
+  // Puppies lead the window; the parents fill in behind them.
+  const ordered = [...dogs].sort((a, b) => Number(isForSale(b)) - Number(isForSale(a)));
+  const [lead, ...rest] = ordered.slice(0, 5);
+  const forSaleNow = dogs.filter(isForSale);
+  const from = forSaleNow.length
+    ? Math.min(...forSaleNow.map((d) => d.price))
+    : PUPPY_PRICE_FLOOR;
 
   return (
     <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
       {/* Counter line — the greeting you get on walking in */}
       <div className="flex flex-col gap-5 pb-7 md:flex-row md:items-end md:justify-between">
-        <ShopFrontHeadline availableCount={availableCount} from={formatPrice(from)} />
+        <ShopFrontHeadline puppyCount={puppyCount} from={formatPrice(from)} />
 
         <div className="flex shrink-0 flex-wrap items-center gap-3">
-          <ButtonLink href="/shop" size="lg" className="shadow-lift">
-            Shop all dogs <ArrowRight size={17} />
+          <ButtonLink href="/puppies" size="lg" className="shadow-lift">
+            Puppies for sale <ArrowRight size={17} />
           </ButtonLink>
-          <ButtonLink href="/puppies" variant="outline" size="lg">
-            Just puppies
+          <ButtonLink href="/breeds" variant="outline" size="lg">
+            Meet our breeds
           </ButtonLink>
         </div>
       </div>
@@ -62,8 +67,8 @@ export function ShopFront({ dogs, availableCount }: { dogs: Dog[]; availableCoun
       {/* Counter promises */}
       <ul className="mt-5 grid gap-2 sm:grid-cols-3">
         {[
-          { icon: BadgeCheck, text: "Vaccinated, chipped & papered" },
-          { icon: ShieldCheck, text: "Written health guarantee" },
+          { icon: BadgeCheck, text: "Puppies only — we keep the parents" },
+          { icon: ShieldCheck, text: "Vaccinated, chipped, papered & guaranteed" },
           { icon: Truck, text: "Delivered Kenya-wide & abroad" },
         ].map(({ icon: Icon, text }) => (
           <li
@@ -97,9 +102,15 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
       />
       <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-clay-950/80 via-clay-950/10 to-transparent" />
 
-      {dog.status !== "available" && (
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-clay-900">
-          {dog.status}
+      {isForSale(dog) ? (
+        dog.status !== "available" && (
+          <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-clay-900">
+            {dog.status}
+          </span>
+        )
+      ) : (
+        <span className="absolute left-3 top-3 rounded-full bg-clay-950/80 px-2.5 py-1 text-[11px] font-semibold text-white">
+          Our breeding stock
         </span>
       )}
 
@@ -112,8 +123,13 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
             {dog.breedName} · {dog.ageLabel}
           </span>
         </span>
-        <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-sm font-bold text-clay-800">
-          {formatPrice(dog.price)}
+        {/* Only puppies are sold, so only puppies show a price. */}
+        <span
+          className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-bold ${
+            isForSale(dog) ? "bg-white text-clay-800" : "bg-white/15 text-white backdrop-blur"
+          }`}
+        >
+          {isForSale(dog) ? formatPrice(dog.price) : "Not for sale"}
         </span>
       </div>
     </Link>

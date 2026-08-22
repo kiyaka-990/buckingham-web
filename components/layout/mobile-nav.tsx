@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Crest } from "@/components/brand/crest";
 import { X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mainNav, site } from "@/lib/site";
+import { mainNav, phones } from "@/lib/site";
 import { useUI } from "@/lib/store/ui";
 import { ButtonLink } from "@/components/ui/button";
 
@@ -63,9 +63,11 @@ export function MobileNav() {
 
             <div className="space-y-3 border-t border-border p-5">
               <ButtonLink href="/login" onClick={close} variant="outline" className="w-full">Sign in</ButtonLink>
-              <a href={`tel:${site.contact.phone}`} className="flex items-center justify-center gap-2 text-sm text-muted">
-                <Phone size={14} /> {site.contact.phoneDisplay}
-              </a>
+              {phones.map((p) => (
+                <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center justify-center gap-2 text-sm text-muted">
+                  <Phone size={14} /> {p.display}
+                </a>
+              ))}
             </div>
           </motion.div>
         </>

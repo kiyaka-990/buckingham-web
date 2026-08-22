@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const LEAD = "Guardian dogs, raised here";
+const LEAD = "Guardian puppies, bred here";
 
 /** The half of the sentence that changes. Each must finish LEAD as a sentence. */
 const TAILS = [
@@ -11,7 +11,7 @@ const TAILS = [
   "and steady around your children.",
   "and papered, chipped, guaranteed.",
   "and delivered to your gate.",
-  "and watching your gate by Friday.",
+  "from parents you can come and meet.",
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -26,10 +26,10 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * aria-label, and nothing moves at all if the visitor asked for reduced motion.
  */
 export function ShopFrontHeadline({
-  availableCount,
+  puppyCount,
   from,
 }: {
-  availableCount: number;
+  puppyCount: number;
   from: string;
 }) {
   const reduce = useReducedMotion();
@@ -88,8 +88,9 @@ export function ShopFrontHeadline({
       </motion.h1>
 
       <motion.p className="mt-3 max-w-lg text-base text-muted" {...rise(0.16)}>
-        {availableCount} dogs and puppies available today, from {from}. Every one health-checked,
-        papered and photographed at our own kennel.
+        {puppyCount} {puppyCount === 1 ? "puppy" : "puppies"} available today, from {from}. Our
+        adult dogs are the breeding programme and are not for sale — come and meet them, then take
+        a puppy home.
       </motion.p>
     </div>
   );

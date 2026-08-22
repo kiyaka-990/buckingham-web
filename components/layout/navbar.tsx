@@ -21,7 +21,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mainNav, site } from "@/lib/site";
+import { mainNav, phones, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/store/cart";
 import { useWishlist } from "@/lib/store/wishlist";
@@ -32,10 +32,10 @@ import { RotatingText } from "@/components/ui/rotating-text";
 
 const announcements = [
   "Champion bloodlines · Health guaranteed · Global delivery",
-  "New litters arriving — reserve your puppy today",
-  "Health-guaranteed up to 36 months on every dog",
+  "Puppies for sale from $1,600 — reserve yours today",
+  "Health-guaranteed up to 36 months on every puppy",
   "Free breed consultation — chat with us on WhatsApp",
-  "Elite trained protection dogs now available",
+  "We keep the parents · Come and meet them at the kennel",
 ];
 
 export function Navbar() {
@@ -81,9 +81,11 @@ export function Navbar() {
             <RotatingText words={announcements} interval={3500} className="h-4 text-clay-50" />
           </p>
           <div className="flex items-center gap-4">
-            <a href={`tel:${site.contact.phone}`} className="flex items-center gap-1.5 hover:text-ochre-400 transition">
-              <Phone size={12} /> {site.contact.phoneDisplay}
-            </a>
+            {phones.map((p) => (
+              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-1.5 hover:text-ochre-400 transition">
+                <Phone size={12} /> {p.display}
+              </a>
+            ))}
             <a
               href={`https://wa.me/${site.contact.whatsapp}`}
               target="_blank"

@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, Search } from "lucide-react";
-import { categoryList, type Category, type Dog } from "@/lib/data/catalog";
+import { categoryList, isForSale, type Category, type Dog } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
 import { DogCard } from "@/components/shop/dog-card";
 import { formatPrice, cn } from "@/lib/utils";
@@ -30,7 +30,9 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
   }, [params]);
 
   const filtered = useMemo(() => {
-    let list = dogs.filter((d) => d.price <= maxPrice);
+    // Only puppies carry a price, so the price slider only ever filters them —
+    // the parent dogs are unpriced and must not be squeezed out by it.
+    let list = dogs.filter((d) => !isForSale(d) || d.price <= maxPrice);
     if (breed !== "all") list = list.filter((d) => d.breedSlug === breed);
     if (category !== "all") list = list.filter((d) => d.category === category);
     if (availableOnly) list = list.filter((d) => d.status === "available");
@@ -38,9 +40,14 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       const t = q.toLowerCase();
       list = list.filter((d) => `${d.name} ${d.breedName} ${d.color} ${d.category}`.toLowerCase().includes(t));
     }
+    // Unpriced dogs always sort last on a price sort rather than reading as free.
+    const byPrice = (a: Dog, b: Dog, dir: 1 | -1) => {
+      if (isForSale(a) !== isForSale(b)) return isForSale(a) ? -1 : 1;
+      return (a.price - b.price) * dir;
+    };
     switch (sort) {
-      case "price-asc": list = [...list].sort((a, b) => a.price - b.price); break;
-      case "price-desc": list = [...list].sort((a, b) => b.price - a.price); break;
+      case "price-asc": list = [...list].sort((a, b) => byPrice(a, b, 1)); break;
+      case "price-desc": list = [...list].sort((a, b) => byPrice(a, b, -1)); break;
       case "rating": list = [...list].sort((a, b) => b.rating - a.rating); break;
       default: list = [...list].sort((a, b) => Number(b.featured) - Number(a.featured)); break;
     }
@@ -76,7 +83,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       </FilterGroup>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold">Max price: {formatPrice(maxPrice)}</label>
+        <label className="mb-2 block text-sm font-semibold">Max puppy price: {formatPrice(maxPrice)}</label>
         <input
           type="range"
           min={priceRange.min}

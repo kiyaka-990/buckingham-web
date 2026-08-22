@@ -94,7 +94,7 @@ export const testimonials = [
   {
     name: "James Otieno",
     location: "Kisumu, Kenya",
-    dog: "Sable Shepherd — Kaiser",
+    dog: "Royal Black Shepherd — Kaiser",
     rating: 5,
     text: "As a security professional I have high standards. Kaiser's training and drive are exceptional. This is a truly elite kennel.",
   },
@@ -108,7 +108,7 @@ export const testimonials = [
   {
     name: "Peter Mwangi",
     location: "Eldoret, Kenya",
-    dog: "Boerboel — Titan",
+    dog: "Kangal — Titan",
     rating: 5,
     text: "Massive, calm and beautifully tempered. You can see the quality of the bloodline. Highly recommend Buckingham Kennel.",
   },
@@ -123,12 +123,20 @@ export const testimonials = [
 
 export const stats = [
   { value: "500+", label: "Happy Families" },
-  { value: "7", label: "Elite Breeds" },
-  { value: "15+", label: "Years of Expertise" },
+  { value: "5", label: "Elite Breeds" },
+  { value: "$1,600", label: "Puppies From" },
   { value: "100%", label: "Health Guaranteed" },
 ];
 
 export const faqs = [
+  {
+    q: "Do you sell adult dogs?",
+    a: "No. Our adult dogs are our breeding programme and none of them are for sale — they are on the site so you can see the parents behind a litter and come and meet them. We sell puppies only, and prices start at $1,600.",
+  },
+  {
+    q: "How much is a puppy?",
+    a: "Puppies start at $1,600 and the exact price depends on the breed, the litter and the individual puppy. Every price on the site is the full price — vaccinations, deworming, microchip, vet check, pedigree papers and the health guarantee are all included.",
+  },
   {
     q: "Are your puppies health guaranteed?",
     a: "Yes. Every puppy leaves fully vaccinated, dewormed, microchipped and vet-checked, backed by a written health guarantee of up to 36 months on hereditary conditions.",
@@ -139,7 +147,7 @@ export const faqs = [
   },
   {
     q: "How do I reserve a puppy?",
-    a: "Add your chosen dog to the cart and check out with a deposit via Stripe (card) or M-Pesa. Your companion is then marked reserved and we coordinate collection or delivery.",
+    a: "Add your chosen puppy to the cart and check out with a deposit via Stripe (card) or M-Pesa. The puppy is then marked reserved and we coordinate collection or delivery.",
   },
   {
     q: "Can I visit the kennel?",

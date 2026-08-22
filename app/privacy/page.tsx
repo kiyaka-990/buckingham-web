@@ -1,7 +1,7 @@
 import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
-import { site } from "@/lib/site";
+import { phones, site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Privacy Policy" };
 
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
         <h2 className="font-display text-xl font-bold text-foreground">Cookies</h2>
         <p>You control cookie preferences via our consent banner. Essential cookies keep your cart and session working.</p>
         <h2 className="font-display text-xl font-bold text-foreground">Contact</h2>
-        <p>Questions? Email {site.contact.email} or call {site.contact.phoneDisplay}.</p>
+        <p>Questions? Email {site.contact.email} or call {phones.map((p) => p.display).join(" or ")}.</p>
       </article>
     </>
   );

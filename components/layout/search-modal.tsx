@@ -5,12 +5,12 @@ import { FadeImage } from "@/components/ui/fade-image";
 import { useRouter } from "next/navigation";
 import { Search, X, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { dogs } from "@/lib/data/catalog";
+import { dogs, isForSale } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
 import { useUI } from "@/lib/store/ui";
 import { formatPrice } from "@/lib/utils";
 
-const trending = ["Boerboel", "Puppies", "Kangal", "Trained", "Caucasian Shepherd"];
+const trending = ["Puppies", "Kangal", "Caucasian Shepherd", "Royal Black Shepherd", "Akita"];
 
 export function SearchModal() {
   const { searchOpen, setSearch } = useUI();
@@ -121,7 +121,9 @@ export function SearchModal() {
                         <span className="block font-medium">{d.name}</span>
                         <span className="text-xs text-muted">{d.breedName} · {d.ageLabel}</span>
                       </span>
-                      <span className="font-display font-semibold text-accent-ink">{formatPrice(d.price)}</span>
+                      <span className="font-display font-semibold text-accent-ink">
+                        {isForSale(d) ? formatPrice(d.price) : "Not for sale"}
+                      </span>
                     </button>
                   ))}
                 </div>
