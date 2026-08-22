@@ -22,6 +22,7 @@
  *   npx tsx prisma/sync-dogs.ts --dry-run  # report only, no writes
  */
 
+import { createHash } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import { dogs } from "../lib/data/catalog";
 
@@ -64,10 +65,28 @@ const RETIRED = [
   "zara-royal-black-shepherd",
 ];
 
+/**
+ * A primary key that depends on the dog, not on its position in the seed list.
+ *
+ * The catalogue's own ids are `BK-${1000 + i}`, so they are reassigned every
+ * time a seed is added or removed: after the 22 Aug 2026 cull, Rocco inherited
+ * BK-1000, which production was already using for Kaiser. Hashing the slug
+ * gives an id that is stable across edits and cannot collide with a row that
+ * happens to sit at the same index.
+ */
+const stableId = (slug: string) =>
+  `BK-${createHash("sha1").update(slug).digest("hex").slice(0, 8).toUpperCase()}`;
+
 async function main() {
   const target = process.env.DATABASE_URL ?? "";
   const host = target.match(/@([^/?:]+)/)?.[1] ?? "unknown host";
   console.log(`${dryRun ? "[dry run] " : ""}Syncing ${dogs.length} dogs -> ${host}\n`);
+
+  const doomed = await db.dog.findMany({ where: { slug: { in: RETIRED } } });
+  for (const d of doomed) console.log(`  delete  ${d.slug}`);
+  if (!dryRun && doomed.length) {
+    await db.dog.deleteMany({ where: { slug: { in: RETIRED } } });
+  }
 
   let created = 0;
   let updated = 0;
@@ -105,15 +124,9 @@ async function main() {
       console.log(`  update  ${d.slug}`);
     } else {
       created++;
-      if (!dryRun) await db.dog.create({ data: { id: d.id, slug: d.slug, ...data } });
+      if (!dryRun) await db.dog.create({ data: { id: stableId(d.slug), slug: d.slug, ...data } });
       console.log(`  create  ${d.slug}`);
     }
-  }
-
-  const doomed = await db.dog.findMany({ where: { slug: { in: RETIRED } } });
-  for (const d of doomed) console.log(`  delete  ${d.slug}`);
-  if (!dryRun && doomed.length) {
-    await db.dog.deleteMany({ where: { slug: { in: RETIRED } } });
   }
 
   const [total, orders, messages] = await Promise.all([

@@ -230,8 +230,8 @@ export function DogDetail({ dog }: { dog: Dog }) {
             {[
               { icon: ShieldCheck, t: `${dog.health.healthGuaranteeMonths}-month health guarantee` },
               { icon: Truck, t: "Safe nationwide & global delivery" },
-              { icon: Award, t: dog.pedigree.registry },
               { icon: Check, t: "Full vet records & microchip" },
+              ...(dog.pedigree.registry ? [{ icon: Award, t: dog.pedigree.registry }] : []),
             ].map((a) => (
               <div key={a.t} className="flex items-center gap-2 text-muted">
                 <a.icon size={16} className="text-accent-ink" /> {a.t}
@@ -305,7 +305,9 @@ export function DogDetail({ dog }: { dog: Dog }) {
                   <HealthItem icon={Stethoscope} label="Vet Checked" ok={dog.health.vetChecked} />
                   <HealthItem icon={Cpu} label="Microchipped" ok={dog.health.microchipped} />
                   <HealthItem icon={ShieldCheck} label={`${dog.health.healthGuaranteeMonths}-mo Guarantee`} ok />
-                  <HealthItem icon={Award} label={`Hips: ${dog.health.hipScore}`} ok />
+                  {dog.health.hipScore && (
+                    <HealthItem icon={Award} label={`Hips: ${dog.health.hipScore}`} ok />
+                  )}
                 </div>
               )}
             </div>

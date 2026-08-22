@@ -158,15 +158,17 @@ function build(seed: Seed, i: number): Dog {
     rating: seed.rating ?? 4.7 + ((i % 4) * 0.1),
     reviews: seed.reviews ?? 8 + ((i * 7) % 90),
     images: seed.images,
+    // Ancestry is published only where a seed states it. The detail page
+    // hides whatever is blank rather than inventing a line to fill the tab.
     pedigree: {
-      sire: `Ch. ${["Titan", "Baron", "Maximus", "Zeus"][i % 4]} von Buckingham`,
-      dam: `Ch. ${["Nala", "Athena", "Duchess", "Sasha", "Freya", "Zara"][i % 6]} of Webuye`,
-      grandSire: `GCh. ${["Apollo", "Thor", "Cyrus", "Odin"][i % 4]} vom Königshaus`,
-      grandDam: `Ch. ${["Aria", "Luna", "Cleo", "Roxy"][i % 4]} Royal Line`,
-      champions: seed.champions ?? ["Best of Breed 2025", "Regional Working Champion"],
-      generations: 5,
-      registry: "KUC / FCI Registered",
-      inbreedingCoefficient: `${(2 + (i % 5) * 0.5).toFixed(1)}%`,
+      sire: "",
+      dam: "",
+      grandSire: "",
+      grandDam: "",
+      champions: seed.champions ?? [],
+      generations: 0,
+      registry: "",
+      inbreedingCoefficient: "",
     },
     health: {
       vaccinated: true,
@@ -174,7 +176,7 @@ function build(seed: Seed, i: number): Dog {
       vetChecked: true,
       microchipped: true,
       healthGuaranteeMonths: seed.guarantee ?? 24,
-      hipScore: seed.hipScore ?? "OFA Good",
+      hipScore: seed.hipScore ?? "",
     },
     traits,
     description:
@@ -224,7 +226,7 @@ const seeds: Seed[] = [
     champions: ["Imported — Republic of South Africa"],
     images: pics("gsd-black", "adult", 4, 5, 6),
     description:
-      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her litters with Kaiser are, and they start at $1,600.",
+      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her puppies are, and they start at $1,600.",
   },
 
 
