@@ -8,13 +8,14 @@ import { site } from "@/lib/site";
 
 /**
  * Only the first tile leads to something for sale — the rest introduce the
- * parent dogs, which is exactly the distinction the kennel wants drawn.
+ * breeds, the parent dogs and their papers, which is exactly the distinction
+ * the kennel wants drawn.
  */
 const categories = [
-  { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions from $1,600" },
+  { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions, $1,300–$1,600" },
   { title: "Our Breeds", href: "/breeds", image: "/media/kangal/adult-01.jpg", desc: "Five guardian and working lines" },
-  { title: "Elite Bloodlines", href: "/shop?category=elite", image: "/media/gsd-black/adult-01.jpg", desc: "The sires behind every litter" },
-  { title: "Meet the Parents", href: "/shop?category=adult", image: "/media/white-shepherd/adult-02.jpg", desc: "Our dams — visit before you buy" },
+  { title: "Meet the Mothers", href: "/#parents", image: "/media/white-shepherd/adult-02.jpg", desc: "The dams behind every litter" },
+  { title: "Vaccination Records", href: "/#records", image: "/media/gsd-black/adult-01.jpg", desc: "The cards, not just the claim" },
 ];
 
 export function CategoryTiles() {
@@ -25,11 +26,11 @@ export function CategoryTiles() {
           <Link href={c.href} className="group relative block h-72 overflow-hidden rounded-3xl">
             <FadeImage src={c.image} alt={c.title} fill sizes="(max-width:768px) 100vw, 25vw" className="object-cover duotone transition-transform duration-700 group-hover:scale-110" />
             <span className="shine-hover absolute inset-0 z-10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-clay-950/90 via-clay-950/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-azure-950/90 via-azure-950/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-white">
               <h3 className="font-display text-xl font-bold">{c.title}</h3>
               <p className="text-sm text-white/75">{c.desc}</p>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-ochre-400 opacity-0 transition-all group-hover:opacity-100">
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-volt-400 opacity-0 transition-all group-hover:opacity-100">
                 Browse <ArrowRight size={14} />
               </span>
             </div>
@@ -45,7 +46,7 @@ export function StatsBand() {
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {stats.map((s, i) => (
         <Reveal key={s.label} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-          <p className="font-display text-4xl font-bold text-gradient-ochre sm:text-5xl">{s.value}</p>
+          <p className="font-display text-4xl font-bold text-gradient-volt sm:text-5xl">{s.value}</p>
           <p className="mt-2 text-sm text-muted">{s.label}</p>
         </Reveal>
       ))}
@@ -65,7 +66,7 @@ export function WhyUs() {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {pillars.map((p, i) => (
         <Reveal key={p.title} delay={i} className="group rounded-3xl border border-border bg-surface p-6 card-hover">
-          <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-ochre-400/12 text-accent-ink transition group-hover:bg-ochre-400 group-hover:text-clay-900">
+          <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-volt-400/12 text-accent-ink transition group-hover:bg-volt-400 group-hover:text-azure-900">
             <p.icon size={26} />
           </div>
           <h3 className="font-display text-lg font-semibold">{p.title}</h3>
@@ -78,7 +79,7 @@ export function WhyUs() {
 
 const steps = [
   { n: "01", title: "Meet the Parents", desc: "See the breed and the dogs behind the litter — online or at the kennel." },
-  { n: "02", title: "Reserve Your Puppy", desc: "Secure your puppy from $1,600 via Stripe or M-Pesa in minutes." },
+  { n: "02", title: "Reserve Your Puppy", desc: "Secure your puppy from $1,300 via Stripe or M-Pesa in minutes." },
   { n: "03", title: "Health & Handover", desc: "We finalise vet checks, papers and microchipping." },
   { n: "04", title: "Delivered with Care", desc: "Safe delivery to your door — plus lifetime support." },
 ];
@@ -88,11 +89,11 @@ export function ProcessSteps() {
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((s, i) => (
         <Reveal key={s.n} delay={i} className="relative">
-          <span className="font-display text-6xl font-bold text-ochre-400/25">{s.n}</span>
+          <span className="font-display text-6xl font-bold text-volt-400/25">{s.n}</span>
           <h3 className="mt-2 font-display text-lg font-semibold">{s.title}</h3>
           <p className="mt-1 text-sm text-muted">{s.desc}</p>
           {i < steps.length - 1 && (
-            <PawPrint className="absolute -right-3 top-6 hidden text-ochre-400/40 lg:block" size={20} />
+            <PawPrint className="absolute -right-3 top-6 hidden text-volt-400/40 lg:block" size={20} />
           )}
         </Reveal>
       ))}
@@ -103,13 +104,13 @@ export function ProcessSteps() {
 
 export function CtaBand() {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-clay-900 p-10 text-center text-white sm:p-16">
+    <div className="relative overflow-hidden rounded-[2rem] bg-azure-900 p-10 text-center text-white sm:p-16">
       <div className="aurora absolute inset-0 opacity-50" />
       <div className="relative mx-auto max-w-2xl">
-        <PawPrint className="mx-auto mb-4 text-ochre-400" size={36} />
+        <PawPrint className="mx-auto mb-4 text-volt-400" size={36} />
         <h2 className="font-display text-3xl font-bold sm:text-4xl md:text-5xl">Ready to meet your royal companion?</h2>
-        <p className="mx-auto mt-4 max-w-xl text-clay-50/80">
-          Join hundreds of happy families across Kenya and beyond. Puppies start at $1,600 — call{" "}
+        <p className="mx-auto mt-4 max-w-xl text-azure-50/80">
+          Join hundreds of happy families across Kenya and beyond. Puppies are $1,300–$1,600 — call{" "}
           {site.contact.phoneDisplay} or {site.contact.phoneAltDisplay} and we will match you today.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

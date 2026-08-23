@@ -10,7 +10,7 @@ import { getPuppies } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Available Puppies",
-  description: "Adorable, health-guaranteed puppies from champion bloodlines. Raised underfoot with early neurological stimulation. From $1,600.",
+  description: "Adorable, health-guaranteed puppies from champion bloodlines. Raised underfoot with early neurological stimulation. $1,300–$1,600.",
 };
 
 const perks = [
@@ -29,7 +29,7 @@ export default async function PuppiesPage() {
       <PageHero
         eyebrow="New Litters"
         title="Available Puppies"
-        subtitle="Bundles of royal joy, ready to fill your home with love — from $1,600."
+        subtitle="Bundles of royal joy, ready to fill your home with love — $1,300 to $1,600, never more."
         image={heroImages.puppies}
         crumbs={[{ label: "Puppies" }]}
       />

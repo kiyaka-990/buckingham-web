@@ -9,11 +9,11 @@ import { ShowroomOverlay } from "./overlay";
 
 /* ---- Warm Clay, in 3D ---------------------------------------------- */
 const WALL = "#ffffff";
-const WALL_SHADE = "#f6efe8";
-const FLOOR = "#efe4d9";
-const CLAY = "#a8442a";
-const CLAY_DEEP = "#8f3a24";
-const INK = "#2a1d18";
+const WALL_SHADE = "#eaf3ff";
+const FLOOR = "#d9e9ff";
+const CLAY = "#0a84ff";
+const CLAY_DEEP = "#0068d6";
+const INK = "#0b1220";
 
 /**
  * A bright, straight gallery wall — not a carousel of floating frames.
@@ -93,7 +93,7 @@ function Frame({
       <Text
         position={[0, -1.22, 0.03]}
         fontSize={0.082}
-        color="#5b6b60"
+        color="#4a5c78"
         anchorX="center"
         anchorY="middle"
         maxWidth={2}
@@ -171,7 +171,7 @@ function Scene({ dogs, onSelect }: { dogs: Dog[]; onSelect: (d: Dog) => void }) 
       {/* Daylight from the left, fill from the right */}
       <ambientLight intensity={1.5} />
       <directionalLight position={[-6, 8, 6]} intensity={2.2} color="#ffffff" castShadow />
-      <directionalLight position={[8, 4, 5]} intensity={0.7} color="#fff8e7" />
+      <directionalLight position={[8, 4, 5]} intensity={0.7} color="#eaf3ff" />
 
       {/* Back wall */}
       <mesh position={[0, 1.4, -0.12]} receiveShadow>
@@ -197,7 +197,7 @@ function Scene({ dogs, onSelect }: { dogs: Dog[]; onSelect: (d: Dog) => void }) 
         <meshStandardMaterial color={FLOOR} roughness={0.75} metalness={0.05} />
       </mesh>
 
-      <ContactShadows position={[0, -1.64, 0.4]} opacity={0.22} scale={span + 8} blur={2} far={3} color="#14201a" />
+      <ContactShadows position={[0, -1.64, 0.4]} opacity={0.22} scale={span + 8} blur={2} far={3} color="#0b1a2f" />
 
       {dogs.map((dog, i) => (
         <Frame key={dog.id} dog={dog} x={startX + i * gap} onSelect={onSelect} />

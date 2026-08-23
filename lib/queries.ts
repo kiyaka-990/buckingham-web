@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
+import { PUPPY_PRICE_CEILING, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
 
 type DbDog = {
   id: string; slug: string; name: string; breedSlug: string; breedName: string;
@@ -80,7 +80,7 @@ export async function getPriceRange(): Promise<{ min: number; max: number }> {
     _min: { price: true },
     _max: { price: true },
   });
-  return { min: agg._min.price ?? PUPPY_PRICE_FLOOR, max: agg._max.price ?? 3000 };
+  return { min: agg._min.price ?? PUPPY_PRICE_FLOOR, max: agg._max.price ?? PUPPY_PRICE_CEILING };
 }
 
 /** The advertised "from" price — the cheapest puppy we actually hold. */

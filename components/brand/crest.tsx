@@ -5,15 +5,15 @@ import { cn } from "@/lib/utils";
  * Buckingham Kennel mark.
  *
  * This is the kennel's own logo — the retriever head from the company mark —
- * recoloured from its original gold-and-navy into the site's Warm Clay browns
- * and cut out onto transparency, so it sits on cream, on clay and over
- * photographs without a plate behind it. Generated from `logo.png` at the
- * repository root; the wordmark version lives beside it as `logo-brown.png`.
+ * recoloured into the site's Electric Azure brand and cut out onto
+ * transparency, so it sits on white, on azure and over photographs without a
+ * plate behind it. Generated from `logo.png` at the repository root; the
+ * wordmark version lives beside it as `logo-azure.png`.
  *
  * `tone` picks how it renders against its surroundings:
- *  - "brand"  → clay brown   (light surfaces)
- *  - "invert" → cream        (photos / dark surfaces)
- *  - "mono"   → clay brown, kept for API compatibility
+ *  - "brand"  → vivid azure  (light surfaces)
+ *  - "invert" → white        (photos / dark surfaces)
+ *  - "mono"   → vivid azure, kept for API compatibility
  */
 export function Crest({
   className,
@@ -26,7 +26,7 @@ export function Crest({
 }) {
   return (
     <Image
-      src={tone === "invert" ? "/brand/mark-cream.png" : "/brand/mark-brown.png"}
+      src={tone === "invert" ? "/brand/mark-white.png" : "/brand/mark-azure.png"}
       alt={title}
       width={512}
       height={512}

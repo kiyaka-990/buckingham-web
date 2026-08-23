@@ -3,7 +3,7 @@ export const site = {
   shortName: "Buckingham Kennel",
   tagline: "Royalty in Every Paw",
   description:
-    "Kenya's premier kennel for five world-class guardian and working breeds. We keep the parents and sell the puppies — champion bloodlines, health-guaranteed, from $1,600.",
+    "Kenya's premier kennel for five world-class guardian and working breeds. We keep the parents and sell the puppies — champion bloodlines, health-guaranteed, $1,300–$1,600.",
   quote: {
     text: "A dog is the only thing on earth that loves you more than you love yourself.",
     author: "Josh Billings",

@@ -41,8 +41,8 @@ export function PhotoPending({
       <Crest tone="invert" className={cn("relative", compact ? "h-2/3 max-h-8" : "h-14")} />
       {!compact && (
         <span className="relative max-w-[85%] px-3">
-          <span className="block font-display text-sm text-cream-100">{label}</span>
-          <span className="mt-1 block text-[11px] leading-snug text-cream-100/60">
+          <span className="block font-display text-sm text-paper-100">{label}</span>
+          <span className="mt-1 block text-[11px] leading-snug text-paper-100/60">
             Ask us for video — we send footage the same day.
           </span>
         </span>

@@ -4,10 +4,10 @@ export const revenueSeries = {
 };
 
 export const trafficSources = [
-  { label: "Organic Search", value: 42, color: "#c9972a" },
-  { label: "Social Media", value: 28, color: "#4d68bd" },
-  { label: "Direct", value: 18, color: "#e6c65a" },
-  { label: "Referral", value: 12, color: "#7d95d6" },
+  { label: "Organic Search", value: 42, color: "#0a84ff" },
+  { label: "Social Media", value: 28, color: "#06b6d4" },
+  { label: "Direct", value: 18, color: "#a3e635" },
+  { label: "Referral", value: 12, color: "#8ccdff" },
 ];
 
 export const funnel = [
@@ -19,10 +19,10 @@ export const funnel = [
 ];
 
 export const salesByCategory = [
-  { label: "Puppies", value: 38, color: "#e6c65a" },
-  { label: "Trained", value: 27, color: "#c9972a" },
-  { label: "Elite", value: 21, color: "#4d68bd" },
-  { label: "Adult", value: 14, color: "#7d95d6" },
+  { label: "Puppies", value: 38, color: "#a3e635" },
+  { label: "Trained", value: 27, color: "#0a84ff" },
+  { label: "Elite", value: 21, color: "#06b6d4" },
+  { label: "Adult", value: 14, color: "#8ccdff" },
 ];
 
 export const geoSales = [

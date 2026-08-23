@@ -84,7 +84,7 @@ export const breeds: Breed[] = [
     mediaDir: "caucasian",
     photoPending: false,
     heroImage: m("caucasian", "adult-04.jpg"),
-    gallery: [...set("caucasian", "adult", 11), ...set("caucasian", "pup", 2)],
+    gallery: [...set("caucasian", "adult", 8), ...set("caucasian", "pup", 2)],
   },
   {
     slug: "white-swiss-shepherd",
@@ -107,7 +107,7 @@ export const breeds: Breed[] = [
     mediaDir: "white-shepherd",
     photoPending: false,
     heroImage: m("white-shepherd", "adult-02.jpg"),
-    gallery: set("white-shepherd", "adult", 9),
+    gallery: set("white-shepherd", "adult", 8),
   },
   {
     slug: "royal-black-shepherd",
@@ -130,7 +130,11 @@ export const breeds: Breed[] = [
     mediaDir: "gsd-black",
     photoPending: false,
     heroImage: m("gsd-black", "adult-01.jpg"),
-    gallery: [...set("gsd-black", "adult", 7), ...set("gsd-black", "pup", 12)],
+    gallery: [
+      ...set("gsd-black", "adult", 4),
+      ...set("gsd-black", "adult", 2, 6),
+      ...set("gsd-black", "pup", 12),
+    ],
   },
   {
     slug: "american-akita",
@@ -149,11 +153,14 @@ export const breeds: Breed[] = [
       "The American Akita is a large, powerfully built spitz with a plush double coat, a broad bear-like head and a famously silent devotion to its household. It does not fuss, bark or beg for strangers — it simply attaches itself to its family for life and stands between them and anything unfamiliar.",
     care:
       "Two solid walks a day and firm, respectful training from puppyhood. Heavy shedding twice a year needs committed brushing. Happiest as the only dog, at the centre of its family.",
-    residents: [],
+    residents: [
+      { name: "Suzy", sex: "Female", role: "Foundation dam" },
+      { name: "Euro", sex: "Female", role: "Foundation dam" },
+    ],
     mediaDir: "akita",
     photoPending: false,
-    heroImage: m("akita", "adult-02.jpg"),
-    gallery: set("akita", "adult", 6),
+    heroImage: m("akita", "adult-01.jpg"),
+    gallery: set("akita", "adult", 5),
   },
   {
     slug: "kangal",
@@ -172,7 +179,10 @@ export const breeds: Breed[] = [
       "The Kangal is the livestock guardian other guardians are measured against — famed for the strongest bite in the canine world and, far more importantly, for the judgement to almost never use it. Calm, patient and astonishingly gentle with children and stock, it patrols a boundary all night and sleeps at the door all day.",
     care:
       "Room to patrol and a boundary worth patrolling. Early socialisation matters more than obedience drilling. Weekly brushing; heavier during the seasonal moult.",
-    residents: [],
+    residents: [
+      { name: "Romaine", sex: "Female", role: "Foundation dam" },
+      { name: "Pluto", sex: "Male", role: "Foundation sire" },
+    ],
     mediaDir: "kangal",
     photoPending: false,
     heroImage: m("kangal", "adult-01.jpg"),

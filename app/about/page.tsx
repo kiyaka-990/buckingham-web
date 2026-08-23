@@ -1,4 +1,4 @@
-import { heroImages, kennel } from "@/lib/data/media";
+import { heroImages } from "@/lib/data/media";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ShieldCheck, Heart, Award, Leaf } from "lucide-react";
@@ -35,7 +35,7 @@ export default function AboutPage() {
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
         <Reveal>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-            <Image src={kennel.team[1]} alt="Buckingham Kennel" fill className="object-cover" />
+            <Image src="/media/caucasian/adult-04.jpg" alt="A Buckingham Caucasian Shepherd at the Webuye kennel" fill className="object-cover" />
           </div>
         </Reveal>
         <Reveal delay={1} className="space-y-4">
@@ -48,7 +48,7 @@ export default function AboutPage() {
           </p>
           <p className="leading-relaxed text-muted">
             Our adult dogs are not for sale. They are the breeding programme, and you are welcome to come and meet
-            them before you choose. What we sell is their puppies, from $1,600 — every one raised underfoot,
+            them before you choose. What we sell is their puppies, $1,300–$1,600 — every one raised underfoot,
             health-tested, matched thoughtfully to its new family, and supported for life.
           </p>
           <div className="flex flex-wrap gap-4 pt-2 text-sm">
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i} className="rounded-3xl border border-border bg-surface p-6 text-center">
-              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-ochre-400/12 text-accent-ink">
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-volt-400/12 text-accent-ink">
                 <v.icon size={24} />
               </div>
               <h3 className="font-display text-lg font-semibold">{v.title}</h3>

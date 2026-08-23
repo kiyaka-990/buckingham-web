@@ -13,7 +13,7 @@ import { createDog, updateDog, deleteDog } from "@/lib/actions/admin";
 const statusStyles: Record<string, string> = {
   available: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
   reserved: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  sold: "bg-clay-500/15 text-clay-600 dark:text-clay-300",
+  sold: "bg-azure-500/15 text-azure-600 dark:text-azure-300",
 };
 
 export function InventoryManager({ dogs, breeds }: { dogs: Dog[]; breeds: Breed[] }) {
@@ -37,7 +37,7 @@ export function InventoryManager({ dogs, breeds }: { dogs: Dog[]; breeds: Breed[
           <h1 className="font-display text-3xl font-bold">Inventory</h1>
           <p className="text-muted">{dogs.length} dogs in the kennel · saved to the database.</p>
         </div>
-        <button onClick={() => setAdding(true)} className="btn-clay flex h-11 items-center gap-2 rounded-full px-5 text-sm">
+        <button onClick={() => setAdding(true)} className="btn-azure flex h-11 items-center gap-2 rounded-full px-5 text-sm">
           <Plus size={16} /> Add Dog
         </button>
       </div>
@@ -77,8 +77,8 @@ export function InventoryManager({ dogs, breeds }: { dogs: Dog[]; breeds: Breed[
                   <td className="p-4 text-right font-semibold">{formatPrice(d.price)}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-end gap-1.5">
-                      <Link href={`/dogs/${d.slug}`} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:border-ochre-400" aria-label="View"><Eye size={14} /></Link>
-                      <button onClick={() => setEditing(d)} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:border-ochre-400" aria-label="Edit"><Pencil size={14} /></button>
+                      <Link href={`/dogs/${d.slug}`} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:border-volt-400" aria-label="View"><Eye size={14} /></Link>
+                      <button onClick={() => setEditing(d)} className="grid h-8 w-8 place-items-center rounded-lg border border-border hover:border-volt-400" aria-label="Edit"><Pencil size={14} /></button>
                       <button onClick={() => remove(d)} className="grid h-8 w-8 place-items-center rounded-lg border border-border text-red-500 hover:border-red-400" aria-label="Delete"><Trash2 size={14} /></button>
                     </div>
                   </td>
@@ -113,7 +113,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
   dog: Dog | null; breeds: Breed[]; onClose: () => void; onSubmit: (fd: FormData) => void; pending: boolean;
 }) {
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-clay-950/70 p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-azure-950/70 p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-border bg-surface p-6" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-xl font-bold">{dog ? `Edit ${dog.name}` : "Add a Dog"}</h2>
@@ -126,7 +126,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
           <Select label="Sex" name="sex" defaultValue={dog?.sex} options={[{ value: "Male", label: "Male" }, { value: "Female", label: "Female" }]} />
           <Field label="Age label" name="ageLabel" defaultValue={dog?.ageLabel} placeholder="10 weeks" />
           <Field label="Colour" name="color" defaultValue={dog?.color} />
-          <Field label="Price (USD)" name="price" type="number" defaultValue={dog ? String(dog.price) : "1600"} required />
+          <Field label="Price (USD)" name="price" type="number" defaultValue={dog ? String(dog.price) : "1300"} required />
           <Field label="Compare-at (optional)" name="compareAt" type="number" defaultValue={dog?.compareAt ? String(dog.compareAt) : ""} />
           <Field label="Stock" name="stock" type="number" defaultValue={dog ? String(dog.stock) : "1"} />
           <Select label="Status" name="status" defaultValue={dog?.status} options={[["available", "Available"], ["reserved", "Reserved"], ["sold", "Sold"]].map(([value, label]) => ({ value, label }))} />
@@ -136,15 +136,15 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
           <Field label="Traits (comma separated)" name="traits" defaultValue={dog?.traits.join(", ")} className="sm:col-span-2" />
           <div className="sm:col-span-2">
             <label className="mb-1.5 block text-sm font-medium">Description</label>
-            <textarea name="description" rows={3} defaultValue={dog?.description} className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm outline-none focus:border-ochre-400" />
+            <textarea name="description" rows={3} defaultValue={dog?.description} className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm outline-none focus:border-volt-400" />
           </div>
           <div className="flex gap-4 sm:col-span-2">
-            <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="featured" defaultChecked={dog?.featured} className="h-4 w-4 accent-ochre-400" /> Featured</label>
-            <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="bestseller" defaultChecked={dog?.bestseller} className="h-4 w-4 accent-ochre-400" /> Bestseller</label>
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="featured" defaultChecked={dog?.featured} className="h-4 w-4 accent-volt-400" /> Featured</label>
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="bestseller" defaultChecked={dog?.bestseller} className="h-4 w-4 accent-volt-400" /> Bestseller</label>
           </div>
           <div className="mt-2 flex justify-end gap-2 sm:col-span-2">
             <button type="button" onClick={onClose} className="rounded-full border border-border px-5 py-2.5 text-sm">Cancel</button>
-            <button type="submit" disabled={pending} className="btn-clay flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
+            <button type="submit" disabled={pending} className="btn-azure flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
               {pending ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : dog ? "Save changes" : "Create dog"}
             </button>
           </div>
@@ -160,7 +160,7 @@ function Field({ label, name, type = "text", defaultValue, placeholder, required
   return (
     <div className={className}>
       <label className="mb-1.5 block text-sm font-medium">{label}</label>
-      <input name={name} type={type} defaultValue={defaultValue} placeholder={placeholder} required={required} className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none focus:border-ochre-400" />
+      <input name={name} type={type} defaultValue={defaultValue} placeholder={placeholder} required={required} className="h-11 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none focus:border-volt-400" />
     </div>
   );
 }
@@ -171,7 +171,7 @@ function Select({ label, name, defaultValue, options }: {
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium">{label}</label>
-      <select name={name} defaultValue={defaultValue} className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-ochre-400">
+      <select name={name} defaultValue={defaultValue} className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-volt-400">
         {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>

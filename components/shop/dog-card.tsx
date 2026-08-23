@@ -13,8 +13,8 @@ import { Tilt } from "@/components/ui/tilt";
 
 const statusStyles: Record<Dog["status"], string> = {
   available: "bg-emerald-500/90 text-white",
-  reserved: "bg-ochre-400 text-clay-900",
-  sold: "bg-clay-900/80 text-white",
+  reserved: "bg-volt-400 text-azure-900",
+  sold: "bg-azure-900/80 text-white",
 };
 
 export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
@@ -47,19 +47,19 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
         />
         <span className="shine-hover absolute inset-0 z-10" />
         <span className="spotlight-overlay z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-clay-950/45 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-azure-950/45 via-transparent to-transparent opacity-60" />
 
         <div className="absolute left-3 top-3 flex flex-col gap-2">
           <span
             className={cn(
               "rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide capitalize",
-              forSale ? statusStyles[dog.status] : "bg-clay-900/85 text-white"
+              forSale ? statusStyles[dog.status] : "bg-azure-900/85 text-white"
             )}
           >
             {forSale ? dog.status : "Breeding stock"}
           </span>
           {dog.bestseller && (
-            <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-clay-900">
+            <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-azure-900">
               Bestseller
             </span>
           )}
@@ -77,7 +77,7 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
         </button>
 
         <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full glass-strong px-2.5 py-1 text-[11px] text-foreground">
-          <MapPin size={12} className="text-ochre-400" /> {dog.location}
+          <MapPin size={12} className="text-volt-400" /> {dog.location}
         </div>
       </Link>
 
@@ -128,7 +128,7 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
                 })
               }
               aria-label={`Add ${dog.name} to cart`}
-              className="btn-clay grid h-10 w-10 place-items-center rounded-full disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/50"
+              className="btn-azure grid h-10 w-10 place-items-center rounded-full disabled:cursor-not-allowed disabled:bg-azure-800 disabled:text-white/50"
             >
               <ShoppingBag size={16} />
             </button>
@@ -143,7 +143,7 @@ export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
             </div>
             <Link
               href="/puppies"
-              className="shrink-0 rounded-full border border-ochre-400 px-3 py-1.5 text-[11px] font-semibold text-accent-ink transition hover:bg-ochre-400/10"
+              className="shrink-0 rounded-full border border-volt-400 px-3 py-1.5 text-[11px] font-semibold text-accent-ink transition hover:bg-volt-400/10"
             >
               Puppies from {formatPrice(PUPPY_PRICE_FLOOR)}
             </Link>

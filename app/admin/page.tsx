@@ -30,7 +30,7 @@ export default async function AdminDashboard() {
     { label: "Customers", value: String(customerGroups.length), icon: Users, delta: "+8.1%", up: true, spark: [8, 7, 9, 6, 8, 9, 10] },
   ];
 
-  const statusColors: Record<string, string> = { pending: "#d9ad3a", confirmed: "#4d68bd", "in-transit": "#7d95d6", delivered: "#2fb380", cancelled: "#e05561" };
+  const statusColors: Record<string, string> = { pending: "#f59e0b", confirmed: "#0a84ff", "in-transit": "#06b6d4", delivered: "#22c55e", cancelled: "#ef4444" };
   const donut = (["pending", "confirmed", "in-transit", "delivered", "cancelled"] as OrderStatus[])
     .map((s) => ({ label: s, value: orderRows.filter((o) => o.status === s).length, color: statusColors[s] }))
     .filter((s) => s.value > 0);
@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">{pending} orders need attention</span>
-          <Link href="/admin/orders" className="btn-clay rounded-full px-4 py-2 text-sm">View orders</Link>
+          <Link href="/admin/orders" className="btn-azure rounded-full px-4 py-2 text-sm">View orders</Link>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
         {kpis.map((k) => (
           <div key={k.label} className="gradient-border rounded-3xl p-5">
             <div className="flex items-center justify-between">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-ochre-400/12 text-accent-ink"><k.icon size={20} /></div>
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-volt-400/12 text-accent-ink"><k.icon size={20} /></div>
               <span className={`flex items-center gap-1 text-xs font-medium ${k.up ? "text-emerald-500" : "text-red-500"}`}>
                 {k.up ? <TrendingUp size={13} /> : <TrendingDown size={13} />} {k.delta}
               </span>
@@ -87,7 +87,7 @@ export default async function AdminDashboard() {
         <div className="rounded-3xl border border-border bg-royal p-6 text-white">
           <h2 className="font-display text-lg font-bold">Monthly Target</h2>
           <p className="mt-1 text-sm text-white/70">Revenue goal</p>
-          <p className="mt-5 font-display text-3xl font-bold text-gradient-ochre">{formatPrice(revenue)}</p>
+          <p className="mt-5 font-display text-3xl font-bold text-gradient-volt">{formatPrice(revenue)}</p>
           <p className="text-sm text-white/60">of {formatPrice(target)}</p>
           <div className="mt-4"><ProgressBar value={revenue} max={target} /></div>
           <p className="mt-2 text-xs text-white/70">{Math.round((revenue / target) * 100)}% achieved · {formatPrice(Math.max(0, target - revenue))} to go</p>
@@ -132,7 +132,7 @@ export default async function AdminDashboard() {
           <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold"><AlertTriangle size={18} className="text-amber-500" /> Low Stock Alerts</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {lowStock.map((d) => (
-              <Link key={d.id} href={`/dogs/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-ochre-400">
+              <Link key={d.id} href={`/dogs/${d.slug}`} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:border-volt-400">
                 <FadeImage src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                 <div><p className="text-sm font-medium">{d.name}</p><p className="text-xs text-amber-600 dark:text-amber-400">Only {d.stock} left</p></div>
               </Link>

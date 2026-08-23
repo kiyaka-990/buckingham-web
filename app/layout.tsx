@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fffdfb",
+  themeColor: "#f5f9ff",
   width: "device-width",
   initialScale: 1,
 };
@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <Providers>
-          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ochre-400 focus:px-4 focus:py-2 focus:text-clay-900">
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-volt-400 focus:px-4 focus:py-2 focus:text-azure-900">
             Skip to content
           </a>
           <Chrome><ScrollProgress /></Chrome>

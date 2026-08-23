@@ -44,7 +44,7 @@ function RecordCard({ record }: { record: VaccinationRecord }) {
               sizes="(max-width:768px) 50vw, 25vw"
               className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
-            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-clay-950/90 to-transparent p-3 text-[11px] leading-snug text-white">
+            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-azure-950/90 to-transparent p-3 text-[11px] leading-snug text-white">
               {frame.caption}
             </span>
           </a>

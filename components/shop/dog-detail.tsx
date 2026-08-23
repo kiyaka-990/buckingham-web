@@ -54,11 +54,11 @@ export function DogDetail({ dog }: { dog: Dog }) {
               >
                 <FadeImage src={dog.images[activeImg]} alt={dog.name} fill priority sizes="(max-width:1024px) 100vw, 50vw" className={cn("object-cover duotone", soldOut && "grayscale")} />
                 <span className="shine-hover absolute inset-0 z-10" />
-                <span className="absolute left-4 top-4 rounded-full bg-clay-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
+                <span className="absolute left-4 top-4 rounded-full bg-azure-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
                   {dog.status}
                 </span>
                 <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full glass-strong px-3 py-1.5 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
-                  <Expand size={13} className="text-ochre-400" /> Click to zoom
+                  <Expand size={13} className="text-volt-400" /> Click to zoom
                 </span>
               </motion.div>
             )}
@@ -100,7 +100,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
               <button
                 key={i}
                 onClick={() => { setSpin(false); setActiveImg(i); }}
-                className={cn("relative h-20 w-20 overflow-hidden rounded-xl border-2 transition", !spin && activeImg === i ? "border-ochre-400" : "border-transparent opacity-70 hover:opacity-100")}
+                className={cn("relative h-20 w-20 overflow-hidden rounded-xl border-2 transition", !spin && activeImg === i ? "border-volt-400" : "border-transparent opacity-70 hover:opacity-100")}
               >
                 <FadeImage src={src} alt={`${dog.name} ${i + 1}`} fill sizes="80px" className="object-cover" />
               </button>
@@ -119,10 +119,10 @@ export function DogDetail({ dog }: { dog: Dog }) {
           <div className="mt-2 flex items-start justify-between gap-4">
             <h1 className="font-display text-4xl font-bold">{dog.name}</h1>
             <div className="flex gap-2">
-              <button onClick={() => toggleWish(dog.id)} aria-label="Wishlist" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-ochre-400">
+              <button onClick={() => toggleWish(dog.id)} aria-label="Wishlist" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-volt-400">
                 <Heart size={18} className={cn(wished && "fill-red-500 text-red-500")} />
               </button>
-              <button aria-label="Share" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-ochre-400">
+              <button aria-label="Share" className="grid h-11 w-11 place-items-center rounded-full border border-border transition hover:border-volt-400">
                 <Share2 size={18} />
               </button>
             </div>
@@ -139,13 +139,13 @@ export function DogDetail({ dog }: { dog: Dog }) {
           {forSale ? (
             <>
               <div className="mt-6 flex items-end gap-3">
-                <span className="font-display text-4xl font-bold text-gradient-ochre">{formatPrice(dog.price)}</span>
+                <span className="font-display text-4xl font-bold text-gradient-volt">{formatPrice(dog.price)}</span>
                 {dog.compareAt && <span className="mb-1 text-lg text-muted line-through">{formatPrice(dog.compareAt)}</span>}
               </div>
               <p className="mt-1 text-sm text-muted">≈ KES {usdToKes(dog.price).toLocaleString()} · M-Pesa &amp; card accepted · Deposit reserves</p>
             </>
           ) : (
-            <div className="mt-6 rounded-2xl border border-ochre-400/40 bg-ochre-400/8 p-5">
+            <div className="mt-6 rounded-2xl border border-volt-400/40 bg-volt-400/8 p-5">
               <p className="font-display text-2xl font-bold">Not for sale</p>
               <p className="mt-1.5 text-sm text-muted">
                 {dog.name} is part of our breeding programme. We keep the parents and sell the
@@ -173,7 +173,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
           {/* Traits */}
           <div className="mt-5 flex flex-wrap gap-2">
             {dog.traits.map((t) => (
-              <span key={t} className="rounded-full bg-ochre-400/10 px-3 py-1 text-xs font-medium text-accent-ink">{t}</span>
+              <span key={t} className="rounded-full bg-volt-400/10 px-3 py-1 text-xs font-medium text-accent-ink">{t}</span>
             ))}
           </div>
 
@@ -184,14 +184,14 @@ export function DogDetail({ dog }: { dog: Dog }) {
                 <button
                   onClick={addToCart}
                   disabled={soldOut}
-                  className="btn-clay flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-clay-800 disabled:text-white/60"
+                  className="btn-azure flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-azure-800 disabled:text-white/60"
                 >
                   <ShoppingBag size={20} /> {soldOut ? "Sold Out" : "Add to Cart"}
                 </button>
                 <button
                   onClick={() => { if (!soldOut) { addToCart(); openCart(); } }}
                   disabled={soldOut}
-                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-ochre-400 text-base font-semibold text-accent-ink transition hover:bg-ochre-400/10 disabled:opacity-40"
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-volt-400 text-base font-semibold text-accent-ink transition hover:bg-volt-400/10 disabled:opacity-40"
                 >
                   Reserve Now
                 </button>
@@ -200,13 +200,13 @@ export function DogDetail({ dog }: { dog: Dog }) {
               <>
                 <Link
                   href="/puppies"
-                  className="btn-clay flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base"
+                  className="btn-azure flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base"
                 >
                   <ShoppingBag size={20} /> See available puppies
                 </Link>
                 <Link
                   href={`/breeds/${dog.breedSlug}`}
-                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-ochre-400 text-base font-semibold text-accent-ink transition hover:bg-ochre-400/10"
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border border-volt-400 text-base font-semibold text-accent-ink transition hover:bg-volt-400/10"
                 >
                   About the breed
                 </Link>
@@ -220,7 +220,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
                 : `Hi Buckingham Kennel, I'd like to know about puppies from ${dog.name} (${dog.breedName}).`
             )}`}
             target="_blank" rel="noopener noreferrer"
-            className="mt-3 flex h-12 items-center justify-center gap-2 rounded-full border border-border text-sm font-medium transition hover:border-ochre-400"
+            className="mt-3 flex h-12 items-center justify-center gap-2 rounded-full border border-border text-sm font-medium transition hover:border-volt-400"
           >
             Enquire on WhatsApp
           </a>
@@ -249,7 +249,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
                   className={cn("relative px-4 py-3 text-sm font-medium capitalize transition", tab === t ? "text-accent-ink" : "text-muted hover:text-foreground")}
                 >
                   {t}
-                  {tab === t && <motion.span layoutId="tab" className="absolute inset-x-0 -bottom-px h-0.5 bg-ochre-400" />}
+                  {tab === t && <motion.span layoutId="tab" className="absolute inset-x-0 -bottom-px h-0.5 bg-volt-400" />}
                 </button>
               ))}
             </div>

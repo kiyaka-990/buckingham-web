@@ -32,7 +32,7 @@ import { RotatingText } from "@/components/ui/rotating-text";
 
 const announcements = [
   "Champion bloodlines · Health guaranteed · Global delivery",
-  "Puppies for sale from $1,600 — reserve yours today",
+  "Puppies for sale from $1,300 — reserve yours today",
   "Health-guaranteed up to 36 months on every puppy",
   "Free breed consultation — chat with us on WhatsApp",
   "We keep the parents · Come and meet them at the kennel",
@@ -71,18 +71,18 @@ export function Navbar() {
   return (
     <>
       {/* Announcement bar */}
-      <div className="hidden bg-clay-900 text-clay-50 md:block">
+      <div className="hidden bg-azure-900 text-azure-50 md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
           <p className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ochre-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-ochre-400" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-volt-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-volt-400" />
             </span>
-            <RotatingText words={announcements} interval={3500} className="h-4 text-clay-50" />
+            <RotatingText words={announcements} interval={3500} className="h-4 text-azure-50" />
           </p>
           <div className="flex items-center gap-4">
             {phones.map((p) => (
-              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-1.5 hover:text-ochre-400 transition">
+              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-1.5 hover:text-volt-400 transition">
                 <Phone size={12} /> {p.display}
               </a>
             ))}
@@ -90,7 +90,7 @@ export function Navbar() {
               href={`https://wa.me/${site.contact.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-ochre-400 transition"
+              className="hover:text-volt-400 transition"
             >
               WhatsApp
             </a>
@@ -301,7 +301,7 @@ function IconBtn({
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-ochre-400 px-1 text-[10px] font-bold text-clay-900">
+    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-volt-400 px-1 text-[10px] font-bold text-azure-900">
       {children}
     </span>
   );

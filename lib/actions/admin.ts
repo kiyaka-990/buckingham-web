@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { breeds, PHOTO_PENDING } from "@/lib/data/breeds";
+import { PUPPY_PRICE_CEILING, PUPPY_PRICE_FLOOR } from "@/lib/data/catalog";
 import { slugify } from "@/lib/utils";
 
 async function requireAdmin() {
@@ -53,7 +54,7 @@ function parseForm(fd: FormData) {
     sex: String(fd.get("sex") || "Male"),
     ageLabel: String(fd.get("ageLabel") || "10 weeks").trim(),
     color: String(fd.get("color") || "").trim() || "Standard",
-    price: Number(fd.get("price") || 1600),
+    price: Math.min(Number(fd.get("price") || PUPPY_PRICE_FLOOR), PUPPY_PRICE_CEILING),
     compareAt: fd.get("compareAt") ? Number(fd.get("compareAt")) : null,
     status: String(fd.get("status") || "available"),
     stock: Number(fd.get("stock") || 1),

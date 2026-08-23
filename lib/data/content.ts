@@ -117,18 +117,18 @@ export const testimonials = [
 export const stats = [
   { value: "500+", label: "Happy Families" },
   { value: "5", label: "Elite Breeds" },
-  { value: "$1,600", label: "Puppies From" },
+  { value: "$1,300", label: "Puppies From" },
   { value: "100%", label: "Health Guaranteed" },
 ];
 
 export const faqs = [
   {
     q: "Do you sell adult dogs?",
-    a: "No. Our adult dogs are our breeding programme and none of them are for sale — they are on the site so you can see the parents behind a litter and come and meet them. We sell puppies only, and prices start at $1,600.",
+    a: "No. Our adult dogs are our breeding programme and none of them are for sale — they are on the site so you can see the parents behind a litter and come and meet them. We sell puppies only, and they are $1,300–$1,600.",
   },
   {
     q: "How much is a puppy?",
-    a: "Puppies start at $1,600 and the exact price depends on the breed, the litter and the individual puppy. Every price on the site is the full price — vaccinations, deworming, microchip, vet check, pedigree papers and the health guarantee are all included.",
+    a: "Puppies run from $1,300 to $1,600 — never more than $1,600 — and the exact price depends on the breed, the litter and the individual puppy. Every price on the site is the full price — vaccinations, deworming, microchip, vet check, pedigree papers and the health guarantee are all included.",
   },
   {
     q: "Are your puppies health guaranteed?",

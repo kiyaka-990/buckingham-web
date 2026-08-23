@@ -62,8 +62,10 @@ export const isPhotoPending = (dog: Pick<Dog, "images">) =>
  */
 export const isForSale = (dog: Pick<Dog, "category">) => dog.category === "puppy";
 
-/** The floor the kennel advertises on puppies. */
-export const PUPPY_PRICE_FLOOR = 1600;
+/** The band the kennel advertises on puppies. Nothing is priced above the
+ *  ceiling — it is the client's hard cap — and nothing below the floor. */
+export const PUPPY_PRICE_FLOOR = 1300;
+export const PUPPY_PRICE_CEILING = 1600;
 
 const categoryLabels: Record<Category, string> = {
   puppy: "Puppies for Sale",
@@ -148,7 +150,7 @@ function build(seed: Seed, i: number): Dog {
     color: seed.color,
     // Breeding stock carries no price at all — 0 is the sentinel, and every
     // price surface gates on isForSale() rather than on the number.
-    price: forSale ? (seed.price ?? PUPPY_PRICE_FLOOR) : 0,
+    price: forSale ? Math.min(seed.price ?? PUPPY_PRICE_FLOOR, PUPPY_PRICE_CEILING) : 0,
     compareAt: forSale ? seed.compareAt : undefined,
     status: seed.status ?? "available",
     stock: seed.status === "sold" ? 0 : 1,
@@ -183,7 +185,7 @@ function build(seed: Seed, i: number): Dog {
       seed.description ??
       (forSale
         ? `${seed.name} is a ${seed.color.toLowerCase()} ${breedName} puppy from our own Buckingham lines, raised underfoot at the Webuye kennel with early neurological stimulation and daily handling. ${seed.sex === "Male" ? "He" : "She"} leaves us fully vaccinated, dewormed, microchipped and health-guaranteed, with pedigree papers in hand.`
-        : `${seed.name} is one of our ${breedName}s and part of the Buckingham breeding programme. ${seed.sex === "Male" ? "He" : "She"} is not for sale — ${seed.sex === "Male" ? "he" : "she"} is here so you can see the parent behind the litter. Puppies from this line start at $${PUPPY_PRICE_FLOOR.toLocaleString()}.`),
+        : `${seed.name} is one of our ${breedName}s and part of the Buckingham breeding programme. ${seed.sex === "Male" ? "He" : "She"} is not for sale — ${seed.sex === "Male" ? "he" : "she"} is here so you can see the parent behind the litter. Puppies from this line are $${PUPPY_PRICE_FLOOR.toLocaleString()}–$${PUPPY_PRICE_CEILING.toLocaleString()}.`),
     location: seed.location ?? kenyaCounties[i % kenyaCounties.length],
   };
 }
@@ -213,7 +215,7 @@ const seeds: Seed[] = [
     champions: ["Imported — Republic of South Africa"],
     images: pics("caucasian", "adult", 4, 5, 6),
     description:
-      "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Rocco are, and they start at $1,600.",
+      "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Rocco are, and they run $1,300–$1,600.",
   },
 
 
@@ -224,55 +226,91 @@ const seeds: Seed[] = [
     hipScore: "OFA Excellent", guarantee: 24,
     traits: ["Level II obedience", "Family protection", "Foundation dam"],
     champions: ["Imported — Republic of South Africa"],
-    images: pics("gsd-black", "adult", 4, 5, 6),
+    images: pics("gsd-black", "adult", 4, 6, 7),
     description:
-      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her puppies are, and they start at $1,600.",
+      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her puppies are, and they run $1,300–$1,600.",
   },
 
 
 
+  /* ---- American Akita — breeding stock -------------------------- */
+  {
+    name: "Suzy", breedSlug: "american-akita", category: "adult", sex: "Female",
+    color: "Brindle & White", featured: true, weightKg: 45,
+    traits: ["Foundation dam", "Steady", "Quietly watchful"],
+    images: pics("akita", "adult", 1, 2, 3),
+    description:
+      "Suzy is one of our two American Akita dams — heavy-boned, undemonstrative and completely unbothered by noise or strangers at the fence, which is the Akita temperament we breed for. She is not for sale. She is on the site so you can see the mother behind a litter before you choose a puppy.",
+  },
+  {
+    name: "Euro", breedSlug: "american-akita", category: "adult", sex: "Female",
+    color: "Pinto", weightKg: 43,
+    traits: ["Foundation dam", "Confident", "Excellent coat"],
+    images: pics("akita", "adult", 4, 5),
+    description:
+      "Euro is our second American Akita dam and the more forward of the pair — surefooted, quick to investigate and easy to handle on a lead. She is not for sale. Her puppies are, and you are welcome to come and meet her first.",
+  },
+
+  /* ---- Kangal — breeding stock ---------------------------------- */
+  {
+    name: "Romaine", breedSlug: "kangal", category: "adult", sex: "Female",
+    color: "Fawn with Black Mask", featured: true, weightKg: 52,
+    traits: ["Foundation dam", "Composed", "Livestock safe"],
+    images: pics("kangal", "adult", 1),
+    description:
+      "Romaine is our Kangal dam — long-legged, light on her feet for her size and utterly settled around stock and children. She is not for sale. She is the mother behind our Kangal litters, and she is here so you can see her.",
+  },
+  {
+    name: "Pluto", breedSlug: "kangal", category: "adult", sex: "Male",
+    color: "Fawn with Black Mask", weightKg: 62,
+    traits: ["Foundation sire", "Heavy bone", "Patient"],
+    images: pics("kangal", "adult", 2),
+    description:
+      "Pluto is our Kangal sire and the heavier half of the pair — slow to rouse, immovable once he has decided something is his to watch. He is not for sale. He is the father behind our Kangal litters.",
+  },
+
   /* ================================================================
-     PUPPIES — the only listings we sell. From $1,600.
+     PUPPIES — the only listings we sell. $1,300–$1,600.
      ================================================================ */
   {
     name: "Nyota", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Female",
-    ageLabel: "10 weeks", color: "Solid Black", price: 1600, bestseller: true, weightKg: 7,
+    ageLabel: "10 weeks", color: "Solid Black", price: 1300, bestseller: true, weightKg: 7,
     traits: ["Confident", "Early socialised"],
     images: pics("gsd-black", "pup", 4, 5, 6),
   },
   {
     name: "Obsidian", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "10 weeks", color: "Solid Black", price: 1700, featured: true, weightKg: 8,
+    ageLabel: "10 weeks", color: "Solid Black", price: 1400, featured: true, weightKg: 8,
     traits: ["Long coat carrier", "ENS raised"],
     images: pics("gsd-black", "pup", 1, 2, 3),
   },
   {
     name: "Malkia", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Female",
-    ageLabel: "12 weeks", color: "Solid Black", price: 1800, status: "reserved", weightKg: 9,
+    ageLabel: "12 weeks", color: "Solid Black", price: 1500, status: "reserved", weightKg: 9,
     traits: ["Show prospect", "Sweet natured", "Excellent pigment"],
     images: pics("gsd-black", "pup", 10, 11, 12),
   },
   {
     name: "Shujaa", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "12 weeks", color: "Solid Black, Plush Coat", price: 1900, weightKg: 10,
+    ageLabel: "12 weeks", color: "Solid Black, Plush Coat", price: 1600, weightKg: 10,
     traits: ["Plush coat", "Bold", "Protection prospect"],
     images: pics("gsd-black", "pup", 7, 8, 9),
   },
   {
     name: "Bora", breedSlug: "kangal", category: "puppy", sex: "Male",
-    ageLabel: "10 weeks", color: "Fawn with Black Mask", price: 2100, weightKg: 11,
+    ageLabel: "10 weeks", color: "Fawn with Black Mask", price: 1500, weightKg: 11,
     traits: ["Heavy bone", "Steady temperament"],
     images: pics("kangal", "pup", 2),
   },
   {
     name: "Elif", breedSlug: "kangal", category: "puppy", sex: "Female",
-    ageLabel: "13 weeks", color: "Fawn with Black Mask", price: 2200, weightKg: 14,
+    ageLabel: "13 weeks", color: "Fawn with Black Mask", price: 1600, weightKg: 14,
     traits: ["Guardian line", "Calm", "Excellent with stock"],
     images: pics("kangal", "pup", 1),
   },
   {
     name: "Grom", breedSlug: "caucasian-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "11 weeks", color: "Fawn & White", price: 2400, featured: true, weightKg: 14,
+    ageLabel: "11 weeks", color: "Fawn & White", price: 1600, featured: true, weightKg: 14,
     traits: ["Rocco × Maya litter", "Giant frame", "Guardian line"],
     images: pics("caucasian", "pup", 1, 2),
   },
