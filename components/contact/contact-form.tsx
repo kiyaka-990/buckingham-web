@@ -55,7 +55,7 @@ export function ContactForm() {
         <label className="mb-1.5 block text-sm font-medium">Message</label>
         <textarea name="message" rows={4} required placeholder="Tell us what you're looking for…" className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-volt-400" />
       </div>
-      <button disabled={status === "sending"} className="btn-azure flex h-13 w-full items-center justify-center gap-2 rounded-full py-3.5 text-base">
+      <button disabled={status === "sending"} className="btn-accent flex h-13 w-full items-center justify-center gap-2 rounded-full py-3.5 text-base">
         {status === "sending" ? "Sending…" : <>Send Message <Send size={18} /></>}
       </button>
     </form>

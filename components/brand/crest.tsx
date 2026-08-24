@@ -5,15 +5,16 @@ import { cn } from "@/lib/utils";
  * Buckingham Kennel mark.
  *
  * This is the kennel's own logo — the retriever head from the company mark —
- * recoloured into the site's Electric Azure brand and cut out onto
- * transparency, so it sits on white, on azure and over photographs without a
- * plate behind it. Generated from `logo.png` at the repository root; the
- * wordmark version lives beside it as `logo-azure.png`.
+ * cut out onto transparency and rendered in the neutral ink the rest of the
+ * type uses, so it sits on white, on graphite and over photographs without a
+ * plate behind it. The accent is rationed for things that mean something; a
+ * logo is not one of them. Generated from `logo.png` at the repository root;
+ * the wordmark version lives beside it as `logo-ink.png`.
  *
  * `tone` picks how it renders against its surroundings:
- *  - "brand"  → vivid azure  (light surfaces)
+ *  - "brand"  → graphite ink (light surfaces)
  *  - "invert" → white        (photos / dark surfaces)
- *  - "mono"   → vivid azure, kept for API compatibility
+ *  - "mono"   → graphite ink, kept for API compatibility
  */
 export function Crest({
   className,
@@ -24,15 +25,42 @@ export function Crest({
   tone?: "brand" | "invert" | "mono";
   title?: string;
 }) {
+  // "invert" is always the white cut-out — it is asked for by callers that
+  // know they are on a photograph. Everything else follows the theme, because
+  // graphite ink on a graphite surface is an invisible logo.
+  if (tone === "invert") {
+    return (
+      <Image
+        src="/brand/mark-white.png"
+        alt={title}
+        width={512}
+        height={512}
+        priority
+        className={cn("h-9 w-auto object-contain", className)}
+      />
+    );
+  }
+
   return (
-    <Image
-      src={tone === "invert" ? "/brand/mark-white.png" : "/brand/mark-azure.png"}
-      alt={title}
-      width={512}
-      height={512}
-      priority
-      className={cn("h-9 w-auto object-contain", className)}
-    />
+    <>
+      <Image
+        src="/brand/mark-ink.png"
+        alt={title}
+        width={512}
+        height={512}
+        priority
+        className={cn("h-9 w-auto object-contain dark:hidden", className)}
+      />
+      <Image
+        src="/brand/mark-white.png"
+        alt=""
+        aria-hidden
+        width={512}
+        height={512}
+        priority
+        className={cn("hidden h-9 w-auto object-contain dark:block", className)}
+      />
+    </>
   );
 }
 

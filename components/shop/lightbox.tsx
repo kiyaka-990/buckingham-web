@@ -116,7 +116,7 @@ export function Lightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[95] flex flex-col bg-azure-950/95 backdrop-blur-sm"
+          className="fixed inset-0 z-[95] flex flex-col bg-graphite-950/95 backdrop-blur-sm"
         >
           {/* Top bar */}
           <div className="flex items-center justify-between px-4 py-3 text-white sm:px-6">

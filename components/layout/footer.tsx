@@ -14,7 +14,7 @@ const trustBadges = [
 
 export function Footer() {
   return (
-    <footer className="relative mt-24 border-t border-border bg-azure-950 text-azure-50">
+    <footer className="relative mt-24 border-t border-border bg-graphite-950 text-graphite-50">
       <div className="aurora pointer-events-none absolute inset-0 opacity-40" />
       <div className="relative mx-auto max-w-7xl px-6 py-16">
         {/* Trust row */}
@@ -36,8 +36,8 @@ export function Footer() {
                 <span className="text-xs uppercase tracking-[0.3em] text-volt-400">Limited</span>
               </span>
             </Link>
-            <p className="max-w-sm text-sm text-azure-100/80">{site.description}</p>
-            <p className="text-xs text-azure-100/60">Reg. No. {site.registration}</p>
+            <p className="max-w-sm text-sm text-graphite-100/80">{site.description}</p>
+            <p className="text-xs text-graphite-100/60">Reg. No. {site.registration}</p>
             <div className="flex gap-2">
               {[FacebookIcon, InstagramIcon, YoutubeIcon, TiktokIcon].map((Icon, i) => (
                 <a key={i} href="#" aria-label="Social link" className="grid h-9 w-9 place-items-center rounded-full glass transition hover:text-volt-400">
@@ -60,21 +60,21 @@ export function Footer() {
           <div className="space-y-3">
             <h4 className="font-display font-semibold text-volt-400">Get in touch</h4>
             {phones.map((p) => (
-              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-2 text-sm text-azure-100/80 hover:text-volt-400">
+              <a key={p.tel} href={`tel:${p.tel}`} className="flex items-center gap-2 text-sm text-graphite-100/80 hover:text-volt-400">
                 <Phone size={14} /> {p.display}
               </a>
             ))}
-            <a href={`mailto:${site.contact.email}`} className="flex items-start gap-2 text-sm text-azure-100/80 hover:text-volt-400">
+            <a href={`mailto:${site.contact.email}`} className="flex items-start gap-2 text-sm text-graphite-100/80 hover:text-volt-400">
               <Mail size={14} className="mt-0.5" /> <span className="break-all">{site.contact.email}</span>
             </a>
-            <p className="flex items-start gap-2 text-sm text-azure-100/80">
+            <p className="flex items-start gap-2 text-sm text-graphite-100/80">
               <MapPin size={14} className="mt-0.5 shrink-0" /> {site.contact.address.building}, {site.contact.address.county}, {site.contact.address.country}
             </p>
             <NewsletterForm />
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-azure-100/60 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-graphite-100/60 sm:flex-row">
           <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-volt-400">Privacy</Link>
@@ -94,7 +94,7 @@ function FooterCol({ title, links }: { title: string; links: { label: string; hr
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-sm text-azure-100/80 transition hover:text-volt-400">{l.label}</Link>
+            <Link href={l.href} className="text-sm text-graphite-100/80 transition hover:text-volt-400">{l.label}</Link>
           </li>
         ))}
       </ul>

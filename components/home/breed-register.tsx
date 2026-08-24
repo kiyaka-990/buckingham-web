@@ -29,7 +29,7 @@ export function BreedRegister() {
                 sizes="(max-width:768px) 100vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-azure-950/85 via-azure-950/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-graphite-950/85 via-graphite-950/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
                 <p className="text-[11px] uppercase tracking-wider text-volt-400">{b.group}</p>
                 <h3 className="font-display text-xl font-bold leading-tight">{b.name}</h3>

@@ -58,7 +58,7 @@ export function ShopFront({ dogs, puppyCount }: { dogs: Dog[]; puppyCount: numbe
           <Link
             key={b.slug}
             href={`/breeds/${b.slug}`}
-            className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:border-azure-500 hover:bg-azure-50 hover:text-azure-700 dark:hover:bg-azure-900/40 dark:hover:text-azure-300"
+            className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:border-graphite-500 hover:bg-graphite-50 hover:text-graphite-700 dark:hover:bg-graphite-900/40 dark:hover:text-graphite-300"
           >
             {b.shortName}
           </Link>
@@ -76,7 +76,7 @@ export function ShopFront({ dogs, puppyCount }: { dogs: Dog[]; puppyCount: numbe
             key={text}
             className="flex items-center gap-2.5 rounded-2xl bg-surface-2 px-4 py-3 text-sm font-medium"
           >
-            <Icon size={17} className="shrink-0 text-azure-600 dark:text-azure-400" />
+            <Icon size={17} className="shrink-0 text-graphite-600 dark:text-graphite-400" />
             {text}
           </li>
         ))}
@@ -101,16 +101,16 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
         sizes={large ? "(max-width:1024px) 100vw, 50vw" : "(max-width:640px) 100vw, 25vw"}
         className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
       />
-      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-azure-950/80 via-azure-950/10 to-transparent" />
+      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-graphite-950/80 via-graphite-950/10 to-transparent" />
 
       {isForSale(dog) ? (
         dog.status !== "available" && (
-          <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-azure-900">
+          <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold capitalize text-graphite-900">
             {dog.status}
           </span>
         )
       ) : (
-        <span className="absolute left-3 top-3 rounded-full bg-azure-950/80 px-2.5 py-1 text-[11px] font-semibold text-white">
+        <span className="absolute left-3 top-3 rounded-full bg-graphite-950/80 px-2.5 py-1 text-[11px] font-semibold text-white">
           Our breeding stock
         </span>
       )}
@@ -127,7 +127,7 @@ function Pane({ dog, large = false }: { dog: Dog; large?: boolean }) {
         {/* Only puppies are sold, so only puppies show a price. */}
         <span
           className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-bold ${
-            isForSale(dog) ? "bg-white text-azure-800" : "bg-white/15 text-white backdrop-blur"
+            isForSale(dog) ? "bg-white text-graphite-800" : "bg-white/15 text-white backdrop-blur"
           }`}
         >
           {isForSale(dog) ? formatPrice(dog.price) : "Not for sale"}

@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">{pending} orders need attention</span>
-          <Link href="/admin/orders" className="btn-azure rounded-full px-4 py-2 text-sm">View orders</Link>
+          <Link href="/admin/orders" className="btn-accent rounded-full px-4 py-2 text-sm">View orders</Link>
         </div>
       </div>
 
@@ -84,7 +84,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-3xl border border-border bg-royal p-6 text-white">
+        <div className="rounded-3xl border border-border bg-deep p-6 text-white">
           <h2 className="font-display text-lg font-bold">Monthly Target</h2>
           <p className="mt-1 text-sm text-white/70">Revenue goal</p>
           <p className="mt-5 font-display text-3xl font-bold text-gradient-volt">{formatPrice(revenue)}</p>

@@ -89,7 +89,7 @@ export function MessagesManager({ messages }: { messages: AdminMessage[] }) {
                 <textarea rows={3} placeholder={`Reply to ${selected.name}…`} className="w-full resize-none bg-transparent text-sm outline-none" />
                 <div className="mt-2 flex items-center justify-between">
                   <button className="flex items-center gap-2 text-sm text-muted hover:text-foreground"><Archive size={15} /> Archive</button>
-                  <button onClick={sendReply} disabled={pending} className="btn-azure flex items-center gap-2 rounded-full px-5 py-2 text-sm">
+                  <button onClick={sendReply} disabled={pending} className="btn-accent flex items-center gap-2 rounded-full px-5 py-2 text-sm">
                     {pending ? <Loader2 size={15} className="animate-spin" /> : <Reply size={15} />} Send reply
                   </button>
                 </div>

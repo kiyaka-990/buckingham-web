@@ -74,7 +74,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          <button type="submit" disabled={pending} className="btn-azure mt-6 flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
+          <button type="submit" disabled={pending} className="btn-accent mt-6 flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
             {pending ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : saved ? <><Check size={16} /> Saved</> : <><Save size={16} /> Save changes</>}
           </button>
         </form>

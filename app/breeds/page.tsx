@@ -44,9 +44,9 @@ export default function BreedsPage() {
                       <Link href={`/breeds/${b.slug}`} className="group block overflow-hidden rounded-3xl border border-border bg-surface card-hover">
                         <div className="relative aspect-[16/10] overflow-hidden">
                           <FadeImage src={b.heroImage} alt={b.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-azure-950/70 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-graphite-950/70 to-transparent" />
                           <span className="absolute left-3 top-3 rounded-full glass-strong px-3 py-1 text-xs text-white">{b.origin}</span>
-                          {count > 0 && <span className="absolute right-3 top-3 rounded-full bg-volt-400 px-3 py-1 text-xs font-semibold text-azure-900">{count} {count === 1 ? "puppy" : "puppies"}</span>}
+                          {count > 0 && <span className="absolute right-3 top-3 rounded-full bg-volt-400 px-3 py-1 text-xs font-semibold text-graphite-900">{count} {count === 1 ? "puppy" : "puppies"}</span>}
                         </div>
                         <div className="p-5">
                           <h3 className="font-display text-xl font-bold group-hover:text-accent-ink">{b.name}</h3>

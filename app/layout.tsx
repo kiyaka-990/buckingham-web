@@ -56,22 +56,34 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f9ff",
+  themeColor: "#fafafa",
   width: "device-width",
   initialScale: 1,
 };
 
-const noFlash = `(function(){try{var s=JSON.parse(localStorage.getItem('bk-prefs')||'{}').state||{};var t=s.theme||'dark';document.documentElement.classList.toggle('dark',t==='dark');if(s.highContrast)document.documentElement.classList.add('a11y-contrast');if(s.reduceMotion)document.documentElement.classList.add('a11y-reduce-motion');if(s.fontScale)document.documentElement.style.setProperty('--a11y-font-scale',s.fontScale);}catch(e){document.documentElement.classList.add('dark');}})();`;
+const noFlash = `(function(){try{var s=JSON.parse(localStorage.getItem('bk-prefs')||'{}').state||{};var t=s.theme||'light';document.documentElement.classList.toggle('dark',t==='dark');if(s.highContrast)document.documentElement.classList.add('a11y-contrast');if(s.reduceMotion)document.documentElement.classList.add('a11y-reduce-motion');if(s.fontScale)document.documentElement.style.setProperty('--a11y-font-scale',s.fontScale);}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} dark h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${body.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlash }} />
       </head>
       <body className="min-h-full flex flex-col antialiased">
+        {/* Page-wide film grain. One fixed layer rather than a texture on
+            every panel, so flat fields never read as plastic and nothing
+            below it has to opt in. Non-interactive and behind everything. */}
+        <span
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-0 opacity-[var(--grain)]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            backgroundSize: "160px 160px",
+          }}
+        />
         <Providers>
-          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-volt-400 focus:px-4 focus:py-2 focus:text-azure-900">
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-volt-400 focus:px-4 focus:py-2 focus:text-graphite-900">
             Skip to content
           </a>
           <Chrome><ScrollProgress /></Chrome>

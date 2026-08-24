@@ -5,7 +5,7 @@ import { PawPrint } from "lucide-react";
 export function Marquee({ items }: { items: string[] }) {
   const doubled = [...items, ...items];
   return (
-    <div className="relative flex overflow-hidden border-y border-border bg-azure-900 py-4 text-azure-50">
+    <div className="relative flex overflow-hidden border-y border-border bg-graphite-900 py-4 text-graphite-50">
       <div className="flex shrink-0 animate-marquee items-center gap-8 pr-8">
         {doubled.map((item, i) => (
           <span key={i} className="flex items-center gap-8 whitespace-nowrap font-display text-lg">

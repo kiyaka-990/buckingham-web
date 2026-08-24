@@ -5,10 +5,10 @@ type Variant = "brass" | "forest" | "outline" | "ghost" | "glass" | "gradient";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  brass: "btn-azure",
-  forest: "bg-azure-800 text-white hover:bg-azure-700 dark:bg-azure-600 dark:hover:bg-azure-500",
+  brass: "btn-accent",
+  forest: "bg-graphite-800 text-white hover:bg-graphite-700 dark:bg-graphite-600 dark:hover:bg-graphite-500",
   gradient:
-    "bg-[linear-gradient(120deg,var(--color-azure-800),var(--color-azure-600)_45%,var(--color-volt-500))] bg-[length:200%_auto] bg-left text-white hover:bg-right transition-[background-position] duration-500 shadow-soft",
+    "bg-[linear-gradient(120deg,var(--color-graphite-800),var(--color-graphite-600)_45%,var(--color-volt-500))] bg-[length:200%_auto] bg-left text-white hover:bg-right transition-[background-position] duration-500 shadow-soft",
   outline:
     "border border-volt-400/60 text-foreground hover:bg-volt-400/10 hover:border-volt-400",
   ghost: "text-foreground hover:bg-foreground/5",

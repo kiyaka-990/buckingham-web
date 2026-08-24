@@ -54,7 +54,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
               >
                 <FadeImage src={dog.images[activeImg]} alt={dog.name} fill priority sizes="(max-width:1024px) 100vw, 50vw" className={cn("object-cover duotone", soldOut && "grayscale")} />
                 <span className="shine-hover absolute inset-0 z-10" />
-                <span className="absolute left-4 top-4 rounded-full bg-azure-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
+                <span className="absolute left-4 top-4 rounded-full bg-graphite-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white capitalize">
                   {dog.status}
                 </span>
                 <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full glass-strong px-3 py-1.5 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100">
@@ -184,7 +184,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
                 <button
                   onClick={addToCart}
                   disabled={soldOut}
-                  className="btn-azure flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-azure-800 disabled:text-white/60"
+                  className="btn-accent flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base disabled:cursor-not-allowed disabled:bg-graphite-800 disabled:text-white/60"
                 >
                   <ShoppingBag size={20} /> {soldOut ? "Sold Out" : "Add to Cart"}
                 </button>
@@ -200,7 +200,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
               <>
                 <Link
                   href="/puppies"
-                  className="btn-azure flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base"
+                  className="btn-accent flex h-14 flex-1 items-center justify-center gap-2 rounded-full text-base"
                 >
                   <ShoppingBag size={20} /> See available puppies
                 </Link>

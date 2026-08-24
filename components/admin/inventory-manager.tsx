@@ -13,7 +13,7 @@ import { createDog, updateDog, deleteDog } from "@/lib/actions/admin";
 const statusStyles: Record<string, string> = {
   available: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
   reserved: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  sold: "bg-azure-500/15 text-azure-600 dark:text-azure-300",
+  sold: "bg-graphite-500/15 text-graphite-600 dark:text-graphite-300",
 };
 
 export function InventoryManager({ dogs, breeds }: { dogs: Dog[]; breeds: Breed[] }) {
@@ -37,7 +37,7 @@ export function InventoryManager({ dogs, breeds }: { dogs: Dog[]; breeds: Breed[
           <h1 className="font-display text-3xl font-bold">Inventory</h1>
           <p className="text-muted">{dogs.length} dogs in the kennel · saved to the database.</p>
         </div>
-        <button onClick={() => setAdding(true)} className="btn-azure flex h-11 items-center gap-2 rounded-full px-5 text-sm">
+        <button onClick={() => setAdding(true)} className="btn-accent flex h-11 items-center gap-2 rounded-full px-5 text-sm">
           <Plus size={16} /> Add Dog
         </button>
       </div>
@@ -113,7 +113,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
   dog: Dog | null; breeds: Breed[]; onClose: () => void; onSubmit: (fd: FormData) => void; pending: boolean;
 }) {
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-azure-950/70 p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-graphite-950/70 p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-border bg-surface p-6" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-xl font-bold">{dog ? `Edit ${dog.name}` : "Add a Dog"}</h2>
@@ -144,7 +144,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
           </div>
           <div className="mt-2 flex justify-end gap-2 sm:col-span-2">
             <button type="button" onClick={onClose} className="rounded-full border border-border px-5 py-2.5 text-sm">Cancel</button>
-            <button type="submit" disabled={pending} className="btn-azure flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
+            <button type="submit" disabled={pending} className="btn-accent flex items-center gap-2 rounded-full px-6 py-2.5 text-sm">
               {pending ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : dog ? "Save changes" : "Create dog"}
             </button>
           </div>

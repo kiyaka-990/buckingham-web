@@ -66,7 +66,7 @@ export function Spin360({ images, className }: { images: string[]; className?: s
       ))}
 
       {/* 360 badge */}
-      <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-azure-950/70 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+      <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-graphite-950/70 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
         <Rotate3d size={14} className="text-volt-400" /> 360°
       </span>
 

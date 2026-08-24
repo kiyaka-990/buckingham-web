@@ -45,7 +45,7 @@ export default async function BreedPage({ params }: Params) {
       {/* Hero */}
       <section className="relative flex min-h-[60vh] items-end overflow-hidden">
         <FadeImage src={b.heroImage} alt={b.name} fill priority className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-azure-950 via-azure-950/70 to-azure-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-graphite-950 via-graphite-950/70 to-graphite-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pb-14 pt-32 text-white">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-volt-400">{b.group}</p>
           <h1 className="mt-2 font-display text-5xl font-bold sm:text-6xl">{b.name}</h1>

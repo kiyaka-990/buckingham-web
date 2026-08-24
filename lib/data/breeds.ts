@@ -83,7 +83,7 @@ export const breeds: Breed[] = [
     ],
     mediaDir: "caucasian",
     photoPending: false,
-    heroImage: m("caucasian", "adult-04.jpg"),
+    heroImage: m("caucasian", "portrait-maya.jpg"),
     gallery: [...set("caucasian", "adult", 8), ...set("caucasian", "pup", 2)],
   },
   {
@@ -185,7 +185,7 @@ export const breeds: Breed[] = [
     ],
     mediaDir: "kangal",
     photoPending: false,
-    heroImage: m("kangal", "adult-01.jpg"),
+    heroImage: m("kangal", "portrait-romaine.jpg"),
     gallery: [...set("kangal", "adult", 2), ...set("kangal", "pup", 2)],
     video: {
       src: m("kangal", "clip-01.mp4"),

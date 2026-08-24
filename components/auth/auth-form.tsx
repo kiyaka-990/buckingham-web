@@ -151,7 +151,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
               }}
               className={cn(
                 "flex items-center justify-center gap-1.5 rounded-full py-2 text-sm font-medium transition",
-                method === t.key ? "bg-azure-800 text-white" : "text-muted hover:text-foreground"
+                method === t.key ? "bg-graphite-800 text-white" : "text-muted hover:text-foreground"
               )}
             >
               {t.icon}
@@ -175,7 +175,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
-            <button disabled={loading !== null} className="btn-azure flex h-12 w-full items-center justify-center gap-2 rounded-full">
+            <button disabled={loading !== null} className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full">
               {loading === "credentials" ? (
                 <Loader2 className="animate-spin" size={18} />
               ) : isLogin ? (
@@ -203,7 +203,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
-            <button disabled={loading !== null} className="btn-azure flex h-12 w-full items-center justify-center gap-2 rounded-full">
+            <button disabled={loading !== null} className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full">
               {loading === "otp-send" ? <Loader2 className="animate-spin" size={18} /> : "Send me a code"}
             </button>
           </form>
@@ -251,7 +251,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
             <button
               disabled={loading !== null || otpCode.length !== 6}
-              className="btn-azure flex h-12 w-full items-center justify-center gap-2 rounded-full disabled:opacity-50"
+              className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full disabled:opacity-50"
             >
               {loading === "otp-verify" ? <Loader2 className="animate-spin" size={18} /> : "Verify & sign in"}
             </button>

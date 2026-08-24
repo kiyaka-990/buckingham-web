@@ -35,7 +35,7 @@ export default function AboutPage() {
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
         <Reveal>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-            <Image src="/media/caucasian/adult-04.jpg" alt="A Buckingham Caucasian Shepherd at the Webuye kennel" fill className="object-cover" />
+            <Image src="/media/white-shepherd/adult-04.jpg" alt="A Buckingham White Swiss Shepherd at the Webuye kennel" fill className="object-cover" />
           </div>
         </Reveal>
         <Reveal delay={1} className="space-y-4">

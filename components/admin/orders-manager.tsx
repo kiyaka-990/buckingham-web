@@ -54,7 +54,7 @@ export function OrdersManager({ orders }: { orders: AdminOrder[] }) {
         <div className="flex items-center gap-1.5 overflow-x-auto">
           <Filter size={16} className="text-muted" />
           {["all", ...STATUSES].map((s) => (
-            <button key={s} onClick={() => setFilter(s)} className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-medium capitalize transition", filter === s ? "bg-volt-400 text-azure-900" : "border border-border hover:border-volt-400")}>{s}</button>
+            <button key={s} onClick={() => setFilter(s)} className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-medium capitalize transition", filter === s ? "bg-volt-400 text-graphite-900" : "border border-border hover:border-volt-400")}>{s}</button>
           ))}
         </div>
       </div>

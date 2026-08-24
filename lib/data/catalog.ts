@@ -204,7 +204,7 @@ const seeds: Seed[] = [
     hipScore: "OFA Good", guarantee: 36,
     traits: ["Estate guardian", "Enormous bone", "Foundation sire"],
     champions: ["Imported — Republic of South Africa"],
-    images: pics("caucasian", "adult", 1, 2, 3),
+    images: ["/media/caucasian/portrait-rocco.jpg", ...pics("caucasian", "adult", 1, 2, 3)],
     description:
       "Rocco is our foundation Caucasian Ovcharka male and the single most imposing dog on our grounds — unhurried, deeply bonded to his handlers and entirely uninterested in strangers, which is exactly what the breed is supposed to be. He is not for sale. He is here because every Caucasian puppy we place traces back to him.",
   },
@@ -213,7 +213,7 @@ const seeds: Seed[] = [
     born: "2024-10-19", color: "Typical Brown", featured: true, weightKg: 60,
     traits: ["Foundation dam", "Composed", "Livestock safe"],
     champions: ["Imported — Republic of South Africa"],
-    images: pics("caucasian", "adult", 4, 5, 6),
+    images: ["/media/caucasian/portrait-maya.jpg", ...pics("caucasian", "adult", 4, 5, 6)],
     description:
       "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Rocco are, and they run $1,300–$1,600.",
   },
@@ -256,7 +256,7 @@ const seeds: Seed[] = [
     name: "Romaine", breedSlug: "kangal", category: "adult", sex: "Female",
     color: "Fawn with Black Mask", featured: true, weightKg: 52,
     traits: ["Foundation dam", "Composed", "Livestock safe"],
-    images: pics("kangal", "adult", 1),
+    images: ["/media/kangal/portrait-romaine.jpg", ...pics("kangal", "adult", 1)],
     description:
       "Romaine is our Kangal dam — long-legged, light on her feet for her size and utterly settled around stock and children. She is not for sale. She is the mother behind our Kangal litters, and she is here so you can see her.",
   },
@@ -264,7 +264,7 @@ const seeds: Seed[] = [
     name: "Pluto", breedSlug: "kangal", category: "adult", sex: "Male",
     color: "Fawn with Black Mask", weightKg: 62,
     traits: ["Foundation sire", "Heavy bone", "Patient"],
-    images: pics("kangal", "adult", 2),
+    images: ["/media/kangal/portrait-pluto.jpg", ...pics("kangal", "adult", 2)],
     description:
       "Pluto is our Kangal sire and the heavier half of the pair — slow to rouse, immovable once he has decided something is his to watch. He is not for sale. He is the father behind our Kangal litters.",
   },

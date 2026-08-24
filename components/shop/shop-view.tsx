@@ -131,14 +131,14 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
       {/* Mobile filter drawer */}
       {mobileFilters && (
         <div className="fixed inset-0 z-[80] lg:hidden">
-          <div className="absolute inset-0 bg-azure-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
+          <div className="absolute inset-0 bg-graphite-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
           <div className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-surface p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">Filters</h3>
               <button onClick={() => setMobileFilters(false)} aria-label="Close"><X /></button>
             </div>
             {Filters}
-            <button onClick={() => setMobileFilters(false)} className="btn-azure mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
+            <button onClick={() => setMobileFilters(false)} className="btn-accent mt-6 h-12 w-full rounded-full">Show {filtered.length} results</button>
           </div>
         </div>
       )}

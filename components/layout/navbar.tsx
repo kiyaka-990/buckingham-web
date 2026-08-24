@@ -71,14 +71,14 @@ export function Navbar() {
   return (
     <>
       {/* Announcement bar */}
-      <div className="hidden bg-azure-900 text-azure-50 md:block">
+      <div className="hidden bg-graphite-900 text-graphite-50 md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
           <p className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-volt-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-volt-400" />
             </span>
-            <RotatingText words={announcements} interval={3500} className="h-4 text-azure-50" />
+            <RotatingText words={announcements} interval={3500} className="h-4 text-graphite-50" />
           </p>
           <div className="flex items-center gap-4">
             {phones.map((p) => (
@@ -301,7 +301,7 @@ function IconBtn({
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-volt-400 px-1 text-[10px] font-bold text-azure-900">
+    <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-volt-400 px-1 text-[10px] font-bold text-graphite-900">
       {children}
     </span>
   );

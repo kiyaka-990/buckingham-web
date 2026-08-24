@@ -19,7 +19,7 @@ export function PageHero({
   return (
     <section className="relative flex min-h-[42vh] items-end overflow-hidden">
       <Image src={image} alt="" fill priority className="object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-azure-950 via-azure-950/70 to-azure-950/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-graphite-950 via-graphite-950/70 to-graphite-950/40" />
       <div className="relative mx-auto w-full max-w-7xl px-6 pb-12 pt-28 text-white">
         <nav className="mb-4 flex items-center gap-1 text-xs text-white/70">
           <Link href="/" className="hover:text-volt-400">Home</Link>

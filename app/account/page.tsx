@@ -36,7 +36,7 @@ export default async function AccountPage() {
         </div>
         <div className="flex gap-2">
           {user.role === "admin" && (
-            <Link href="/admin" className="flex items-center gap-2 rounded-full bg-azure-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-azure-700">
+            <Link href="/admin" className="flex items-center gap-2 rounded-full bg-graphite-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-graphite-700">
               <LayoutDashboard size={16} /> Admin
             </Link>
           )}

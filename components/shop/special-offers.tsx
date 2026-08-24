@@ -11,12 +11,12 @@ export async function SpecialOffers() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 pt-10">
-      <div className="relative overflow-hidden rounded-[2rem] border border-volt-400/30 bg-royal p-6 sm:p-8">
+      <div className="relative overflow-hidden rounded-[2rem] border border-volt-400/30 bg-deep p-6 sm:p-8">
         <div className="aurora pointer-events-none absolute inset-0 opacity-40" />
         <div className="relative">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3 text-white">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-red-500 to-volt-400 text-azure-900">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-red-500 to-volt-400 text-graphite-900">
                 <Flame size={22} />
               </span>
               <div>
@@ -36,7 +36,7 @@ export async function SpecialOffers() {
                 <Link
                   key={d.id}
                   href={`/dogs/${d.slug}`}
-                  className="group relative w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-white/10 bg-azure-900/40 backdrop-blur"
+                  className="group relative w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-white/10 bg-graphite-900/40 backdrop-blur"
                 >
                   <div className="relative h-40 overflow-hidden">
                     <FadeImage src={d.images[0]} alt={d.name} fill sizes="224px" className="object-cover transition-transform duration-700 group-hover:scale-110" />

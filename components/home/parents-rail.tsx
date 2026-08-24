@@ -61,13 +61,13 @@ export function ParentsRail({ parents }: { parents: Dog[] }) {
                   className={cn(
                     "absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide",
                     d.sex === "Female"
-                      ? "bg-volt-400 text-azure-950"
-                      : "bg-azure-600 text-white"
+                      ? "bg-volt-400 text-graphite-950"
+                      : "bg-graphite-600 text-white"
                   )}
                 >
                   {d.sex === "Female" ? "Mother" : "Father"}
                 </span>
-                <span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-azure-900">
+                <span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-graphite-900">
                   Not for sale
                 </span>
               </div>

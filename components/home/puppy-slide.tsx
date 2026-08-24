@@ -21,7 +21,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
   const from = list.length ? list[0].price : PUPPY_PRICE_FLOOR;
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-azure-900 text-white">
+    <div className="relative overflow-hidden rounded-[2rem] bg-graphite-900 text-white">
       <div className="aurora pointer-events-none absolute inset-0 opacity-40" />
 
       <div className="relative p-6 sm:p-10">
@@ -34,7 +34,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
             <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl md:text-5xl">
               Puppies from {formatPrice(from)}
             </h2>
-            <p className="mt-3 max-w-xl text-azure-50/80">
+            <p className="mt-3 max-w-xl text-graphite-50/80">
               Puppies are the only dogs we sell. Every one leaves us vaccinated, dewormed,
               microchipped and vet-checked, with pedigree papers and a written health guarantee.
             </p>
@@ -62,7 +62,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
               <Reveal key={d.id} delay={i % 4}>
                 <Link
                   href={`/dogs/${d.slug}`}
-                  className="group block overflow-hidden rounded-2xl border border-white/10 bg-azure-950/40 backdrop-blur"
+                  className="group block overflow-hidden rounded-2xl border border-white/10 bg-graphite-950/40 backdrop-blur"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <FadeImage
@@ -73,7 +73,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     {d.status === "reserved" && (
-                      <span className="absolute left-2.5 top-2.5 rounded-full bg-volt-400 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-azure-900">
+                      <span className="absolute left-2.5 top-2.5 rounded-full bg-volt-400 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-graphite-900">
                         Reserved
                       </span>
                     )}
@@ -97,7 +97,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
             ))}
           </div>
         ) : (
-          <p className="mt-8 rounded-2xl border border-dashed border-white/20 p-8 text-center text-azure-50/70">
+          <p className="mt-8 rounded-2xl border border-dashed border-white/20 p-8 text-center text-graphite-50/70">
             Every puppy from the current litters is placed. Join the waitlist and we will call you
             first when the next one is born — prices start at {formatPrice(PUPPY_PRICE_FLOOR)}.
           </p>

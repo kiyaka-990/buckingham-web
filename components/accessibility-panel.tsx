@@ -52,7 +52,7 @@ export function AccessibilityPanel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setA11y(false)}
-            className="fixed inset-0 z-[85] bg-azure-950/50 backdrop-blur-sm"
+            className="fixed inset-0 z-[85] bg-graphite-950/50 backdrop-blur-sm"
           />
           <motion.aside
             initial={{ x: "100%" }}
