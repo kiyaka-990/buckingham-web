@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { issueLoginCode, deliverLoginCode, otpDeliveryConfigured, OTP_TTL_MINUTES } from "@/lib/otp";
 import { db } from "@/lib/db";
+import { isProduction } from "@/lib/env";
+import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-/** Naive per-address throttle: one code per 30 seconds. */
-const lastSent = new Map<string, number>();
 
 export async function POST(req: Request) {
   let email = "";
@@ -27,21 +26,22 @@ export async function POST(req: Request) {
   // Without a mail provider we cannot deliver a code privately, and handing it
   // back to the browser would let anyone sign in as anyone. Refuse outright in
   // production rather than degrade into an open door.
-  if (process.env.NODE_ENV === "production" && !otpDeliveryConfigured()) {
+  if (isProduction() && !otpDeliveryConfigured()) {
     return NextResponse.json(
       { error: "Email sign-in codes aren't available yet. Please use Google or your password.", unavailable: true },
       { status: 503 }
     );
   }
 
-  const previous = lastSent.get(email);
-  if (previous && Date.now() - previous < 30_000) {
-    return NextResponse.json(
-      { error: "A code was just sent. Please wait a moment before asking for another." },
-      { status: 429 }
-    );
+  // Two limits, both in the database so they survive a cold start: one that
+  // stops a single address being spammed with codes, and one that stops a
+  // single caller enumerating addresses across the whole site.
+  const perAddress = await rateLimit("otp:addr", clientKey(req, email), 3, 15 * 60_000);
+  if (!perAddress.ok) {
+    return tooMany(perAddress, "A code was just sent. Please wait before asking for another.");
   }
-  lastSent.set(email, Date.now());
+  const perCaller = await rateLimit("otp:ip", clientKey(req), 10, 60 * 60_000);
+  if (!perCaller.ok) return tooMany(perCaller, "Too many sign-in attempts. Please try again later.");
 
   // Signing in by code creates the account on first use, like Google sign-in does.
   await db.user.upsert({
@@ -56,8 +56,10 @@ export async function POST(req: Request) {
   return NextResponse.json({
     sent: true,
     expiresInMinutes: OTP_TTL_MINUTES,
-    // With no mail provider configured the code comes back so the flow is
-    // still usable in development. Never happens once RESEND_API_KEY is set.
-    devCode: delivered ? undefined : code,
+    // The code only ever comes back to the caller on a developer machine.
+    // Outside development it stays server-side whatever happens to delivery:
+    // handing it to whoever asked for it is an account takeover, and a
+    // provider outage must not silently become one.
+    devCode: !isProduction() && !delivered ? code : undefined,
   });
 }

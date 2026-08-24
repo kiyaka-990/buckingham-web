@@ -109,3 +109,12 @@ model LoginCode {
 
   @@index([email])
 }
+
+model RateLimit {
+  key       String   @id
+  count     Int      @default(0)
+  expiresAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@index([expiresAt])
+}

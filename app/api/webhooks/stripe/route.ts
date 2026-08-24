@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { db } from "@/lib/db";
+import { confirmOrderPaid, cancelPendingOrder } from "@/lib/fulfilment";
 
 export const runtime = "nodejs";
 // Stripe needs the raw, unparsed body to verify the signature.
@@ -35,28 +35,21 @@ export async function POST(req: Request) {
         const session = event.data.object as Stripe.Checkout.Session;
         const ref = session.metadata?.orderId;
         if (ref && session.payment_status === "paid") {
-          await db.order.updateMany({
-            where: { ref },
-            data: { status: "confirmed", paidAt: new Date(), stripeSessionId: session.id },
-          });
-          console.log(`[stripe webhook] order ${ref} marked paid.`);
+          const { confirmed } = await confirmOrderPaid({ ref }, { stripeSessionId: session.id });
+          console.log(`[stripe webhook] order ${ref} ${confirmed ? "confirmed" : "already settled"}.`);
         }
         break;
       }
       case "checkout.session.expired": {
         const session = event.data.object as Stripe.Checkout.Session;
         const ref = session.metadata?.orderId;
-        if (ref) {
-          await db.order.updateMany({ where: { ref, status: "pending" }, data: { status: "cancelled" } });
-        }
+        if (ref) await cancelPendingOrder({ ref });
         break;
       }
       case "charge.refunded": {
         const charge = event.data.object as Stripe.Charge;
         const sessionId = typeof charge.payment_intent === "string" ? undefined : charge.payment_intent?.id;
-        if (sessionId) {
-          await db.order.updateMany({ where: { stripeSessionId: sessionId }, data: { status: "cancelled" } });
-        }
+        if (sessionId) await cancelPendingOrder({ stripeSessionId: sessionId });
         break;
       }
       default:

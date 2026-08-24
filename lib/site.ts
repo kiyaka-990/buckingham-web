@@ -38,10 +38,6 @@ export const site = {
     tiktok: "https://tiktok.com/",
     youtube: "https://youtube.com/",
   },
-  admin: {
-    demoEmail: "admin@buckinghamkennel.co.ke",
-    demoPassword: "buckingham2026",
-  },
 } as const;
 
 /** Both kennel lines, in the order they should be offered to a caller. */

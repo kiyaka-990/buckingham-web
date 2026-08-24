@@ -270,8 +270,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         <ShieldCheck size={16} className="mt-0.5 shrink-0 text-accent-ink" />
         <span>
           <strong className="text-foreground">Three ways in:</strong> Google, a password, or a
-          one-time code emailed to you. Admin demo: <code>{site.admin.demoEmail}</code> /{" "}
-          <code>{site.admin.demoPassword}</code>
+          one-time code emailed to you.
         </span>
       </div>
     </div>

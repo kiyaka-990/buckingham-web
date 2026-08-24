@@ -5,6 +5,7 @@ import { isForSale, isPhotoPending, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/da
 import { phones, site } from "@/lib/site";
 import { formatPrice } from "@/lib/utils";
 import { runSalesAgent, type ChatMsg, type DogSuggestion } from "@/lib/agent/sales-agent";
+import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -84,11 +85,24 @@ const toSuggestion = (d: Dog): DogSuggestion => ({
 
 /* ------------------------------------------------------------------ */
 
+/** Every turn is billed to us, so the transcript is bounded on both axes. */
+const MAX_TURNS = 20;
+const MAX_CHARS_PER_TURN = 2000;
+
 export async function POST(req: Request) {
+  // This endpoint spends money with every call. Without a ceiling it is a
+  // free way to run up the kennel's model bill.
+  const limit = await rateLimit("chat", clientKey(req), 30, 10 * 60_000);
+  if (!limit.ok) return tooMany(limit, "You're sending messages very quickly. Please wait a moment.");
+
   let messages: ChatMsg[] = [];
   try {
     const body = (await req.json()) as { messages?: ChatMsg[] };
-    messages = Array.isArray(body.messages) ? body.messages.slice(-20) : [];
+    messages = (Array.isArray(body.messages) ? body.messages.slice(-MAX_TURNS) : [])
+      // Roles are whitelisted so a crafted transcript cannot smuggle in a
+      // "system" turn and rewrite the agent's instructions.
+      .filter((m) => m && (m.role === "user" || m.role === "assistant"))
+      .map((m) => ({ role: m.role, content: String(m.content ?? "").slice(0, MAX_CHARS_PER_TURN) }));
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }

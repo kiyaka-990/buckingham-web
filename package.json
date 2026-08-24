@@ -15,7 +15,9 @@
     "db:seed:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/seed.ts",
     "db:sync:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/sync-dogs.ts",
     "db:sync:prod:dry": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/sync-dogs.ts --dry-run",
-    "db:sync": "tsx prisma/sync-dogs.ts"
+    "db:sync": "tsx prisma/sync-dogs.ts",
+    "admin:password": "tsx prisma/set-admin-password.ts",
+    "admin:password:prod": "prisma generate --schema=prisma/schema.postgres.prisma && tsx prisma/set-admin-password.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.118.0",
