@@ -49,8 +49,10 @@ export const metadata: Metadata = {
     "dog kennel Nairobi",
   ],
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `Buckingham Kennel Limited — ${site.tagline}`,
     description: site.description,
+    url: siteUrl,
+    siteName: "Buckingham Kennel Limited",
     type: "website",
     locale: "en_KE",
   },
