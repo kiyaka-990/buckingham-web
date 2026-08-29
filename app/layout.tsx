@@ -36,6 +36,8 @@ export const metadata: Metadata = {
   },
   description: site.description,
   keywords: [
+    "Buckingham Kennel Limited",
+    "Buckingham Kennel",
     "dog breeder Kenya",
     "puppies for sale Kenya",
     "Royal Black German Shepherd Kenya",
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
     "American Akita Kenya",
     "Kangal Kenya",
     "guard dog puppies Kenya",
-    "Buckingham Kennel",
+    "dog kennel Nairobi",
   ],
   openGraph: {
     title: `${site.name} — ${site.tagline}`,
