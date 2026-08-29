@@ -56,6 +56,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_KE",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Buckingham Kennel Limited — ${site.tagline}`,
+    description: site.description,
+    images: [`${siteUrl}/og-image.jpg`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: { icon: "/icon.png", apple: "/apple-icon.png" },
 };
 
