@@ -28,11 +28,13 @@ const body = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.buckinghamkennel.com";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s · ${site.shortName}`,
+    default: `Buckingham Kennel Limited — ${site.tagline}`,
+    template: `%s · Buckingham Kennel Limited`,
   },
   description: site.description,
   keywords: [
@@ -48,6 +50,9 @@ export const metadata: Metadata = {
     "guard dog puppies Kenya",
     "dog kennel Nairobi",
   ],
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: `Buckingham Kennel Limited — ${site.tagline}`,
     description: site.description,
@@ -55,6 +60,14 @@ export const metadata: Metadata = {
     siteName: "Buckingham Kennel Limited",
     type: "website",
     locale: "en_KE",
+    images: [
+      {
+        url: `${siteUrl}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Buckingham Kennel Limited",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -82,6 +95,22 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Buckingham Kennel Limited",
+  "url": siteUrl,
+  "logo": `${siteUrl}/icon.png`,
+  "image": `${siteUrl}/og-image.jpg`,
+  "description": site.description,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Nairobi",
+    "addressCountry": "KE",
+  },
+  "priceRange": "$$$",
+};
+
 const noFlash = `(function(){try{var s=JSON.parse(localStorage.getItem('bk-prefs')||'{}').state||{};var t=s.theme||'light';document.documentElement.classList.toggle('dark',t==='dark');if(s.highContrast)document.documentElement.classList.add('a11y-contrast');if(s.reduceMotion)document.documentElement.classList.add('a11y-reduce-motion');if(s.fontScale)document.documentElement.style.setProperty('--a11y-font-scale',s.fontScale);}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -89,11 +118,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlash }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
       </head>
       <body className="min-h-full flex flex-col antialiased">
-        {/* Page-wide film grain. One fixed layer rather than a texture on
-            every panel, so flat fields never read as plastic and nothing
-            below it has to opt in. Non-interactive and behind everything. */}
         <span
           aria-hidden
           className="pointer-events-none fixed inset-0 z-0 opacity-[var(--grain)]"
