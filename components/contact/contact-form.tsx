@@ -37,7 +37,7 @@ export function ContactForm() {
   return (
     <form onSubmit={submit} className="space-y-4 rounded-3xl border border-border bg-surface p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Full name" name="name" required placeholder="Jane Doe" />
+        <Field label="Full name" name="name" required placeholder="Mary Wangui" />
         <Field label="Phone / WhatsApp" name="phone" required placeholder="+254 …" />
       </div>
       <Field label="Email" name="email" type="email" required placeholder="you@email.com" />

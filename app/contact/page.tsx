@@ -49,14 +49,16 @@ export default function ContactPage() {
 
       {/* Map */}
       <section className="mx-auto max-w-7xl px-6 pb-24">
-        <div className="overflow-hidden rounded-[2rem] border border-border">
-          <iframe
-            title="Buckingham Kennel location"
-            src="https://www.google.com/maps?q=Webuye,+Bungoma,+Kenya&output=embed"
-            className="h-[420px] w-full"
-            loading="lazy"
-          />
-        </div>
+       <div className="overflow-hidden rounded-[2rem] border border-border">
+        <iframe
+         title="Buckingham Kennel location"
+         src="https://maps.google.com/maps?q=Webuye,+Bungoma,+Kenya&t=&z=13&ie=UTF8&iwloc=&output=embed"
+         className="h-105 w-full border-0"
+         loading="lazy"
+        allowFullScreen
+       referrerPolicy="no-referrer-when-downgrade"
+      />
+      </div>
       </section>
     </>
   );
