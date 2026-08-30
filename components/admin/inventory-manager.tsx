@@ -132,7 +132,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
           <Select label="Status" name="status" defaultValue={dog?.status} options={[["available", "Available"], ["reserved", "Reserved"], ["sold", "Sold"]].map(([value, label]) => ({ value, label }))} />
           <Field label="Weight (kg)" name="weightKg" type="number" defaultValue={dog ? String(dog.weightKg) : "10"} />
           <Field label="Location" name="location" defaultValue={dog?.location ?? "Nairobi"} />
-          <Field label="Image path" name="image" defaultValue={dog?.images[0] ?? "/media/gsd-black/adult-01.jpg"} className="sm:col-span-2" />
+          <Field label="Image path" name="image" defaultValue={dog?.images[0] ?? "/media/gsd-black/adult-03.jpg"} className="sm:col-span-2" />
           <Field label="Traits (comma separated)" name="traits" defaultValue={dog?.traits.join(", ")} className="sm:col-span-2" />
           <div className="sm:col-span-2">
             <label className="mb-1.5 block text-sm font-medium">Description</label>

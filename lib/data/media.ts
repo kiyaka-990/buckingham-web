@@ -33,11 +33,11 @@ export const galleryItems = breedGallery.map((g) => ({
 
 /** Page headers. Each one is a dog-only frame — no handlers in shot. */
 export const heroImages = {
-  home: m("gsd-black", "adult-01.jpg"),
+  home: m("gsd-black", "adult-03.jpg"),
   shop: m("gsd-black", "pup-01.jpg"),
   puppies: m("gsd-sable", "pup-05.jpg"),
-  breeds: m("white-shepherd", "adult-01.jpg"),
-  gallery: m("akita", "adult-01.jpg"),
+  breeds: m("white-shepherd", "adult-03.jpg"),
+  gallery: m("akita", "adult-03.jpg"),
   about: m("white-shepherd", "adult-03.jpg"),
   services: m("gsd-black", "pup-04.jpg"),
   contact: m("white-shepherd", "adult-08.jpg"),

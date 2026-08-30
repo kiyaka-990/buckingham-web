@@ -129,7 +129,7 @@ export const breeds: Breed[] = [
     residents: [{ name: "Felly Atlas", sex: "Female", born: "2024-09-21", role: "Foundation dam" }],
     mediaDir: "gsd-black",
     photoPending: false,
-    heroImage: m("gsd-black", "adult-01.jpg"),
+    heroImage: m("gsd-black", "adult-03.jpg"),
     gallery: [
       ...set("gsd-black", "adult", 4),
       ...set("gsd-black", "adult", 2, 6),
@@ -159,7 +159,7 @@ export const breeds: Breed[] = [
     ],
     mediaDir: "akita",
     photoPending: false,
-    heroImage: m("akita", "adult-01.jpg"),
+    heroImage: m("akita", "adult-03.jpg"),
     gallery: set("akita", "adult", 5),
   },
   {

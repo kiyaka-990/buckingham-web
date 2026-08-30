@@ -15,7 +15,7 @@ const categories = [
   { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions, $1,300–$1,600" },
   { title: "Our Breeds", href: "/breeds", image: "/media/kangal/pup-02.jpg", desc: "Five guardian and working lines" },
   { title: "Meet the Mothers", href: "/#parents", image: "/media/white-shepherd/adult-02.jpg", desc: "The dams behind every litter" },
-  { title: "Vaccination Records", href: "/#records", image: "/media/gsd-black/adult-01.jpg", desc: "The cards, not just the claim" },
+  { title: "Vaccination Records", href: "/#records", image: "/media/gsd-black/adult-03.jpg", desc: "The cards, not just the claim" },
 ];
 
 export function CategoryTiles() {

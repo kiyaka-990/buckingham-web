@@ -68,8 +68,8 @@ const heroSlides: HeroSlide[] = [
   },
   {
     kind: "image",
-    src: "/media/akita/adult-01.jpg",
-    thumb: "/media/akita/adult-01.jpg",
+    src: "/media/akita/adult-03.jpg",
+    thumb: "/media/akita/adult-03.jpg",
     eyebrow: "Meet the mothers",
     title: "See the parents before you choose",
     copy: "Suzy, Euro, Romaine, Maya and Felly Atlas live here and are not for sale. Come and meet the mother behind a litter before you put a name to a puppy.",
