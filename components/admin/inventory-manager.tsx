@@ -126,7 +126,7 @@ function DogModal({ dog, breeds, onClose, onSubmit, pending }: {
           <Select label="Sex" name="sex" defaultValue={dog?.sex} options={[{ value: "Male", label: "Male" }, { value: "Female", label: "Female" }]} />
           <Field label="Age label" name="ageLabel" defaultValue={dog?.ageLabel} placeholder="10 weeks" />
           <Field label="Colour" name="color" defaultValue={dog?.color} />
-          <Field label="Price (USD)" name="price" type="number" defaultValue={dog ? String(dog.price) : "1300"} required />
+          <Field label="Price (USD)" name="price" type="number" defaultValue={dog ? String(dog.price) : "450"} required />
           <Field label="Compare-at (optional)" name="compareAt" type="number" defaultValue={dog?.compareAt ? String(dog.compareAt) : ""} />
           <Field label="Stock" name="stock" type="number" defaultValue={dog ? String(dog.stock) : "1"} />
           <Select label="Status" name="status" defaultValue={dog?.status} options={[["available", "Available"], ["reserved", "Reserved"], ["sold", "Sold"]].map(([value, label]) => ({ value, label }))} />

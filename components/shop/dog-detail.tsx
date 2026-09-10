@@ -21,7 +21,7 @@ export function DogDetail({ dog }: { dog: Dog }) {
   const [activeImg, setActiveImg] = useState(0);
   const [spin, setSpin] = useState(false);
   const [lightbox, setLightbox] = useState(false);
-  const [tab, setTab] = useState<"overview" | "pedigree" | "health">("overview");
+  const [tab, setTab] = useState<"overview" | "health">("overview");
   const add = useCart((s) => s.add);
   const openCart = useCart((s) => s.open);
   const toggleWish = useWishlist((s) => s.toggle);
@@ -231,7 +231,6 @@ export function DogDetail({ dog }: { dog: Dog }) {
               { icon: ShieldCheck, t: `${dog.health.healthGuaranteeMonths}-month health guarantee` },
               { icon: Truck, t: "Safe nationwide & global delivery" },
               { icon: Check, t: "Full vet records & microchip" },
-              ...(dog.pedigree.registry ? [{ icon: Award, t: dog.pedigree.registry }] : []),
             ].map((a) => (
               <div key={a.t} className="flex items-center gap-2 text-muted">
                 <a.icon size={16} className="text-accent-ink" /> {a.t}
@@ -239,10 +238,24 @@ export function DogDetail({ dog }: { dog: Dog }) {
             ))}
           </div>
 
+          {/* The registration position, stated at the point of sale rather than
+              buried in the FAQ. These dogs are not Kennel Club registered and
+              carry no pedigree certificate; saying so here is what keeps the
+              sale clean. */}
+          <p className="mt-4 rounded-xl border border-border bg-surface-2 px-4 py-3 text-xs leading-relaxed text-muted">
+            <strong className="font-semibold text-foreground">Not registered, no pedigree certificate.</strong>{" "}
+            {dog.name} is not registered with the East Africa Kennel Club or any other
+            registry and is not sold with a pedigree certificate. The parents were
+            imported but arrived without pedigree certificates of their own.
+            {isForSale(dog)
+              ? " What comes with the puppy is the vaccination record, deworming history, microchip, vet check and our written health guarantee."
+              : " We hold the import health certificate, microchip record and vaccination book, and will show you all of it."}
+          </p>
+
           {/* Tabs */}
           <div className="mt-8">
             <div className="flex gap-1 border-b border-border">
-              {(["overview", "pedigree", "health"] as const).map((t) => (
+              {(["overview", "health"] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -256,47 +269,6 @@ export function DogDetail({ dog }: { dog: Dog }) {
 
             <div className="pt-5 text-sm leading-relaxed text-muted">
               {tab === "overview" && <p>{dog.description}</p>}
-
-              {/* Only state what the dog's papers actually record. A listing
-                  with no pedigree on file says so and invites the question,
-                  rather than filling the tab with a line nobody verified. */}
-              {tab === "pedigree" && (
-                <div className="space-y-4">
-                  {dog.pedigree.generations > 0 && dog.pedigree.registry && (
-                    <p className="text-foreground">
-                      A verified {dog.pedigree.generations}-generation pedigree — {dog.pedigree.registry}.
-                      {dog.pedigree.inbreedingCoefficient &&
-                        ` Inbreeding coefficient ${dog.pedigree.inbreedingCoefficient}.`}
-                    </p>
-                  )}
-                  {(dog.pedigree.sire || dog.pedigree.dam) && (
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      {dog.pedigree.sire && (
-                        <PedigreeCard label="Sire" name={dog.pedigree.sire} sub={dog.pedigree.grandSire} />
-                      )}
-                      {dog.pedigree.dam && (
-                        <PedigreeCard label="Dam" name={dog.pedigree.dam} sub={dog.pedigree.grandDam} />
-                      )}
-                    </div>
-                  )}
-                  {dog.pedigree.champions.length > 0 && (
-                    <div>
-                      <p className="mb-2 font-semibold text-foreground">Titles &amp; Achievements</p>
-                      <ul className="space-y-1">
-                        {dog.pedigree.champions.map((c) => (
-                          <li key={c} className="flex items-center gap-2"><Award size={14} className="text-accent-ink" /> {c}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {!dog.pedigree.sire && !dog.pedigree.dam && !dog.pedigree.champions.length && (
-                    <p>
-                      We haven&rsquo;t published a pedigree for {dog.name} yet. Ask us and we&rsquo;ll
-                      send whatever paperwork we hold for {dog.sex === "Male" ? "him" : "her"}.
-                    </p>
-                  )}
-                </div>
-              )}
 
               {tab === "health" && (
                 <div className="grid gap-2 sm:grid-cols-2">
@@ -314,16 +286,6 @@ export function DogDetail({ dog }: { dog: Dog }) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function PedigreeCard({ label, name, sub }: { label: string; name: string; sub: string }) {
-  return (
-    <div className="rounded-2xl border border-border bg-surface p-4">
-      <p className="text-[11px] uppercase tracking-wide text-accent-ink">{label}</p>
-      <p className="mt-1 font-display font-semibold text-foreground">{name}</p>
-      <p className="mt-1 text-xs text-muted">out of {sub}</p>
     </div>
   );
 }

@@ -116,7 +116,7 @@ function makeTools(seen: Map<string, Dog>) {
   const getDogDetails = betaTool({
     name: "get_dog_details",
     description:
-      "Full record for one dog: pedigree, health testing, guarantee length, traits and full description. Use when a visitor asks about a specific dog.",
+      "Full record for one dog: origin, health testing, guarantee length, traits and full description. Use when a visitor asks about a specific dog.",
     inputSchema: {
       type: "object",
       properties: { slug: { type: "string", description: "The dog's slug from search_inventory" } },
@@ -132,8 +132,10 @@ function makeTools(seen: Map<string, Dog>) {
       return [
         line(d),
         `Description: ${d.description}`,
-        `Pedigree: sire ${d.pedigree.sire}; dam ${d.pedigree.dam}; ${d.pedigree.generations} generations; ${d.pedigree.registry}; titles: ${d.pedigree.champions.join(", ")}`,
-        `Health: vaccinated ${h.vaccinated}, dewormed ${h.dewormed}, vet-checked ${h.vetChecked}, microchipped ${h.microchipped}, hips ${h.hipScore}, written guarantee ${h.healthGuaranteeMonths} months`,
+        // No kennel-club pedigree is published for any dog, so none is offered to
+        // the agent. Only the import origin, where the papers actually record one.
+        ...(d.pedigree.champions.length ? [`Origin: ${d.pedigree.champions.join(", ")}`] : []),
+        `Health: vaccinated ${h.vaccinated}, dewormed ${h.dewormed}, vet-checked ${h.vetChecked}, microchipped ${h.microchipped}, written guarantee ${h.healthGuaranteeMonths} months`,
         `Price in Kenyan shillings (approx, for M-Pesa): KES ${usdToKes(d.price).toLocaleString()}`,
       ].join("\n");
     },
@@ -279,7 +281,10 @@ THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
 - Phone/WhatsApp ${phones.map((p) => p.display).join(" or ")}, email ${site.contact.email}.
 - Visits by appointment at ${site.contact.address.building}, ${site.contact.address.street}, ${site.contact.address.locality}.
 - Payment: international cards via Stripe, or M-Pesa for local buyers. A deposit reserves a dog; the balance falls due on delivery.
-- Every puppy leaves vaccinated, dewormed, microchipped, vet-checked, with pedigree papers and a written health guarantee.
+- Every puppy leaves vaccinated, dewormed, microchipped, vet-checked, with its full vaccination record and a written health guarantee.
+- The dogs are NOT registered and NOT pedigree certified — neither the puppies nor the parents. The parents were imported but arrived without pedigree certificates, so there is no registered line to pass on.
+- NEVER promise or imply pedigree papers, Kennel Club registration, championship titles, show titles or hip certifications. If a buyer asks, say no plainly, then say what they DO get: vaccination record, deworming history, microchip, vet check and a written health guarantee.
+- If a buyer wants a registered or papered dog for showing or for registered breeding, tell them we are not the right kennel and do not try to close the sale.
 - Delivery nationwide across Kenya and internationally, with the paperwork handled.
 - There is a 3D showroom on the site if they want to look around before travelling.`;
 

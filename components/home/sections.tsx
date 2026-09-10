@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
  * the kennel wants drawn.
  */
 const categories = [
-  { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions, $1,300–$1,600" },
+  { title: "Puppies for Sale", href: "/puppies", image: "/media/gsd-black/pup-01.jpg", desc: "9–13 week companions, $450–$550" },
   { title: "Our Breeds", href: "/breeds", image: "/media/kangal/pup-02.jpg", desc: "Five guardian and working lines" },
   { title: "Meet the Mothers", href: "/#parents", image: "/media/white-shepherd/adult-02.jpg", desc: "The dams behind every litter" },
   { title: "Vaccination Records", href: "/#records", image: "/media/gsd-black/adult-03.jpg", desc: "The cards, not just the claim" },
@@ -55,7 +55,7 @@ export function StatsBand() {
 }
 
 const pillars = [
-  { icon: Dna, title: "Champion Genetics", desc: "Every litter comes from health-tested, titled parents with verifiable 5-generation pedigrees." },
+  { icon: Dna, title: "Imported Foundation Stock", desc: "Our parent dogs were imported and vet-checked on arrival. You can meet every one of them at the kennel." },
   { icon: Stethoscope, title: "Health First", desc: "Fully vaccinated, dewormed, microchipped and vet-certified with a written health guarantee." },
   { icon: ShieldCheck, title: "Expert Training", desc: "From basic obedience to elite personal protection, delivered by certified handlers." },
   { icon: HeartHandshake, title: "Lifetime Support", desc: "Our relationship never ends at sale — nutrition, training and health guidance for life." },
@@ -79,8 +79,8 @@ export function WhyUs() {
 
 const steps = [
   { n: "01", title: "Meet the Parents", desc: "See the breed and the dogs behind the litter — online or at the kennel." },
-  { n: "02", title: "Reserve Your Puppy", desc: "Secure your puppy from $1,300 via Stripe or M-Pesa in minutes." },
-  { n: "03", title: "Health & Handover", desc: "We finalise vet checks, papers and microchipping." },
+  { n: "02", title: "Reserve Your Puppy", desc: "Secure your puppy from $450 via Stripe or M-Pesa in minutes." },
+  { n: "03", title: "Health & Handover", desc: "We finalise vet checks, vaccination records and microchipping." },
   { n: "04", title: "Delivered with Care", desc: "Safe delivery to your door — plus lifetime support." },
 ];
 
@@ -110,7 +110,7 @@ export function CtaBand() {
         <PawPrint className="mx-auto mb-4 text-volt-400" size={36} />
         <h2 className="font-display text-3xl font-bold sm:text-4xl md:text-5xl">Ready to meet your royal companion?</h2>
         <p className="mx-auto mt-4 max-w-xl text-graphite-50/80">
-          Join hundreds of happy families across Kenya and beyond. Puppies are $1,300–$1,600 — call{" "}
+          Join hundreds of happy families across Kenya and beyond. Puppies are $450–$550 — call{" "}
           {site.contact.phoneDisplay} or {site.contact.phoneAltDisplay} and we will match you today.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

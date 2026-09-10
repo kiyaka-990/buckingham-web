@@ -21,10 +21,9 @@ function revalidateStore() {
 }
 
 /**
- * A new dog starts with an empty pedigree, not a flattering one. The detail
- * page hides whatever is blank, so an unrecorded ancestry simply does not
- * appear — the alternative is publishing championship lines for a puppy nobody
- * has papers for.
+ * The pedigree blob is retained only because the Dog row has the column. No
+ * page renders it any more — the site publishes vaccination and import health
+ * records, which we actually hold, and makes no kennel-club claim at all.
  */
 const defaultPedigree = {
   sire: "",
@@ -38,7 +37,8 @@ const defaultPedigree = {
 };
 const defaultHealth = {
   vaccinated: true, dewormed: true, vetChecked: true, microchipped: true,
-  healthGuaranteeMonths: 24, hipScore: "OFA Good",
+  // No hip certification is claimed for any dog — the kennel holds none.
+  healthGuaranteeMonths: 24, hipScore: "",
 };
 
 function parseForm(fd: FormData) {

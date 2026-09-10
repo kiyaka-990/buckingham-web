@@ -10,7 +10,7 @@ import { getPuppies } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Available Puppies",
-  description: "Adorable, health-guaranteed puppies from champion bloodlines. Raised underfoot with early neurological stimulation. $1,300–$1,600.",
+  description: "Health-guaranteed puppies from our own imported parent dogs. Raised underfoot with early neurological stimulation. $450–$550.",
 };
 
 const perks = [
@@ -29,7 +29,7 @@ export default async function PuppiesPage() {
       <PageHero
         eyebrow="New Litters"
         title="Available Puppies"
-        subtitle="Bundles of royal joy, ready to fill your home with love — $1,300 to $1,600, never more."
+        subtitle="Bundles of royal joy, ready to fill your home with love — $450 to $550, never more. Our puppies are not Kennel Club registered and are not sold with a pedigree certificate."
         image={heroImages.puppies}
         crumbs={[{ label: "Puppies" }]}
       />

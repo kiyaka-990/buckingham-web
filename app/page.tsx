@@ -29,10 +29,15 @@ export const dynamic = "force-dynamic";
 /**
  * The landing carousel.
  *
- * Footage first — the client wanted the AKC Marketplace treatment, where the
- * opening pane is a clip rather than a still. We hold one clip today (the
- * Kangals on the range), so it leads and the photography carries the rest.
- * Add another entry here the moment the kennel sends more video.
+ * Footage first — the client wanted the AKC Marketplace treatment, where every
+ * pane moves rather than sitting still. The Kangal pane is real footage shot at
+ * the kennel and it leads. The other three are cut from the kennel's own
+ * photographs: each is a three-shot sequence with a slow push, pull and lateral
+ * track, cross-faded, rendered to mp4 by scripts/build-clips.sh.
+ *
+ * They are stand-ins, not a substitute for real footage. Swap any one of them
+ * for a genuine clip the moment the kennel sends it — only the src and poster
+ * change.
  */
 const heroSlides: HeroSlide[] = [
   {
@@ -47,18 +52,20 @@ const heroSlides: HeroSlide[] = [
     cta: "Meet the Kangals",
   },
   {
-    kind: "image",
-    src: "/media/gsd-black/pup-01.jpg",
+    kind: "video",
+    src: "/media/clips/puppies.mp4",
+    poster: "/media/gsd-black/pup-01.jpg",
     thumb: "/media/gsd-black/pup-01.jpg",
     eyebrow: "For sale now",
     title: `Puppies from ${formatPrice(PUPPY_PRICE_FLOOR)}`,
-    copy: `Puppies are the only dogs we sell, and none of them costs more than ${formatPrice(PUPPY_PRICE_CEILING)}. Vaccinated, dewormed, microchipped, papered and health-guaranteed before they leave us.`,
+    copy: `Puppies are the only dogs we sell, and none of them costs more than ${formatPrice(PUPPY_PRICE_CEILING)}. Vaccinated, dewormed, microchipped, vet-checked and health-guaranteed before they leave us.`,
     href: "/puppies",
     cta: "See the puppies",
   },
   {
-    kind: "image",
-    src: "/media/white-shepherd/adult-02.jpg",
+    kind: "video",
+    src: "/media/clips/breeds.mp4",
+    poster: "/media/white-shepherd/adult-02.jpg",
     thumb: "/media/white-shepherd/adult-02.jpg",
     eyebrow: "Our register",
     title: "Five breeds, one standard",
@@ -67,9 +74,10 @@ const heroSlides: HeroSlide[] = [
     cta: "Browse the breeds",
   },
   {
-    kind: "image",
-    src: "/media/akita/adult-03.jpg",
-    thumb: "/media/akita/adult-03.jpg",
+    kind: "video",
+    src: "/media/clips/parents.mp4",
+    poster: "/media/akita/adult-01.jpg",
+    thumb: "/media/akita/adult-01.jpg",
     eyebrow: "Meet the mothers",
     title: "See the parents before you choose",
     copy: "Suzy, Euro, Romaine, Maya and Felly Atlas live here and are not for sale. Come and meet the mother behind a litter before you put a name to a puppy.",
@@ -108,7 +116,7 @@ export default async function HomePage() {
 
       <Marquee
         items={[
-          "Champion Bloodlines",
+          "Imported Parent Dogs",
           "Health Guaranteed",
           "Global Delivery",
           `Puppies ${formatPrice(PUPPY_PRICE_FLOOR)}–${formatPrice(PUPPY_PRICE_CEILING)}`,
@@ -123,7 +131,7 @@ export default async function HomePage() {
         <SectionHeading
           eyebrow="Our Breeds"
           title={`The ${breeds.length} breeds we raise — and the dogs behind them`}
-          subtitle="Guardians, working shepherds and one very dignified spitz. Every dog below lives at our Webuye kennel under the name on its own papers — these are the parents, not the puppies for sale."
+          subtitle="Guardians, working shepherds and one very dignified spitz. Every dog below lives at our Webuye kennel under the name on its own vaccination record — these are the parents, not the puppies for sale."
           center
           className="mb-12"
         />

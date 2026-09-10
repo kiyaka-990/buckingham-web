@@ -69,7 +69,7 @@ export function ShopFront({ dogs, puppyCount }: { dogs: Dog[]; puppyCount: numbe
       <ul className="mt-5 grid gap-2 sm:grid-cols-3">
         {[
           { icon: BadgeCheck, text: "Puppies only — we keep the parents" },
-          { icon: ShieldCheck, text: "Vaccinated, chipped, papered & guaranteed" },
+          { icon: ShieldCheck, text: "Vaccinated, chipped, vet-checked & guaranteed" },
           { icon: Truck, text: "Delivered Kenya-wide & abroad" },
         ].map(({ icon: Icon, text }) => (
           <li

@@ -21,12 +21,12 @@ export default async function AdminDashboard() {
   const paidCount = orderRows.filter((o) => o.status !== "cancelled").length || 1;
   const aov = Math.round(revenue / paidCount);
   const pending = orderRows.filter((o) => o.status === "pending" || o.status === "confirmed").length;
-  const target = 40000;
+  const target = 5000;
 
   const kpis = [
     { label: "Total Revenue", value: formatPrice(revenue), icon: DollarSign, delta: "+18.2%", up: true, spark: revenueSeries.data },
     { label: "Orders", value: String(orderRows.length), icon: ShoppingCart, delta: "+12.5%", up: true, spark: [4, 6, 5, 8, 7, 9, 8] },
-    { label: "Avg Order Value", value: formatPrice(aov), icon: Target, delta: "+4.1%", up: true, spark: [3200, 3400, 3300, 3800, 4100, 3900, 4200] },
+    { label: "Avg Order Value", value: formatPrice(aov), icon: Target, delta: "+4.1%", up: true, spark: [480, 500, 495, 510, 530, 515, 525] },
     { label: "Customers", value: String(customerGroups.length), icon: Users, delta: "+8.1%", up: true, spark: [8, 7, 9, 6, 8, 9, 10] },
   ];
 

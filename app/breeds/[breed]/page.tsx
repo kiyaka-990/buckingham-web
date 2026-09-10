@@ -88,7 +88,7 @@ export default async function BreedPage({ params }: Params) {
             </p>
             {b.residents.length === 0 && (
               <p className="mt-4 rounded-2xl border border-border bg-surface-2 p-4 text-sm text-muted">
-                We publish a dog&rsquo;s name and date of birth only once we hold its papers.
+                We publish a dog&rsquo;s name and date of birth only once we hold its vaccination record.
                 Call us and we&rsquo;ll talk you through this line and send footage the same day.
               </p>
             )}
@@ -145,7 +145,7 @@ export default async function BreedPage({ params }: Params) {
                 </div>
               ))}
             </div>
-            <ButtonLink href="/puppies" className="mt-6 w-full">Puppies from $1,300</ButtonLink>
+            <ButtonLink href="/puppies" className="mt-6 w-full">Puppies from $450</ButtonLink>
           </div>
         </aside>
       </div>
@@ -156,7 +156,7 @@ export default async function BreedPage({ params }: Params) {
           <SectionHeading
             eyebrow="For Sale"
             title={`${b.shortName} puppies available now`}
-            subtitle="From $1,300 and never more than $1,600 — vaccinated, chipped, papered and health-guaranteed."
+            subtitle="From $450 and never more than $550 — vaccinated, chipped, vet-checked and health-guaranteed."
             className="mb-8"
           />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

@@ -46,7 +46,7 @@ export function BreedRegister() {
                   us. We say so plainly rather than print a name we can't back. */}
               {b.residents.length === 0 && (
                 <p className="mt-2 text-sm text-muted">
-                  Names and dates published once we have the papers in hand — call us and
+                  Names and dates published once we have the records in hand — call us and
                   we&rsquo;ll walk you through this line today.
                 </p>
               )}

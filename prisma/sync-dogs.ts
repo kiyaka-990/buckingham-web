@@ -36,6 +36,11 @@ const dryRun = process.argv.includes("--dry-run");
  * a dog added through the admin portal is never caught by this script.
  */
 const RETIRED = [
+  // Rocco was renamed Simba on 10 Sep 2026 — his vaccine card has ROCCO struck
+  // out and SIMBA written in. The slug is derived from the name, so the old row
+  // has to go or the site lists him twice.
+  "rocco-caucasian-shepherd",
+
   // Unevidenced adults, removed from the catalogue on 22 Aug 2026.
   "kazbek-caucasian-shepherd",
   "lada-caucasian-shepherd",

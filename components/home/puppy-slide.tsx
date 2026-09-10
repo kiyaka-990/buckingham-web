@@ -36,7 +36,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
             </h2>
             <p className="mt-3 max-w-xl text-graphite-50/80">
               Puppies are the only dogs we sell. Every one leaves us vaccinated, dewormed,
-              microchipped and vet-checked, with pedigree papers and a written health guarantee.
+              microchipped and vet-checked, with a full vaccination record and a written health guarantee. They are not Kennel Club registered and carry no pedigree certificate.
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export function PuppySlide({ puppies }: { puppies: Dog[] }) {
           {[
             { icon: Syringe, text: "Vaccinated, dewormed & microchipped" },
             { icon: ShieldCheck, text: "Written health guarantee" },
-            { icon: PawPrint, text: "Pedigree papers & lifetime support" },
+            { icon: PawPrint, text: "Vaccination records & lifetime support" },
           ].map(({ icon: Icon, text }) => (
             <li
               key={text}

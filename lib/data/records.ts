@@ -44,16 +44,16 @@ const r = (file: string) => `/media/records/${file}`;
 
 export const vaccinationRecords: VaccinationRecord[] = [
   {
-    dog: "Rocco",
+    dog: "Simba",
     breedSlug: "caucasian-shepherd",
     breedLabel: "Caucasian Shepherd",
     sex: "Male",
-    born: "2024-10-10",
+    born: "2024-10-19",
     vaccines: ["Parvovirus (Vanguard Plus CPV) — 14/11/24", "Parvovirus (Vanguard Plus CPV) — 28/11/24"],
     nextDue: "28/12/24",
     notes: "Deworming 16/12/24",
     frames: [
-      { src: r("rocco-card.jpg"), caption: "Rocco's vaccine record card" },
+      { src: r("rocco-card.jpg"), caption: "Simba's vaccine record card — the card reads ROCCO struck out, SIMBA written in" },
       { src: r("rocco-record.jpg"), caption: "Vaccination record — batch stickers and dated entries" },
     ],
   },
@@ -62,7 +62,7 @@ export const vaccinationRecords: VaccinationRecord[] = [
     breedSlug: "caucasian-shepherd",
     breedLabel: "Caucasian Shepherd",
     sex: "Female",
-    born: "2024-10-19",
+    born: "2024-10-10",
     vaccines: ["Parvovirus (Vanguard Plus CPV) — 23/11/24", "Parvovirus (Vanguard Plus CPV) — 07/12/24"],
     nextDue: "07/01/25",
     frames: [

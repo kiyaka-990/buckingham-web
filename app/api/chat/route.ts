@@ -57,8 +57,13 @@ function ruleReply(userText: string, pool: Dog[]): string {
     return `Our adult dogs are our breeding programme and none of them are for sale — they are on the site so you can see the parents behind a litter, and you are welcome to come and meet them. We sell puppies only, from ${formatPrice(min)}. Here is what is available:`;
   if (/deliver|ship|nairobi|mombasa|transport|abroad|export/.test(q))
     return `We deliver nationwide across Kenya and internationally — climate-controlled transport with all paperwork handled, arranged once a deposit is down. Whereabouts are you?`;
-  if (/health|vaccin|guarantee|sick|vet|microchip|papers/.test(q))
-    return `Every puppy leaves us vaccinated, dewormed, microchipped and vet-checked, with pedigree papers and a written health guarantee of up to 36 months on hereditary conditions.`;
+  // Registration is asked about often and the answer is no. It gets its own
+  // branch, ahead of the health branch, so "papers" never lands on an answer
+  // that lists what we do give and leaves the buyer to infer the rest.
+  if (/pedigree|papers|paperwork|registrat|registered|kennel club|kc |eakc|certificate|certified|title|champion|show/.test(q))
+    return `Straight answer: no. Our puppies are not Kennel Club registered and they do not come with a pedigree certificate. The parents were imported from overseas but arrived without pedigree certificates themselves, so there is no registered line to pass on. What you do get with every puppy is its vaccination record, deworming history, microchip, a vet check and a written health guarantee. If you specifically need a registered dog for showing or registered breeding, we are not the right kennel — I would rather tell you now.`;
+  if (/health|vaccin|guarantee|sick|vet|microchip/.test(q))
+    return `Every puppy leaves us vaccinated, dewormed, microchipped and vet-checked, with its full vaccination record and a written health guarantee of up to 36 months on hereditary conditions.`;
   if (/pay|mpesa|m-pesa|stripe|deposit|instal|card/.test(q))
     return `International cards through Stripe, or M-Pesa for local buyers. A deposit reserves the puppy and the balance falls due on delivery. Which one were you looking at?`;
   if (/train|guard|protect|security|police|patrol|farm|livestock/.test(q))

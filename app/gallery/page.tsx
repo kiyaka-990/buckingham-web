@@ -5,7 +5,7 @@ import { GalleryGrid } from "@/components/gallery/gallery-grid";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: "A visual journey through our kennel, our dogs and our champions.",
+  description: "A visual journey through our kennel, our dogs and our litters.",
 };
 
 const images = galleryImages;
@@ -16,7 +16,7 @@ export default function GalleryPage() {
       <PageHero
         eyebrow="Moments Captured"
         title="Gallery"
-        subtitle="A window into life at Buckingham — our dogs, our champions, our family."
+        subtitle="A window into life at Buckingham — our dogs, our litters, our family."
         image={heroImages.gallery}
         crumbs={[{ label: "Gallery" }]}
       />

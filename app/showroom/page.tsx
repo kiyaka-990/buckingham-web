@@ -28,7 +28,7 @@ export default function ShowroomPage() {
             The <span className="text-gradient-volt">3D Showroom</span>
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-muted">
-            Wander through a living gallery of our champions in real-time 3D. Meet your next companion from anywhere.
+            Wander through a living gallery of our dogs in real-time 3D. Meet your next companion from anywhere.
           </p>
         </div>
 
@@ -45,7 +45,7 @@ export default function ShowroomPage() {
 
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <Reveal>
-          <SectionHeading center title="Prefer the classic view?" subtitle="Browse our full collection in the traditional shop with detailed pedigrees and health records." />
+          <SectionHeading center title="Prefer the classic view?" subtitle="Browse our full collection in the traditional shop with full health and vaccination records." />
           <ButtonLink href="/shop" size="lg" className="mt-6">Enter the Shop</ButtonLink>
         </Reveal>
       </section>

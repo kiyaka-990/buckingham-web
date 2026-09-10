@@ -4,7 +4,7 @@
  * The five breeds the kennel keeps and breeds from, in the order the owner
  * lists them. Adult dogs are never sold — they are the breeding programme —
  * so this register carries each breed's *residents*: the dogs on the ground,
- * under the birth names on their own papers.
+ * under the birth names on their own vaccination records.
  *
  * Where we hold a vaccination record for a dog, `born` is transcribed from it.
  * Dogs without a record on file carry a name only; we never invent a date.
@@ -15,7 +15,7 @@
 
 export type BreedGroup = "Estate Guardian" | "Working Shepherd" | "Spitz & Companion";
 
-/** A dog living at the kennel, under the name on its papers. */
+/** A dog living at the kennel, under the name on its vaccination record. */
 export type Resident = {
   name: string;
   sex: "Male" | "Female";
@@ -78,8 +78,8 @@ export const breeds: Breed[] = [
     care:
       "Steady daily walking rather than sprinting, plus early and continuous socialisation. Serious weekly grooming for the double coat. Needs secure fencing and an owner who is comfortable being the decision-maker.",
     residents: [
-      { name: "Rocco", sex: "Male", born: "2024-10-10", role: "Foundation sire" },
-      { name: "Maya", sex: "Female", born: "2024-10-19", role: "Foundation dam" },
+      { name: "Simba", sex: "Male", born: "2024-10-19", role: "Foundation sire" },
+      { name: "Maya", sex: "Female", born: "2024-10-10", role: "Foundation dam" },
     ],
     mediaDir: "caucasian",
     photoPending: false,
@@ -123,7 +123,7 @@ export const breeds: Breed[] = [
     stats: { energy: 5, trainability: 5, family: 4, guarding: 5, shedding: 4 },
     tagline: "Solid black. Straight back. Pure presence.",
     description:
-      "The solid black German Shepherd is the rarest and most striking expression of the breed — a recessive coat carried by both parents, paired here with straighter backs, heavy bone and the long plush coat our clients travel for. Every dog in this line comes from proven working stock with certified hips and the level, unshakeable temperament the breed is meant to have.",
+      "The solid black German Shepherd is the rarest and most striking expression of the breed — a recessive coat carried by both parents, paired here with straighter backs, heavy bone and the long plush coat our clients travel for. The dogs in this line are imported working stock with the level, unshakeable temperament the breed is meant to have. They are not registered and carry no pedigree certificate.",
     care:
       "Vigorous daily exercise and genuine mental work. Weekly brushing, daily through the seasonal coat blow. Thrives on structure, training and being close to its people.",
     residents: [{ name: "Felly Atlas", sex: "Female", born: "2024-09-21", role: "Foundation dam" }],

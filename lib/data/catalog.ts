@@ -64,14 +64,14 @@ export const isForSale = (dog: Pick<Dog, "category">) => dog.category === "puppy
 
 /** The band the kennel advertises on puppies. Nothing is priced above the
  *  ceiling — it is the client's hard cap — and nothing below the floor. */
-export const PUPPY_PRICE_FLOOR = 1300;
-export const PUPPY_PRICE_CEILING = 1600;
+export const PUPPY_PRICE_FLOOR = 450;
+export const PUPPY_PRICE_CEILING = 550;
 
 const categoryLabels: Record<Category, string> = {
   puppy: "Puppies for Sale",
   adult: "Our Adults",
   trained: "Trained & Protection",
-  elite: "Elite Bloodline",
+  elite: "Foundation Stock",
 };
 export const categoryList = Object.entries(categoryLabels).map(([value, label]) => ({
   value: value as Category,
@@ -184,7 +184,7 @@ function build(seed: Seed, i: number): Dog {
     description:
       seed.description ??
       (forSale
-        ? `${seed.name} is a ${seed.color.toLowerCase()} ${breedName} puppy from our own Buckingham lines, raised underfoot at the Webuye kennel with early neurological stimulation and daily handling. ${seed.sex === "Male" ? "He" : "She"} leaves us fully vaccinated, dewormed, microchipped and health-guaranteed, with pedigree papers in hand.`
+        ? `${seed.name} is a ${seed.color.toLowerCase()} ${breedName} puppy from our own Buckingham lines, raised underfoot at the Webuye kennel with early neurological stimulation and daily handling. ${seed.sex === "Male" ? "He" : "She"} leaves us fully vaccinated, dewormed, microchipped and health-guaranteed, with a complete vaccination record in hand.`
         : `${seed.name} is one of our ${breedName}s and part of the Buckingham breeding programme. ${seed.sex === "Male" ? "He" : "She"} is not for sale — ${seed.sex === "Male" ? "he" : "she"} is here so you can see the parent behind the litter. Puppies from this line are $${PUPPY_PRICE_FLOOR.toLocaleString()}–$${PUPPY_PRICE_CEILING.toLocaleString()}.`),
     location: seed.location ?? kenyaCounties[i % kenyaCounties.length],
   };
@@ -199,23 +199,28 @@ function build(seed: Seed, i: number): Dog {
 const seeds: Seed[] = [
   /* ---- Caucasian Shepherd — breeding stock --------------------- */
   {
-    name: "Rocco", breedSlug: "caucasian-shepherd", category: "elite", sex: "Male",
-    born: "2024-10-10", color: "Tri-colour", featured: true, weightKg: 72,
-    hipScore: "OFA Good", guarantee: 36,
+    // Simba, formerly Rocco — his GetMeKnown card has "ROCCO" struck out and
+    // "SIMBA" written in. Date of birth and colour are read off the South
+    // African export health certificate (chip 900233003512390), which is the
+    // document of record; the site previously carried Maya's row by mistake.
+    name: "Simba", breedSlug: "caucasian-shepherd", category: "elite", sex: "Male",
+    born: "2024-10-19", color: "Typical Brown", featured: true, weightKg: 72,
+    guarantee: 36,
     traits: ["Estate guardian", "Enormous bone", "Foundation sire"],
     champions: ["Imported — Republic of South Africa"],
     images: ["/media/caucasian/portrait-rocco.jpg", ...pics("caucasian", "adult", 1, 2, 3)],
     description:
-      "Rocco is our foundation Caucasian Ovcharka male and the single most imposing dog on our grounds — unhurried, deeply bonded to his handlers and entirely uninterested in strangers, which is exactly what the breed is supposed to be. He is not for sale. He is here because every Caucasian puppy we place traces back to him.",
+      "Simba is our foundation Caucasian Ovcharka male and the single most imposing dog on our grounds — unhurried, deeply bonded to his handlers and entirely uninterested in strangers, which is exactly what the breed is supposed to be. He is not for sale. He is here because every Caucasian puppy we place traces back to him.",
   },
   {
     name: "Maya", breedSlug: "caucasian-shepherd", category: "adult", sex: "Female",
-    born: "2024-10-19", color: "Typical Brown", featured: true, weightKg: 60,
+    // Chip 900233003512389 on the same export certificate.
+    born: "2024-10-10", color: "Tri-colour", featured: true, weightKg: 60,
     traits: ["Foundation dam", "Composed", "Livestock safe"],
     champions: ["Imported — Republic of South Africa"],
     images: ["/media/caucasian/portrait-maya.jpg", ...pics("caucasian", "adult", 4, 5, 6)],
     description:
-      "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Rocco are, and they run $1,300–$1,600.",
+      "Maya is our foundation Caucasian dam — heavy, quiet and completely settled around stock and children, with the flat, unbothered temperament we breed for. She is not for sale. Her litters with Simba are, and they run $450–$550.",
   },
 
 
@@ -223,12 +228,12 @@ const seeds: Seed[] = [
   {
     name: "Felly Atlas", breedSlug: "royal-black-shepherd", category: "trained", sex: "Female",
     born: "2024-09-21", color: "Solid Black", featured: true, weightKg: 32,
-    hipScore: "OFA Excellent", guarantee: 24,
+    guarantee: 24,
     traits: ["Level II obedience", "Family protection", "Foundation dam"],
     champions: ["Imported — Republic of South Africa"],
     images: pics("gsd-black", "adult", 4, 6, 7),
     description:
-      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her puppies are, and they run $1,300–$1,600.",
+      "Felly Atlas is our solid-black German Shepherd dam, imported as a puppy and raised here through her obedience work. She is handler-focused, level under pressure and outstanding with children. She is not for sale — her puppies are, and they run $450–$550.",
   },
 
 
@@ -270,48 +275,48 @@ const seeds: Seed[] = [
   },
 
   /* ================================================================
-     PUPPIES — the only listings we sell. $1,300–$1,600.
+     PUPPIES — the only listings we sell. $450–$550.
      ================================================================ */
   {
     name: "Nyota", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Female",
-    ageLabel: "10 weeks", color: "Solid Black", price: 1300, bestseller: true, weightKg: 7,
+    ageLabel: "10 weeks", color: "Solid Black", price: 450, bestseller: true, weightKg: 7,
     traits: ["Confident", "Early socialised"],
     images: pics("gsd-black", "pup", 4, 5, 6),
   },
   {
     name: "Obsidian", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "10 weeks", color: "Solid Black", price: 1400, featured: true, weightKg: 8,
+    ageLabel: "10 weeks", color: "Solid Black", price: 475, featured: true, weightKg: 8,
     traits: ["Long coat carrier", "ENS raised"],
     images: pics("gsd-black", "pup", 1, 2, 3),
   },
   {
     name: "Malkia", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Female",
-    ageLabel: "12 weeks", color: "Solid Black", price: 1500, status: "reserved", weightKg: 9,
+    ageLabel: "12 weeks", color: "Solid Black", price: 500, status: "reserved", weightKg: 9,
     traits: ["Show prospect", "Sweet natured", "Excellent pigment"],
     images: pics("gsd-black", "pup", 10, 11, 12),
   },
   {
     name: "Shujaa", breedSlug: "royal-black-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "12 weeks", color: "Solid Black, Plush Coat", price: 1600, weightKg: 10,
+    ageLabel: "12 weeks", color: "Solid Black, Plush Coat", price: 550, weightKg: 10,
     traits: ["Plush coat", "Bold", "Protection prospect"],
     images: pics("gsd-black", "pup", 7, 8, 9),
   },
   {
     name: "Bora", breedSlug: "kangal", category: "puppy", sex: "Male",
-    ageLabel: "10 weeks", color: "Fawn with Black Mask", price: 1500, weightKg: 11,
+    ageLabel: "10 weeks", color: "Fawn with Black Mask", price: 500, weightKg: 11,
     traits: ["Heavy bone", "Steady temperament"],
     images: pics("kangal", "pup", 2),
   },
   {
     name: "Elif", breedSlug: "kangal", category: "puppy", sex: "Female",
-    ageLabel: "13 weeks", color: "Fawn with Black Mask", price: 1600, weightKg: 14,
+    ageLabel: "13 weeks", color: "Fawn with Black Mask", price: 550, weightKg: 14,
     traits: ["Guardian line", "Calm", "Excellent with stock"],
     images: pics("kangal", "pup", 1),
   },
   {
     name: "Grom", breedSlug: "caucasian-shepherd", category: "puppy", sex: "Male",
-    ageLabel: "11 weeks", color: "Fawn & White", price: 1600, featured: true, weightKg: 14,
-    traits: ["Rocco × Maya litter", "Giant frame", "Guardian line"],
+    ageLabel: "11 weeks", color: "Fawn & White", price: 550, featured: true, weightKg: 14,
+    traits: ["Simba × Maya litter", "Giant frame", "Guardian line"],
     images: pics("caucasian", "pup", 1, 2),
   },
 ];

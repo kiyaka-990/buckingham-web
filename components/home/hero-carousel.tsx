@@ -81,16 +81,18 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   }, []);
 
   // Only the slide on screen plays; the rest rewind so they start from the top.
+  // Every pane is footage now, so a reduced-motion visitor gets none of it
+  // moving — the poster frame stands in and nothing autoplays.
   useEffect(() => {
     videos.current.forEach((v, i) => {
-      if (i === index && !paused) {
+      if (i === index && !paused && !reduced) {
         void v.play().catch(() => {});
       } else {
         v.pause();
         if (i !== index) v.currentTime = 0;
       }
     });
-  }, [index, paused]);
+  }, [index, paused, reduced]);
 
   useEffect(() => {
     videos.current.forEach((v) => {
@@ -155,7 +157,11 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   fill
                   priority={i === 0}
                   sizes="(max-width:1024px) 100vw, 56vw"
-                  className={cn("object-cover", i === index && !reduced && "animate-ken-burns")}
+                  className={cn(
+                    "object-cover",
+                    // Alternate the pan so back-to-back stills move differently.
+                    i === index && !reduced && (i % 2 ? "animate-ken-burns-alt" : "animate-ken-burns")
+                  )}
                 />
               )}
             </div>

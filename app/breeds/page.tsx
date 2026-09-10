@@ -19,9 +19,9 @@ export default function BreedsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Pedigrees We're Proud Of"
+        eyebrow="Breeds We're Proud Of"
         title="Our Breeds"
-        subtitle="Five distinguished breeds, each raised to the Buckingham standard of health, temperament and type. We keep the parents — the puppies go home with you, from $1,300."
+        subtitle="Five distinguished breeds, each raised to the Buckingham standard of health, temperament and type. We keep the parents — the puppies go home with you, from $450."
         image={heroImages.breeds}
         crumbs={[{ label: "Breeds" }]}
       />

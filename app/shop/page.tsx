@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Shop Puppies",
   description:
-    "Browse every puppy we have for sale, $1,300–$1,600. Filter by breed, price and availability.",
+    "Browse every puppy we have for sale, $450–$550. Filter by breed, price and availability.",
 };
 
 export default async function ShopPage() {
@@ -21,7 +21,7 @@ export default async function ShopPage() {
       <PageHero
         eyebrow="The Collection"
         title="Shop Our Puppies"
-subtitle="Puppies are the only thing we sell — $1,300 to $1,600, never more. The parent dogs live with us and are not for sale; you will find them on the home page and on each breed."
+subtitle="Puppies are the only thing we sell — $450 to $550, never more, and none of them is Kennel Club registered or sold with a pedigree certificate. The parent dogs live with us and are not for sale; you will find them on the home page and on each breed."
         image={heroImages.shop}
         crumbs={[{ label: "Shop" }]}
       />

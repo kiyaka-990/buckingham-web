@@ -31,8 +31,8 @@ import { breeds } from "@/lib/data/breeds";
 import { RotatingText } from "@/components/ui/rotating-text";
 
 const announcements = [
-  "Champion bloodlines · Health guaranteed · Global delivery",
-  "Puppies for sale from $1,300 — reserve yours today",
+  "Imported parent dogs · Health guaranteed · Global delivery",
+  "Puppies for sale from $450 — reserve yours today",
   "Health-guaranteed up to 36 months on every puppy",
   "Free breed consultation — chat with us on WhatsApp",
   "We keep the parents · Come and meet them at the kennel",

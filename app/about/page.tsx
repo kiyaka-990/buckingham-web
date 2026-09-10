@@ -11,13 +11,13 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "The story, mission and values behind Buckingham Kennel Limited — Kenya's premier champion kennel.",
+  description: "The story, mission and values behind Buckingham Kennel Limited — Kenya's guardian and working breed kennel.",
 };
 
 const values = [
   { icon: Heart, title: "Welfare First", desc: "Our dogs are family. Every decision starts with their health and happiness." },
-  { icon: Award, title: "Uncompromising Quality", desc: "Only proven, health-tested bloodlines earn a place in our program." },
-  { icon: ShieldCheck, title: "Integrity", desc: "Transparent pedigrees, honest guidance and written guarantees, always." },
+  { icon: Award, title: "Uncompromising Quality", desc: "Only vet-checked, temperament-assessed dogs earn a place in our programme." },
+  { icon: ShieldCheck, title: "Integrity", desc: "Transparent records, honest guidance and written guarantees, always." },
   { icon: Leaf, title: "Ethical Breeding", desc: "Responsible, limited litters raised underfoot in a loving home environment." },
 ];
 
@@ -48,8 +48,8 @@ export default function AboutPage() {
           </p>
           <p className="leading-relaxed text-muted">
             Our adult dogs are not for sale. They are the breeding programme, and you are welcome to come and meet
-            them before you choose. What we sell is their puppies, $1,300–$1,600 — every one raised underfoot,
-            health-tested, matched thoughtfully to its new family, and supported for life.
+            them before you choose. What we sell is their puppies, $450–$550 — every one raised underfoot,
+            vet-checked, matched thoughtfully to its new family, and supported for life.
           </p>
           <div className="flex flex-wrap gap-4 pt-2 text-sm">
             <span className="rounded-full bg-surface-2 px-4 py-1.5">Reg. No. {site.registration}</span>

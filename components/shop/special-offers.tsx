@@ -21,7 +21,7 @@ export async function SpecialOffers() {
               </span>
               <div>
                 <h2 className="font-display text-2xl font-bold">Special Offers</h2>
-                <p className="text-sm text-white/70">Limited-time deals on champion dogs — while they last.</p>
+                <p className="text-sm text-white/70">Limited-time deals — while they last.</p>
               </div>
             </div>
             <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white">

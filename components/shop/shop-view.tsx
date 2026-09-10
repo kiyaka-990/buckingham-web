@@ -72,7 +72,7 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
           type="range"
           min={priceRange.min}
           max={priceRange.max}
-          step={100}
+          step={25}
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
           className="w-full accent-volt-400"
