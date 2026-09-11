@@ -37,6 +37,8 @@ export type VaccinationRecord = {
   nextDue?: string;
   /** Medical-history notes written on the card. */
   notes?: string;
+  /** Anything the card itself needs explaining — a correction, a discrepancy. */
+  notes2?: string;
   frames: [RecordFrame, RecordFrame];
 };
 
@@ -52,9 +54,10 @@ export const vaccinationRecords: VaccinationRecord[] = [
     vaccines: ["Parvovirus (Vanguard Plus CPV) — 14/11/24", "Parvovirus (Vanguard Plus CPV) — 28/11/24"],
     nextDue: "28/12/24",
     notes: "Deworming 16/12/24",
+    notes2: "His card was written up as Rocco and later corrected: ROCCO is struck through and SIMBA written in. The booklet's handwritten birth date reads 10/10/24; the export certificate, which is the document of record, gives 19/10/2024.",
     frames: [
-      { src: r("rocco-card.jpg"), caption: "Simba's vaccine record card — the card reads ROCCO struck out, SIMBA written in" },
-      { src: r("rocco-record.jpg"), caption: "Vaccination record — batch stickers and dated entries" },
+      { src: r("simba-namecard.jpg"), caption: "Vaccine record card — ROCCO struck through, SIMBA written in" },
+      { src: r("simba-record.jpg"), caption: "Pet details and vaccination record — batch stickers and dated entries" },
     ],
   },
   {
@@ -89,6 +92,31 @@ export const vaccinationRecords: VaccinationRecord[] = [
     ],
   },
 ];
+
+/**
+ * The import paperwork behind the three dogs that came in from South Africa.
+ *
+ * One document covers all of them, so it sits beside the per-dog cards rather
+ * than being repeated inside each. Published redacted, to the same rule as the
+ * cards: the certificate number, the internal reference, the import permit
+ * number, all three microchip numbers, the consignor and consignee names and
+ * addresses, and the chip ID in the rabies table are painted out. What is left
+ * legible is the part that evidences the import — the issuing authorities and
+ * the breed, sex, date of birth and colour of each dog.
+ *
+ * Note the rabies row is dated 2022 while the dogs are born 2024, so it cannot
+ * describe these animals; it is reproduced as written rather than tidied.
+ */
+export const importCertificate = {
+  src: "/media/records/import-certificate.jpg",
+  title: "International Veterinary Health Certificate",
+  caption: "Republic of South Africa → Republic of Kenya. Covers Simba, Maya and Felly Atlas.",
+  rows: [
+    { breed: "Caucasian Shepherd", sex: "Male", born: "19/10/2024", colour: "Typical Brown", dog: "Simba" },
+    { breed: "Caucasian Shepherd", sex: "Female", born: "10/10/2024", colour: "Tri colour", dog: "Maya" },
+    { breed: "German Shepherd", sex: "Female", born: "21/09/2024", colour: "Solid Black", dog: "Felly Atlas" },
+  ],
+};
 
 /** Records for one breed, for the breed detail page. */
 export const recordsForBreed = (slug: string) =>

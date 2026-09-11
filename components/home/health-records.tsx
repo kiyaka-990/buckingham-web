@@ -2,7 +2,7 @@ import { CakeSlice, ShieldCheck, Syringe } from "lucide-react";
 import { FadeImage } from "@/components/ui/fade-image";
 import { Reveal } from "@/components/ui/reveal";
 import { formatBorn } from "@/lib/data/breeds";
-import { vaccinationRecords, type VaccinationRecord } from "@/lib/data/records";
+import { importCertificate, vaccinationRecords, type VaccinationRecord } from "@/lib/data/records";
 
 /**
  * The vaccination cards themselves.
@@ -66,6 +66,11 @@ function RecordCard({ record }: { record: VaccinationRecord }) {
           </p>
         )}
         {record.notes && <p className="text-sm text-muted">{record.notes}</p>}
+        {record.notes2 && (
+          <p className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs leading-relaxed text-muted">
+            {record.notes2}
+          </p>
+        )}
       </div>
     </article>
   );
@@ -84,6 +89,49 @@ export function HealthRecords({ records = vaccinationRecords }: { records?: Vacc
         ))}
       </div>
 
+      {/* The import paperwork. One document behind three of the dogs, so it sits
+          on its own rather than being repeated in each card. */}
+      <Reveal>
+        <article className="mt-6 overflow-hidden rounded-3xl border border-border bg-surface">
+          <div className="border-b border-border px-5 py-4">
+            <h3 className="font-display text-xl font-bold text-foreground">{importCertificate.title}</h3>
+            <p className="text-sm text-muted">{importCertificate.caption}</p>
+          </div>
+          <div className="grid gap-px bg-border md:grid-cols-2">
+            <a
+              href={importCertificate.src}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block aspect-[3/4] overflow-hidden bg-surface"
+            >
+              <FadeImage
+                src={importCertificate.src}
+                alt={importCertificate.title}
+                fill
+                sizes="(max-width:768px) 100vw, 40vw"
+                className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              />
+            </a>
+            <div className="bg-surface p-5">
+              <p className="mb-3 text-sm text-muted">
+                The dogs as the certificate records them — this is where their dates of birth and
+                colours come from.
+              </p>
+              <ul className="space-y-2">
+                {importCertificate.rows.map((row) => (
+                  <li key={row.dog} className="text-sm">
+                    <span className="font-semibold text-foreground">{row.dog}</span>
+                    <span className="text-muted">
+                      {" "}— {row.breed}, {row.sex}, born {row.born}, {row.colour}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </article>
+      </Reveal>
+
       {/* Buyers should know why parts of the scans are blacked out, so that a
           redaction never reads as something being hidden from them. */}
       <p className="mx-auto mt-8 flex max-w-2xl items-start gap-2 text-center text-xs leading-relaxed text-muted">
@@ -91,8 +139,11 @@ export function HealthRecords({ records = vaccinationRecords }: { records?: Vacc
         <span className="text-left">
           These are our dogs&rsquo; real vaccination cards. Microchip numbers and our
           veterinarian&rsquo;s signature, stamp and licence number are blacked out for the dogs&rsquo;
-          security — every vaccine, batch number and date is left exactly as written. Originals are
-          shown to buyers on collection, and travel with every puppy.
+          security — every vaccine, batch number and date is left exactly as written. On the import
+          certificate the certificate and permit numbers and the consignor and consignee details are
+          blacked out for the same reason. Originals are shown to buyers on collection, and travel
+          with every puppy. None of this is a pedigree: our dogs are not Kennel Club registered and
+          hold no pedigree certificates.
         </span>
       </p>
     </>

@@ -12,6 +12,7 @@ import { AccessibilityPanel } from "@/components/accessibility-panel";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ChatWidget } from "@/components/chatbot/chat-widget";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
+import { CursorGlow } from "@/components/ui/cursor-glow";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { Chrome } from "@/components/layout/chrome";
@@ -149,6 +150,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CookieConsent />
             <ChatWidget />
             <WhatsAppWidget />
+            <CursorGlow />
             <ScrollToTop />
           </Chrome>
         </Providers>

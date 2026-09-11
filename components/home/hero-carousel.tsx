@@ -37,14 +37,17 @@ const AUTOPLAY_MS = 7000;
  *
  * Video slides autoplay muted and looping, which is the only form of autoplay
  * browsers allow and the only one that is not rude. Sound is opt-in, the
- * rotation pauses on hover, on focus and while the tab is hidden, and it never
- * starts at all for a visitor who has asked for reduced motion.
+ * rotation pauses on keyboard focus and while the tab is hidden, and it never
+ * starts at all for a visitor who has asked for reduced motion. Hover does not
+ * pause it — the reel runs on while the cursor rests over it.
  */
 export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(true);
   const [reduced, setReduced] = useState(false);
+  /** 0 at the top of the page, 1 once scrolled a screenful — drives the shadow. */
+  const [lift, setLift] = useState(0);
   const videos = useRef(new Map<number, HTMLVideoElement>());
 
   const count = slides.length;
@@ -80,6 +83,27 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
 
+  // The carousel sits on its own layer, and scrolling lifts it: the shadow it
+  // casts onto the section below deepens over the first screenful and then
+  // holds. At rest at the top of the page there is no shadow at all, so the
+  // hero still reads as flush with the header.
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setLift(Math.min(window.scrollY / 320, 1));
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // Only the slide on screen plays; the rest rewind so they start from the top.
   // Every pane is footage now, so a reduced-motion visitor gets none of it
   // moving — the poster frame stands in and nothing autoplays.
@@ -107,11 +131,19 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     <section
       aria-roledescription="carousel"
       aria-label="Buckingham Kennel"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      // Hovering no longer pauses — the client wants the reel to keep running
+      // while the cursor sits over it. Keyboard focus still holds it, so a
+      // visitor tabbing through the slide's link does not lose it mid-read.
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
-      className="relative isolate overflow-hidden"
+      // z-10 so the shadow paints over the section that follows; overflow-hidden
+      // clips the children, not the element's own shadow.
+      className="relative isolate z-10 overflow-hidden"
+      style={{
+        boxShadow: lift
+          ? `0 ${Math.round(14 + 12 * lift)}px ${Math.round(28 + 26 * lift)}px -18px rgba(12, 13, 15, ${(0.44 * lift).toFixed(3)})`
+          : undefined,
+      }}
     >
       <span className="lattice" aria-hidden />
       {/* A single soft bloom of the accent behind the media, so the right

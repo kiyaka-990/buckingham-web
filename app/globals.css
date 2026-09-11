@@ -407,6 +407,35 @@ html {
   100% { background-position: 0 50%; }
 }
 
+/* The pointer-following light. --gx/--gy are written by CursorGlow each frame;
+   the gradient is the only thing that moves, so there is no layout work. */
+.cursor-glow {
+  background: radial-gradient(
+    22rem 22rem at var(--gx, 50%) var(--gy, 50%),
+    color-mix(in oklab, var(--color-volt-400) 22%, transparent),
+    transparent 70%
+  );
+  mix-blend-mode: multiply;
+}
+
+:root:not([data-theme="light"]) .cursor-glow {
+  mix-blend-mode: screen;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .cursor-glow {
+    mix-blend-mode: multiply;
+  }
+}
+
+:root[data-theme="dark"] .cursor-glow {
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow { display: none; }
+}
+
 @keyframes ken-burns {
   from { transform: scale(1.06) translate3d(0, 0, 0); }
   to { transform: scale(1.16) translate3d(-1.5%, -1.5%, 0); }
