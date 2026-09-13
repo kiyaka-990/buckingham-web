@@ -14,10 +14,27 @@ type Msg = { role: "user" | "assistant"; content: string; suggestions?: Suggesti
 
 const starters = [
   "I need a guard dog for my farm",
-  "Show me puppies under $2,600",
+  "Show me puppies under $550",
   "Do you deliver to Nairobi?",
   "Which breed suits a family with kids?",
 ];
+
+/** Remembered so a returning visitor is never asked twice. */
+const VISITOR_KEY = "bk.visitor";
+
+type Visitor = { name: string; email: string };
+
+function loadVisitor(): Visitor | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(VISITOR_KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw) as Partial<Visitor>;
+    return v.name && v.email ? { name: v.name, email: v.email } : null;
+  } catch {
+    return null;
+  }
+}
 
 export function ChatWidget() {
   const { chatOpen, setChat } = useUI();
@@ -31,25 +48,49 @@ export function ChatWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // Lazy initialiser rather than an effect: loadVisitor() is guarded for SSR and
+  // returns null there. `visitor` never reaches the DOM, so server and client
+  // markup match regardless of what is in localStorage.
+  const [visitor, setVisitor] = useState<Visitor | null>(loadVisitor);
+  const [gate, setGate] = useState(false);
+  /** The message that triggered the gate, replayed once they identify themselves. */
+  const pending = useRef<string | null>(null);
+  const [form, setForm] = useState({ name: "", email: "" });
+  const [formError, setFormError] = useState<string | null>(null);
+
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
-  const send = async (text: string) => {
+  const send = async (text: string, who: Visitor | null = visitor, replayOf?: Msg[]) => {
     const q = text.trim();
     if (!q || loading) return;
-    const next = [...messages, { role: "user" as const, content: q }];
-    setMessages(next);
+    const next = replayOf ?? [...messages, { role: "user" as const, content: q }];
+    if (!replayOf) setMessages(next);
     setInput("");
     setLoading(true);
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.map(({ role, content }) => ({ role, content })) }),
+        body: JSON.stringify({
+          messages: next.map(({ role, content }) => ({ role, content })),
+          ...(who ? { visitor: who } : {}),
+        }),
       });
       const data = await res.json();
+
+      // The server decides when to ask, not the widget — so honour whatever it
+      // says even if we thought we had already identified this visitor.
+      if (data.gate) {
+        pending.current = q;
+        setGate(true);
+        setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+        return;
+      }
+
+      setGate(false);
       setMessages((m) => [...m, { role: "assistant", content: data.reply, suggestions: data.suggestions }]);
     } catch {
       setMessages((m) => [
@@ -58,6 +99,33 @@ export function ChatWidget() {
       ]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const submitDetails = (e: React.FormEvent) => {
+    e.preventDefault();
+    const name = form.name.trim();
+    const email = form.email.trim().toLowerCase();
+    if (name.length < 2) return setFormError("Could I take your name?");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return setFormError("That email doesn't look quite right.");
+
+    const who = { name, email };
+    setFormError(null);
+    setVisitor(who);
+    try {
+      window.localStorage.setItem(VISITOR_KEY, JSON.stringify(who));
+    } catch {
+      /* private browsing — they'll just be asked again next visit */
+    }
+    setGate(false);
+
+    // Replay the question the gate interrupted, so they never have to retype it.
+    const question = pending.current;
+    pending.current = null;
+    if (question) {
+      const replay = [...messages, { role: "assistant" as const, content: `Thank you, ${name}.` }];
+      setMessages(replay);
+      void send(question, who, [...replay, { role: "user" as const, content: question }]);
     }
   };
 
@@ -170,7 +238,7 @@ export function ChatWidget() {
             </div>
 
             {/* Starters */}
-            {messages.length <= 1 && (
+            {messages.length <= 1 && !gate && (
               <div className="flex flex-wrap gap-2 border-t border-border px-3 py-2">
                 {starters.map((s) => (
                   <button key={s} onClick={() => send(s)} className="rounded-full border border-border px-3 py-1.5 text-xs transition hover:border-volt-400 hover:text-accent-ink">
@@ -180,7 +248,37 @@ export function ChatWidget() {
               </div>
             )}
 
-            {/* Input */}
+            {/* Gentle gate: asked once, after Duke has already been useful. */}
+            {gate ? (
+              <form onSubmit={submitDetails} className="space-y-2 border-t border-border p-3">
+                <div className="flex gap-2">
+                  <input
+                    value={form.name}
+                    onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                    placeholder="Your name"
+                    autoComplete="name"
+                    autoFocus
+                    className="h-11 w-1/2 rounded-full border border-border bg-surface px-4 text-sm outline-none focus:border-volt-400"
+                  />
+                  <input
+                    value={form.email}
+                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                    placeholder="Email"
+                    type="email"
+                    autoComplete="email"
+                    className="h-11 w-1/2 rounded-full border border-border bg-surface px-4 text-sm outline-none focus:border-volt-400"
+                  />
+                </div>
+                {formError && <p className="px-2 text-xs text-red-400">{formError}</p>}
+                <button type="submit" className="btn-accent h-11 w-full rounded-full text-sm font-semibold">
+                  Continue the conversation
+                </button>
+                <p className="px-2 text-center text-[11px] leading-snug text-muted">
+                  We&apos;ll only use this to follow up about puppies, and you can stop it any time
+                  with one click. We never pass it to anyone else.
+                </p>
+              </form>
+            ) : (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -198,6 +296,7 @@ export function ChatWidget() {
                 <Send size={16} />
               </button>
             </form>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

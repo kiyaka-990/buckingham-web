@@ -6,8 +6,38 @@ import { phones, site } from "@/lib/site";
 import { formatPrice } from "@/lib/utils";
 import { runSalesAgent, type ChatMsg, type DogSuggestion } from "@/lib/agent/sales-agent";
 import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
+import { captureLead } from "@/lib/leads";
 
 export const runtime = "nodejs";
+
+/* ------------------------------------------------------------------ */
+/*  Visitor gate                                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * How many questions a visitor gets before we ask who they are.
+ *
+ * Deliberately not zero. A wall in front of the first message costs more
+ * enquiries than it captures — the visitor has had nothing from us yet and has
+ * no reason to hand over an address. Three answered questions is enough for
+ * the agent to have been useful, which is when asking is fair.
+ */
+const FREE_TURNS = 3;
+
+type Visitor = { name: string; email: string };
+
+/** Loose on purpose — this is a lead form, not an auth system. We only need
+ *  enough structure that the address is plausibly deliverable. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function readVisitor(raw: unknown): Visitor | null {
+  if (!raw || typeof raw !== "object") return null;
+  const v = raw as Record<string, unknown>;
+  const name = String(v.name ?? "").trim().slice(0, 160);
+  const email = String(v.email ?? "").trim().toLowerCase().slice(0, 160);
+  if (name.length < 2 || !EMAIL_RE.test(email)) return null;
+  return { name, email };
+}
 
 /* ------------------------------------------------------------------ */
 /*  Fallback: keyword matching over live inventory.                    */
@@ -101,8 +131,10 @@ export async function POST(req: Request) {
   if (!limit.ok) return tooMany(limit, "You're sending messages very quickly. Please wait a moment.");
 
   let messages: ChatMsg[] = [];
+  let visitor: Visitor | null = null;
   try {
-    const body = (await req.json()) as { messages?: ChatMsg[] };
+    const body = (await req.json()) as { messages?: ChatMsg[]; visitor?: unknown };
+    visitor = readVisitor(body.visitor);
     messages = (Array.isArray(body.messages) ? body.messages.slice(-MAX_TURNS) : [])
       // Roles are whitelisted so a crafted transcript cannot smuggle in a
       // "system" turn and rewrite the agent's instructions.
@@ -113,6 +145,36 @@ export async function POST(req: Request) {
   }
   if (messages.length === 0) {
     return NextResponse.json({ error: "No messages supplied" }, { status: 400 });
+  }
+
+  // The gate. Enforced here rather than in the widget, because a gate that
+  // lives only in the browser is a suggestion: anyone can POST this endpoint
+  // directly, and that is exactly what an abusive caller does.
+  const userTurns = messages.filter((m) => m.role === "user").length;
+  if (userTurns > FREE_TURNS && !visitor) {
+    return NextResponse.json({
+      gate: true,
+      reply:
+        "Before we go further — may I take your name and email? It means I can send you the details of anything we talk about, and one of the team can follow up properly if I'm not enough. It takes a second and we won't pass it on to anyone.",
+      suggestions: [],
+    });
+  }
+
+  // First message after they identified themselves: put them in the pipeline.
+  // Bounded to that one turn so we are not writing to the database on every
+  // message of a long conversation.
+  if (visitor && userTurns === FREE_TURNS + 1) {
+    const interest = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+    void captureLead({
+      name: visitor.name,
+      email: visitor.email,
+      source: "chat",
+      interest: interest.slice(0, 300),
+      notes: "Gave their details in the chat widget after three questions.",
+      // Duke re-scores properly via capture_lead once he has qualified them;
+      // this is only a floor so the lead is not sitting at zero.
+      score: 25,
+    }).catch((err) => console.error("[chat] captureLead failed", err));
   }
 
   const agent = await runSalesAgent(messages);
