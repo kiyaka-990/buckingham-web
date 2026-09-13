@@ -211,3 +211,36 @@ export async function sendLeadAlert(input: {
     replyTo: input.contact.includes("@") ? input.contact : undefined,
   });
 }
+
+/**
+ * A follow-up drafted by Ivy, the marketing agent.
+ *
+ * The unsubscribe line is appended here rather than left to the model — an
+ * opt-out that depends on an LLM remembering to include it is not an opt-out.
+ */
+export async function sendMarketingFollowUp(input: {
+  to: string;
+  name: string;
+  subject: string;
+  body: string;
+  unsubscribeUrl: string;
+}) {
+  const text = [
+    input.body.trim(),
+    ``,
+    `— Ivy, ${site.shortName}`,
+    contactBlock(),
+    ``,
+    `———`,
+    `You're getting this because you asked us about a puppy. If you'd rather`,
+    `not hear from us again, open this link and we'll stop immediately:`,
+    input.unsubscribeUrl,
+  ].join("\n");
+
+  return send({
+    to: input.to,
+    subject: input.subject,
+    text,
+    replyTo: site.contact.email,
+  });
+}

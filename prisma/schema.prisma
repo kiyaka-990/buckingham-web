@@ -161,3 +161,41 @@ model Hold {
   @@index([dogSlug])
   @@index([expiresAt])
 }
+
+/// A person who showed real buying intent, and where they are in the pipeline.
+///
+/// Distinct from Message, which is an inbox item — a thing somebody reads once
+/// and ticks off. A Lead is a record the marketing agent works over time: it
+/// carries what they want, how warm they are, how many times we have already
+/// contacted them, and when it is fair to do so again.
+model Lead {
+  id           String    @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  source       String    @default("chat") // "chat" | "form" | "checkout"
+  stage        String    @default("new")  // new | qualified | nurturing | hot | won | lost | unsubscribed
+  score        Int       @default(0)      // 0-100, set by the agent at capture
+  interest     String?
+  breedSlug    String?
+  dogSlug      String?
+  budgetUsd    Int?
+  location     String?
+  notes        String?
+  orderRef     String?
+  /// Outbound touches so far. Hard-capped — see MAX_TOUCHES.
+  touches      Int       @default(0)
+  lastTouchAt  DateTime?
+  nextTouchAt  DateTime?
+  /// Set the moment someone opts out. Nothing outbound may ever go to a lead
+  /// with this set, regardless of stage.
+  unsubscribedAt DateTime?
+  /// Unguessable token for the one-click unsubscribe link in every email.
+  optOutToken  String    @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
+  @@index([stage])
+  @@index([nextTouchAt])
+}

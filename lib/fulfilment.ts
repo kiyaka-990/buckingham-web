@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { sendOrderConfirmation, sendOwnerOrderAlert, type OrderMail } from "@/lib/email";
+import { markWon } from "@/lib/leads";
 
 /**
  * Taking a dog off the shelf.
@@ -48,6 +49,10 @@ export async function confirmOrderPaid(
       data: { stock, status: stock === 0 ? "reserved" : dog.status },
     });
   }
+
+  // They bought — stop any nurture sequence immediately. Nothing is more
+  // corrosive than a "still interested?" email to someone who already paid.
+  if (order.email) await markWon(order.email, order.ref).catch((err) => console.error("[fulfilment] markWon failed", err));
 
   // Receipts go out only on the update that actually won the race above, so a
   // replayed webhook cannot email the buyer twice. Mail is best-effort: a

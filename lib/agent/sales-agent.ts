@@ -10,6 +10,7 @@ import { priceCart, persistOrder, createStripeSession, newOrderRef } from "@/lib
 import { placeHold } from "@/lib/holds";
 import { recordAgentAction } from "@/lib/agent/audit";
 import { sendLeadAlert } from "@/lib/email";
+import { captureLead as recordLead } from "@/lib/leads";
 
 /**
  * "Duke" — the Buckingham Kennel sales agent.
@@ -186,7 +187,14 @@ function makeTools(seen: Map<string, Dog>) {
         email: { type: "string", description: "Use \"not given\" if they only left a phone number." },
         phone: { type: "string" },
         interest: { type: "string", description: "Which dog or breed, plus budget and timing if known." },
-        notes: { type: "string", description: "Anything else useful for the handler — location, experience, use case." },
+        notes: { type: "string", description: "Anything else useful for the handler — experience, use case, timing." },
+        location: { type: "string", description: "Town or county they are in, if they said." },
+        budget_usd: { type: "number", description: "Their stated budget in USD, if they gave one." },
+        score: {
+          type: "number",
+          description:
+            "How close this person is to buying, 0-100. 80+ = named a puppy and asked how to pay. 50-79 = clear need, real budget, no date. 20-49 = browsing with a genuine question. Under 20 = idle curiosity. Be honest; an inflated score means we chase people who did not want chasing.",
+        },
       },
       required: ["name", "email", "interest"],
       additionalProperties: false,
@@ -209,6 +217,20 @@ function makeTools(seen: Map<string, Dog>) {
           unread: true,
         },
       });
+      // The inbox row stays — the owner still works from it — but the lead is
+      // now also a pipeline record Ivy can follow up on later.
+      await recordLead({
+        name: input.name,
+        email: input.email.includes("@") ? input.email : "",
+        phone: input.phone ?? null,
+        source: "chat",
+        interest: input.interest,
+        budgetUsd: input.budget_usd ?? null,
+        location: input.location ?? null,
+        notes: input.notes ?? null,
+        score: input.score ?? null,
+      }).catch((err) => console.error("[agent] recordLead failed", err));
+
       await sendLeadAlert({
         kind: "lead",
         name: input.name,

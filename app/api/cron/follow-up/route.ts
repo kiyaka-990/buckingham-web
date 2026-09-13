@@ -4,6 +4,7 @@ import { expireStaleHolds } from "@/lib/holds";
 import { cancelPendingOrder } from "@/lib/fulfilment";
 import { sendAbandonedOrderNudge, type OrderMail } from "@/lib/email";
 import { recordAgentAction, alreadyDone } from "@/lib/agent/audit";
+import { runNurturePass } from "@/lib/agent/marketing-agent";
 
 export const runtime = "nodejs";
 
@@ -43,7 +44,14 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Not authorised" }, { status: 401 });
   }
 
-  const report = { holdsExpired: 0, nudged: 0, abandoned: 0, errors: [] as string[] };
+  const report = {
+    holdsExpired: 0, nudged: 0, abandoned: 0, nurtured: 0,
+    // Notes are informational ("nothing to write about today"); errors mean the
+    // run actually failed. Conflating them would report a healthy quiet day as
+    // a broken job.
+    notes: [] as string[],
+    errors: [] as string[],
+  };
 
   // 1. Let go of lapsed holds so those puppies can be sold again.
   try {
@@ -123,6 +131,16 @@ export async function GET(req: Request) {
     }
   } catch (err) {
     report.errors.push(`abandon: ${(err as Error).message}`);
+  }
+
+  // 4. Ivy works the leads nobody closed. Who may be contacted is decided by
+  //    dueForFollowUp(), not by the agent.
+  try {
+    const nurture = await runNurturePass();
+    report.nurtured = nurture.sent;
+    if (nurture.reasons.length) report.notes.push(...nurture.reasons.slice(0, 5));
+  } catch (err) {
+    report.errors.push(`nurture: ${(err as Error).message}`);
   }
 
   console.log("[cron/follow-up]", JSON.stringify(report));
