@@ -3,9 +3,13 @@ import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema";
 import { db } from "@/lib/db";
 import { getDogs } from "@/lib/queries";
 import { breeds } from "@/lib/data/breeds";
-import { isForSale, isPhotoPending, PUPPY_PRICE_CEILING, PUPPY_PRICE_FLOOR, type Dog } from "@/lib/data/catalog";
+import { isForSale, isPhotoPending, PUPPY_PRICE_CEILING, PUPPY_PRICE_FLOOR, depositFor, type Dog } from "@/lib/data/catalog";
 import { phones, site } from "@/lib/site";
 import { formatPrice, usdToKes } from "@/lib/utils";
+import { priceCart, persistOrder, createStripeSession, newOrderRef } from "@/lib/orders";
+import { placeHold } from "@/lib/holds";
+import { recordAgentAction } from "@/lib/agent/audit";
+import { sendLeadAlert } from "@/lib/email";
 
 /**
  * "Duke" — the Buckingham Kennel sales agent.
@@ -205,6 +209,19 @@ function makeTools(seen: Map<string, Dog>) {
           unread: true,
         },
       });
+      await sendLeadAlert({
+        kind: "lead",
+        name: input.name,
+        contact: input.phone || input.email,
+        detail: input.interest,
+        body: [`Interest: ${input.interest}`, input.phone ? `Phone: ${input.phone}` : null, input.notes ? `Notes: ${input.notes}` : null].filter(Boolean).join("\n"),
+      });
+      await recordAgentAction({
+        action: "capture_lead",
+        contact: input.email || input.phone,
+        summary: `Lead captured for ${input.name} — ${input.interest}`,
+        payload: input,
+      });
       return `Lead saved to the kennel inbox for ${input.name}. A handler will follow up. Tell the visitor this and give them ${site.contact.phoneDisplay} for anything urgent.`;
     },
   });
@@ -244,11 +261,170 @@ function makeTools(seen: Map<string, Dog>) {
           unread: true,
         },
       });
+      await sendLeadAlert({
+        kind: "viewing",
+        name: input.name,
+        contact: input.contact,
+        detail: `${input.mode} — ${input.preferred_time}`,
+        body: [`Mode: ${input.mode}`, `Preferred time: ${input.preferred_time}`, input.dog_slug ? `Dog: ${input.dog_slug}` : null].filter(Boolean).join("\n"),
+      });
+      await recordAgentAction({
+        action: "book_viewing",
+        contact: input.contact,
+        dogSlug: input.dog_slug ?? null,
+        summary: `${input.mode} booked for ${input.name} — ${input.preferred_time}`,
+        payload: input,
+      });
       return `Viewing request saved. Confirm to the visitor that the kennel will call to confirm the slot, and that visits are by appointment at ${site.contact.address.street}, ${site.contact.address.locality}.`;
     },
   });
 
-  return [searchInventory, getDogDetails, listBreeds, captureLead, bookViewing];
+
+  /* ---------------- Commerce: the agent can actually transact ------------- */
+
+  const holdPuppy = betaTool({
+    name: "hold_puppy",
+    description:
+      "Put a short, expiring hold on one puppy so nobody else is offered it while this visitor decides. Use when a visitor says they want a specific puppy. Requires a contact detail so the hold belongs to someone. Does NOT take payment and does NOT sell the dog — it only reserves it for a few minutes. Tell the visitor how long they have.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        dog_slug: { type: "string", description: "The slug from search_inventory." },
+        contact: { type: "string", description: "The visitor's email or phone number." },
+      },
+      required: ["dog_slug", "contact"],
+      additionalProperties: false,
+    },
+    run: async (input) => {
+      const result = await placeHold({
+        dogSlug: input.dog_slug,
+        contact: input.contact,
+        source: "agent",
+      });
+      await recordAgentAction({
+        action: "hold_puppy",
+        status: result.ok ? "done" : "rejected",
+        dogSlug: input.dog_slug,
+        contact: input.contact,
+        summary: result.ok
+          ? `Held ${input.dog_slug} for ${input.contact} for ${result.minutes} minutes.`
+          : `Refused hold on ${input.dog_slug}: ${result.reason}`,
+        payload: input,
+      });
+      if (!result.ok) return `Could not hold that puppy. ${result.reason}`;
+      return `Held for ${result.minutes} minutes (until ${result.expiresAt.toISOString()}). Tell the visitor it is theirs for ${result.minutes} minutes and that paying the deposit confirms it.`;
+    },
+  });
+
+  const startReservation = betaTool({
+    name: "start_reservation",
+    description:
+      "Raise a real pending order for one puppy and get back a secure payment link the visitor can pay the deposit on. Only call this once the visitor has clearly said they want to reserve THAT puppy and has given a name and an email. The order is created unpaid — nothing is sold until the payment clears. Give the visitor the link and the reference exactly as returned.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        dog_slug: { type: "string" },
+        name: { type: "string", description: "The buyer's full name." },
+        email: { type: "string", description: "The buyer's email — the payment receipt goes here." },
+        phone: { type: "string" },
+        city: { type: "string", description: "Where they are, for delivery." },
+      },
+      required: ["dog_slug", "name", "email"],
+      additionalProperties: false,
+    },
+    run: async (input) => {
+      const wanted = new Map([[input.dog_slug, 1]]);
+      const priced = await priceCart(wanted, { contact: input.email });
+      if (!priced.ok) {
+        await recordAgentAction({
+          action: "start_reservation",
+          status: "rejected",
+          dogSlug: input.dog_slug,
+          contact: input.email,
+          summary: `Refused reservation for ${input.dog_slug}: ${priced.error}`,
+          payload: input,
+        });
+        return `Cannot reserve that one. ${priced.error}`;
+      }
+
+      const ref = newOrderRef();
+      const origin = process.env.NEXT_PUBLIC_SITE_URL || "";
+      const customer = {
+        name: input.name,
+        email: input.email.toLowerCase(),
+        phone: input.phone ?? "",
+        city: input.city ?? "",
+      };
+
+      let payUrl: string | null = null;
+      let sessionId: string | undefined;
+      try {
+        const session = await createStripeSession({
+          ref,
+          items: priced.items,
+          total: priced.total,
+          origin,
+          email: customer.email,
+        });
+        payUrl = session?.url ?? null;
+        sessionId = session?.id;
+      } catch (err) {
+        console.error("[agent] stripe session failed", err);
+      }
+
+      await persistOrder(ref, priced.items, customer, priced.total, "Card (Stripe)", sessionId);
+      await placeHold({ dogSlug: input.dog_slug, contact: customer.email, source: "agent", orderRef: ref });
+
+      const deposit = depositFor(priced.total);
+      await recordAgentAction({
+        action: "start_reservation",
+        orderRef: ref,
+        dogSlug: input.dog_slug,
+        contact: customer.email,
+        summary: `Raised order ${ref} for ${input.name} — ${priced.items[0]?.name} at ${formatPrice(priced.total)}, deposit ${formatPrice(deposit)}.`,
+        payload: { ...input, ref, total: priced.total, deposit, paymentLink: Boolean(payUrl) },
+      });
+
+      if (!payUrl) {
+        return `Order ${ref} created for ${formatPrice(priced.total)} (deposit ${formatPrice(deposit)}), but no payment link could be generated. Give the visitor the reference ${ref}, tell them the kennel will send a payment link shortly, and offer M-Pesa on ${phones[0].display}.`;
+      }
+      return `Order ${ref} created. Total ${formatPrice(priced.total)}, deposit due now ${formatPrice(deposit)}, balance on delivery. Payment link: ${payUrl}\nGive the visitor BOTH the reference and the link, and say the puppy is held until they pay.`;
+    },
+  });
+
+  const checkOrderStatus = betaTool({
+    name: "check_order_status",
+    description:
+      "Look up an existing order by its reference (looks like BK-XXXXXXXX). Use when a visitor asks what happened to their order, whether payment went through, or what they still owe.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        order_ref: { type: "string", description: "The BK- reference the buyer quotes." },
+      },
+      required: ["order_ref"],
+      additionalProperties: false,
+    },
+    run: async (input) => {
+      const ref = input.order_ref.trim().toUpperCase();
+      const order = await db.order.findUnique({ where: { ref }, include: { items: true } });
+      if (!order) return `No order found with reference ${ref}. Ask them to check the reference, or take their email and call capture_lead so a human can find it.`;
+
+      const paid = order.deposit > 0 && order.deposit < order.total ? order.deposit : order.total;
+      const balance = order.status === "confirmed" ? order.total - paid : order.total;
+      return [
+        `Order ${order.ref} — status ${order.status}.`,
+        `Placed ${order.createdAt.toISOString().slice(0, 10)} via ${order.method}.`,
+        `Items: ${order.items.map((i) => `${i.name} (${i.breedName})`).join(", ")}.`,
+        `Total ${formatPrice(order.total)}.`,
+        order.status === "confirmed"
+          ? `Deposit of ${formatPrice(paid)} received${order.paidAt ? ` on ${order.paidAt.toISOString().slice(0, 10)}` : ""}. Balance ${formatPrice(balance)} due on collection or delivery.`
+          : order.status === "cancelled"
+            ? `This order was cancelled and nothing was charged.`
+            : `Payment has NOT been received yet — nothing has been charged. The puppy is not confirmed until the deposit clears.`,
+      ].join("\n");
+    },
+  });
+  return [searchInventory, getDogDetails, listBreeds, captureLead, bookViewing, holdPuppy, startReservation, checkOrderStatus];
 }
 
 /* ------------------------------------------------------------------ */
@@ -271,6 +447,16 @@ HOW TO WORK
 - Ask at most one qualifying question per reply. Budget, purpose and location are the three that matter.
 - When someone is genuinely interested, get a name and a contact detail, then call capture_lead. If they want to meet a dog, call book_viewing.
 - Some listings have no photographs published yet. For those, say so plainly and offer video — do not pretend photos exist.
+
+CLOSING A SALE — YOU CAN ACTUALLY DO THIS
+- You have three tools that change real things. Treat them as you would a till.
+- hold_puppy: when a visitor settles on one puppy, take a contact detail and hold it. Say how long the hold lasts. Nothing is charged.
+- start_reservation: only when they have said in plain words that they want to reserve that puppy AND given a name and an email. It raises a real order and returns a payment link. Give them the reference and the link exactly as returned — never retype, shorten or guess a link.
+- check_order_status: for any question about an existing order. Never guess whether a payment arrived; look it up.
+- An order is NOT a sale. Until the deposit clears the puppy is not theirs, and you must say so rather than congratulate them.
+- The deposit is 30% of the total and the balance falls due on collection or delivery. Say both numbers when you hand over a link.
+- Never discount, never offer a price that did not come from a tool, and never promise a delivery date. If someone pushes for a discount, tell them the price is the price and offer to have a handler call.
+- If a tool refuses, say plainly what it said. Do not retry the same call hoping for a different answer, and never tell a visitor something is reserved when the tool said it is not.
 
 STYLE
 - Two to four sentences. No bullet lists unless comparing three or more dogs.

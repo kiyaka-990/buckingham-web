@@ -123,3 +123,46 @@ model RateLimit {
 
   @@index([expiresAt])
 }
+
+/// Everything an AI agent did on the kennel's behalf.
+///
+/// Agent writes are not the same as a visitor filling in a form, and they must
+/// not be indistinguishable from one in the Message table. Every tool call that
+/// changes state lands here: what ran, for whom, what it touched, and whether a
+/// human still needs to approve it.
+model AgentAction {
+  id         String   @id @default(cuid())
+  agent      String   @default("duke")
+  action     String
+  status     String   @default("done") // "done" | "pending_approval" | "rejected" | "failed"
+  sessionId  String?
+  orderRef   String?
+  dogSlug    String?
+  contact    String?
+  summary    String
+  payload    String // JSON object
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([orderRef])
+  @@index([status])
+}
+
+/// A puppy held off the market while a buyer completes payment.
+///
+/// Distinct from stock: stock only moves when money confirms. A hold is the
+/// soft, expiring claim an agent or a checkout can place so two buyers are not
+/// sold the same puppy in the same ten minutes.
+model Hold {
+  id        String   @id @default(cuid())
+  dogSlug   String
+  orderRef  String?
+  source    String   @default("agent") // "agent" | "checkout"
+  contact   String?
+  expiresAt DateTime
+  releasedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([dogSlug])
+  @@index([expiresAt])
+}

@@ -7,6 +7,7 @@ import { CreditCard, Smartphone, ShieldCheck, Lock, Loader2, CheckCircle2, XCirc
 import { useCart } from "@/lib/store/cart";
 import { formatPrice, usdToKes, cn } from "@/lib/utils";
 import { site } from "@/lib/site";
+import { depositFor } from "@/lib/data/catalog";
 
 type Method = "card" | "mpesa";
 type Stk = "idle" | "sent" | "success" | "failed" | "timeout";
@@ -23,7 +24,7 @@ export default function CheckoutPage() {
   const [orderRef, setOrderRef] = useState<string | null>(null);
 
   const subtotal = items.reduce((n, i) => n + i.qty * i.price, 0);
-  const deposit = Math.round(subtotal * 0.3);
+  const deposit = depositFor(subtotal);
   const depositKes = usdToKes(deposit);
 
   const pollStatus = async (orderId: string) => {
@@ -52,7 +53,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
 
-      if (data.url) { window.location.href = data.url; return; } // Stripe Checkout
+      if (data.url) { window.location.assign(data.url as string); return; } // Stripe Checkout
 
       if (method === "mpesa") {
         const orderId = data.orderId as string;

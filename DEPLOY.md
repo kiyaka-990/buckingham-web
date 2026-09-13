@@ -51,6 +51,9 @@ git push -u origin main
    | `ANTHROPIC_MODEL` | Defaults to `claude-opus-5` |
    | `RESEND_API_KEY` | Sends the one-time sign-in codes (see below) |
    | `OTP_FROM_EMAIL` | From-address for those codes |
+   | `ORDER_FROM_EMAIL` | From-address for order receipts and follow-ups |
+   | `OWNER_ALERT_EMAIL` | Where the kennel's own copy of every order lands (defaults to the published address) |
+   | `CRON_SECRET` | Bearer token Vercel Cron uses to call `/api/cron/follow-up`. **Unset means the endpoint refuses every call.** |
 
 3. **Deploy.** The build runs the migrations against Neon and ships the app.
 
@@ -94,3 +97,42 @@ Point `DATABASE_URL` at a Neon dev branch and run everything with the Postgres s
 npm run db:generate:prod
 prisma migrate deploy --schema=prisma/schema.postgres.prisma
 ```
+
+---
+
+## What production is still missing
+
+`vercel env ls production` should list all of the following. Anything absent
+here is a feature that is silently switched off on the live site:
+
+| Variable | What breaks without it |
+| --- | --- |
+| `STRIPE_WEBHOOK_SECRET` | **Card payments never confirm.** The webhook returns 501, the order stays `pending` for ever, stock is never decremented and no receipt is sent. Money can arrive and the shop will not know. |
+| `MPESA_*` (7 vars) | The entire M-Pesa rail is dead — the STK push endpoint cannot authenticate. |
+| `RESEND_API_KEY` | No order receipts, no owner alerts, no follow-ups, and email sign-in refuses to issue codes. |
+| `CRON_SECRET` | The hourly follow-up job returns 401: stale holds are never released and stalled orders are never chased. |
+
+Set them with:
+
+```bash
+vercel env add STRIPE_WEBHOOK_SECRET production
+vercel env add RESEND_API_KEY production
+vercel env add ORDER_FROM_EMAIL production
+vercel env add OWNER_ALERT_EMAIL production
+vercel env add CRON_SECRET production          # openssl rand -base64 32
+vercel env add MPESA_ENV production            # and the other six MPESA_ vars
+```
+
+Redeploy afterwards — environment variables are read at build and boot.
+
+## The scheduled follow-up job
+
+`vercel.json` registers `/api/cron/follow-up` hourly. Each run:
+
+1. releases holds that have lapsed, putting those puppies back on sale;
+2. emails a one-time nudge for orders that stalled mid-payment (older than 2
+   hours, younger than 7 days);
+3. cancels orders still unpaid after 7 days.
+
+Every step is idempotent and logged to the `AgentAction` table, so a replayed
+schedule cannot email the same buyer twice.

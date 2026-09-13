@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { sendOrderConfirmation, sendOwnerOrderAlert, type OrderMail } from "@/lib/email";
 
 /**
  * Taking a dog off the shelf.
@@ -47,6 +48,35 @@ export async function confirmOrderPaid(
       data: { stock, status: stock === 0 ? "reserved" : dog.status },
     });
   }
+
+  // Receipts go out only on the update that actually won the race above, so a
+  // replayed webhook cannot email the buyer twice. Mail is best-effort: a
+  // provider outage must not fail the webhook and trigger endless retries of
+  // an order that is already settled.
+  const mail: OrderMail = {
+    ref: order.ref,
+    customerName: order.customerName,
+    email: order.email,
+    phone: order.phone,
+    total: order.total,
+    deposit: order.deposit,
+    method: order.method,
+    items: order.items.map((i) => ({
+      name: i.name,
+      breedName: i.breedName,
+      price: i.price,
+      qty: i.qty,
+    })),
+  };
+  const results = await Promise.allSettled([
+    order.email ? sendOrderConfirmation(mail) : Promise.resolve({ delivered: false }),
+    sendOwnerOrderAlert(mail),
+  ]);
+  results.forEach((r, i) => {
+    if (r.status === "rejected") {
+      console.error(`[fulfilment] ${i === 0 ? "buyer receipt" : "owner alert"} failed for ${order.ref}:`, r.reason);
+    }
+  });
 
   return { confirmed: true, ref: order.ref };
 }

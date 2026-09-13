@@ -342,3 +342,13 @@ export const priceRange = {
   min: Math.min(...puppies.map((d) => d.price)),
   max: Math.max(...puppies.map((d) => d.price)),
 };
+
+/**
+ * The share of an order taken up front to reserve a puppy; the balance falls
+ * due on collection or before delivery. Both payment rails charge this same
+ * figure — set it to 1 to take payment in full instead.
+ */
+export const DEPOSIT_RATE = 0.3;
+
+/** What a buyer is actually charged at checkout for an order of `total`. */
+export const depositFor = (total: number) => Math.round(total * DEPOSIT_RATE);
