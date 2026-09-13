@@ -68,7 +68,7 @@ export function Footer() {
               <Mail size={14} className="mt-0.5" /> <span className="break-all">{site.contact.email}</span>
             </a>
             <p className="flex items-start gap-2 text-sm text-graphite-100/80">
-              <MapPin size={14} className="mt-0.5 shrink-0" /> {site.contact.address.building}, {site.contact.address.county}, {site.contact.address.country}
+              <MapPin size={14} className="mt-0.5 shrink-0" /> {site.contact.address.street}, {site.contact.address.county}, {site.contact.address.country}
             </p>
             <NewsletterForm />
           </div>

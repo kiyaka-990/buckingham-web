@@ -32,7 +32,7 @@ export default function ContactPage() {
             href={`tel:${site.contact.phone}`}
           />
           <InfoCard icon={Mail} title="Email" lines={[site.contact.email]} href={`mailto:${site.contact.email}`} />
-          <InfoCard icon={MapPin} title="Visit Us" lines={[a.building, `${a.street}, ${a.locality}`, `${a.county}, ${a.country}`, a.poBox]} />
+          <InfoCard icon={MapPin} title="Visit Us" lines={[`${a.street}, ${a.locality}`, `${a.county}, ${a.country}`, a.poBox]} />
           <InfoCard icon={Clock} title="Hours" lines={["Mon–Sat: 8:00 – 18:00", "Sun: By appointment"]} />
           <a
             href={`https://wa.me/${site.contact.whatsapp}`}

@@ -19,7 +19,6 @@ export const site = {
     whatsapp: "254720332626",
     email: "buckinghamkennellltd@gmail.com",
     address: {
-      building: "The Great Mini Mall, Webuye",
       street: "T-Junction, Lions Road",
       locality: "Webuye",
       county: "Bungoma",

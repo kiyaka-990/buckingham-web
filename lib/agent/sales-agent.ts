@@ -244,7 +244,7 @@ function makeTools(seen: Map<string, Dog>) {
           unread: true,
         },
       });
-      return `Viewing request saved. Confirm to the visitor that the kennel will call to confirm the slot, and that visits are by appointment at ${site.contact.address.building}, ${site.contact.address.locality}.`;
+      return `Viewing request saved. Confirm to the visitor that the kennel will call to confirm the slot, and that visits are by appointment at ${site.contact.address.street}, ${site.contact.address.locality}.`;
     },
   });
 
@@ -279,7 +279,7 @@ STYLE
 
 THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
 - Phone/WhatsApp ${phones.map((p) => p.display).join(" or ")}, email ${site.contact.email}.
-- Visits by appointment at ${site.contact.address.building}, ${site.contact.address.street}, ${site.contact.address.locality}.
+- Visits by appointment at ${site.contact.address.street}, ${site.contact.address.locality}.
 - Payment: international cards via Stripe, or M-Pesa for local buyers. A deposit reserves a dog; the balance falls due on delivery.
 - Every puppy leaves vaccinated, dewormed, microchipped, vet-checked, with its full vaccination record and a written health guarantee.
 - The dogs are NOT registered and NOT pedigree certified — neither the puppies nor the parents. The parents were imported but arrived without pedigree certificates, so there is no registered line to pass on.
