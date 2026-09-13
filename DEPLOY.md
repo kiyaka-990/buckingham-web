@@ -110,7 +110,7 @@ here is a feature that is silently switched off on the live site:
 | `STRIPE_WEBHOOK_SECRET` | **Card payments never confirm.** The webhook returns 501, the order stays `pending` for ever, stock is never decremented and no receipt is sent. Money can arrive and the shop will not know. |
 | `MPESA_*` (7 vars) | The entire M-Pesa rail is dead — the STK push endpoint cannot authenticate. |
 | `RESEND_API_KEY` | No order receipts, no owner alerts, no follow-ups, and email sign-in refuses to issue codes. |
-| `CRON_SECRET` | The hourly follow-up job returns 401: stale holds are never released and stalled orders are never chased. |
+| `CRON_SECRET` | The daily follow-up job returns 401: stale holds are never released and stalled orders are never chased. |
 
 Set them with:
 
@@ -127,7 +127,9 @@ Redeploy afterwards — environment variables are read at build and boot.
 
 ## The scheduled follow-up job
 
-`vercel.json` registers `/api/cron/follow-up` hourly. Each run:
+`vercel.json` registers `/api/cron/follow-up` daily at 07:00 UTC (10:00 EAT).
+Hobby plans allow one cron run per day; on Pro you can raise this to hourly by
+changing the schedule to `0 * * * *`. Each run:
 
 1. releases holds that have lapsed, putting those puppies back on sale;
 2. emails a one-time nudge for orders that stalled mid-payment (older than 2
