@@ -7,6 +7,7 @@ import { type Dog } from "@/lib/data/catalog";
 import { breeds } from "@/lib/data/breeds";
 import { DogCard } from "@/components/shop/dog-card";
 import { formatPrice, cn } from "@/lib/utils";
+import { matches } from "@/lib/search";
 
 type Sort = "featured" | "price-asc" | "price-desc" | "rating";
 
@@ -31,10 +32,9 @@ export function ShopView({ dogs, priceRange }: { dogs: Dog[]; priceRange: { min:
     let list = dogs.filter((d) => d.price <= maxPrice);
     if (breed !== "all") list = list.filter((d) => d.breedSlug === breed);
     if (availableOnly) list = list.filter((d) => d.status === "available");
-    if (q.trim()) {
-      const t = q.toLowerCase();
-      list = list.filter((d) => `${d.name} ${d.breedName} ${d.color}`.toLowerCase().includes(t));
-    }
+    // Same token matcher as the search modal, so a query that found a dog
+    // there does not come up empty here.
+    if (q.trim()) list = list.filter((d) => matches(`${d.name} ${d.breedName} ${d.color}`, q));
     const byPrice = (a: Dog, b: Dog, dir: 1 | -1) => (a.price - b.price) * dir;
     switch (sort) {
       case "price-asc": list = [...list].sort((a, b) => byPrice(a, b, 1)); break;

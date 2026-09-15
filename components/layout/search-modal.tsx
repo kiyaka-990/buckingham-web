@@ -1,21 +1,49 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { FadeImage } from "@/components/ui/fade-image";
 import { useRouter } from "next/navigation";
 import { Search, X, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { dogs, isForSale } from "@/lib/data/catalog";
-import { breeds } from "@/lib/data/breeds";
+import { dogs, isForSale, isPhotoPending } from "@/lib/data/catalog";
+import { breeds, PHOTO_PENDING } from "@/lib/data/breeds";
 import { useUI } from "@/lib/store/ui";
 import { formatPrice } from "@/lib/utils";
+import { matches, score } from "@/lib/search";
+
+type IndexDog = {
+  slug: string; name: string; breedName: string; breedSlug: string;
+  color: string; category: string; ageLabel: string;
+  price: number; status: string; forSale: boolean; image: string;
+};
 
 const trending = ["Puppies", "Kangal", "Caucasian Shepherd", "Royal Black Shepherd", "Akita"];
+
+/** The bundled catalogue, used only until the live index arrives (or if it fails). */
+const seedIndex: IndexDog[] = dogs.map((d) => ({
+  slug: d.slug, name: d.name, breedName: d.breedName, breedSlug: d.breedSlug,
+  color: d.color, category: d.category, ageLabel: d.ageLabel,
+  price: d.price, status: d.status, forSale: isForSale(d),
+  image: isPhotoPending(d) ? PHOTO_PENDING : d.images[0],
+}));
 
 export function SearchModal() {
   const { searchOpen, setSearch } = useUI();
   const [q, setQ] = useState("");
+  const [index, setIndex] = useState<IndexDog[]>(seedIndex);
+  const loaded = useRef(false);
   const router = useRouter();
+
+  // Fetched once, the first time the modal opens — search must reflect what the
+  // owner has actually listed, not what was in the bundle at build time.
+  useEffect(() => {
+    if (!searchOpen || loaded.current) return;
+    loaded.current = true;
+    fetch("/api/search")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d?.dogs?.length) setIndex(d.dogs as IndexDog[]); })
+      .catch(() => { /* keep the bundled catalogue — stale beats broken */ });
+  }, [searchOpen]);
 
   useEffect(() => {
     if (!searchOpen) setQ("");
@@ -35,18 +63,33 @@ export function SearchModal() {
 
   const results = useMemo(() => {
     if (!q.trim()) return { dogs: [], breeds: [] };
-    const t = q.toLowerCase();
+    const rank = (d: IndexDog) => score(`${d.name} ${d.breedName}`, q);
     return {
-      dogs: dogs
-        .filter((d) => `${d.name} ${d.breedName} ${d.color} ${d.category}`.toLowerCase().includes(t))
-        .slice(0, 5),
-      breeds: breeds.filter((b) => b.name.toLowerCase().includes(t)).slice(0, 3),
+      // Puppies first: they are the only thing a visitor can actually buy.
+      dogs: index
+        .filter((d) => matches(`${d.name} ${d.breedName} ${d.color} ${d.category}`, q))
+        .sort((a, b) => Number(b.forSale) - Number(a.forSale) || rank(b) - rank(a))
+        .slice(0, 6),
+      breeds: breeds.filter((b) => matches(b.name, q)).slice(0, 3),
     };
-  }, [q]);
+  }, [q, index]);
 
   const go = (href: string) => {
     setSearch(false);
     router.push(href);
+  };
+
+  /**
+   * Enter used to send every query to /shop, which lists puppies only — so
+   * searching for one of the parent dogs, or for a breed with no puppies in at
+   * the moment, landed on an empty shop reading "no results" for a dog the
+   * visitor had just seen listed. Go to the best actual match instead, and only
+   * fall back to the shop when there is nothing to go to.
+   */
+  const submit = () => {
+    if (results.dogs.length) return go(`/dogs/${results.dogs[0].slug}`);
+    if (results.breeds.length) return go(`/breeds/${results.breeds[0].slug}`);
+    go(`/shop?q=${encodeURIComponent(q)}`);
   };
 
   return (
@@ -75,7 +118,7 @@ export function SearchModal() {
                 placeholder="Search breeds, puppies, trained dogs…"
                 className="h-16 flex-1 bg-transparent text-lg outline-none placeholder:text-muted"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") go(`/shop?q=${encodeURIComponent(q)}`);
+                  if (e.key === "Enter") submit();
                 }}
               />
               <button onClick={() => setSearch(false)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-foreground/5">
@@ -115,14 +158,14 @@ export function SearchModal() {
                     </button>
                   ))}
                   {results.dogs.map((d) => (
-                    <button key={d.id} onClick={() => go(`/dogs/${d.slug}`)} className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition hover:bg-foreground/5">
-                      <FadeImage src={d.images[0]} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
+                    <button key={d.slug} onClick={() => go(`/dogs/${d.slug}`)} className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition hover:bg-foreground/5">
+                      <FadeImage src={d.image} alt={d.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                       <span className="flex-1">
                         <span className="block font-medium">{d.name}</span>
                         <span className="text-xs text-muted">{d.breedName} · {d.ageLabel}</span>
                       </span>
                       <span className="font-display font-semibold text-accent-ink">
-                        {isForSale(d) ? formatPrice(d.price) : "Not for sale"}
+                        {d.forSale ? formatPrice(d.price) : "Not for sale"}
                       </span>
                     </button>
                   ))}

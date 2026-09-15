@@ -14,7 +14,11 @@ Needs `ffmpeg` on PATH, or set `SP` to a directory holding
       public/media/gsd-black/pup-09.jpg
 
 Output is 1280x800, 30fps, 6s per shot with a 1s cross-fade, ~1.5 MB for three
-shots. The clips in `public/media/clips/` were built this way.
+shots. The carousel's three stand-in clips were built this way and have since
+been deleted: the kennel sent real footage (`public/media/video.mp4`), that
+took the lead pane, and the other panes went back to being photographs.
 
-These are stand-ins for real footage. When the kennel sends an actual clip for a
-breed, drop it in and point the slide's `src` at it — nothing else changes.
+The script stays because the need can recur — a breed page that wants movement
+before there is footage for it. Anything it renders is a stand-in. When the
+kennel sends an actual clip, drop it in and point the slide's `src` and
+`poster` at it; nothing else changes.

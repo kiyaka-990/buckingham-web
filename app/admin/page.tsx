@@ -7,14 +7,16 @@ import { statusStyles, type OrderStatus } from "@/lib/data/orders";
 import { revenueSeries, activity } from "@/lib/data/admin";
 import { formatPrice } from "@/lib/utils";
 import { DonutChart, Sparkline, AreaChart, ProgressBar } from "@/components/admin/charts";
+import { agentHealth } from "@/lib/agent/health";
 
 const activityIcon = { order: ShoppingCart, message: MessageSquare, stock: Package, review: Star };
 
 export default async function AdminDashboard() {
-  const [orderRows, dogs, customerGroups] = await Promise.all([
+  const [orderRows, dogs, customerGroups, health] = await Promise.all([
     db.order.findMany({ orderBy: { createdAt: "desc" }, include: { items: true } }),
     getDogs(),
     db.order.groupBy({ by: ["email"] }),
+    agentHealth(),
   ]);
 
   const revenue = orderRows.filter((o) => o.status !== "cancelled").reduce((n, o) => n + o.total, 0);
@@ -40,6 +42,27 @@ export default async function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* The agent fails quietly by design — the keyword fallback keeps selling.
+          That is exactly why its failure needs shouting about here. */}
+      {!health.healthy && (
+        <div className="flex items-start gap-3 rounded-2xl border border-red-500/40 bg-red-500/10 p-4">
+          <AlertTriangle size={20} className="mt-0.5 shrink-0 text-red-400" />
+          <div className="text-sm">
+            <p className="font-semibold text-red-400">
+              Duke is not answering — visitors are getting the basic fallback
+            </p>
+            <p className="mt-1 text-muted">{health.reason}</p>
+            {health.since && (
+              <p className="mt-1 text-xs text-muted">
+                Since {health.since.toISOString().slice(0, 16).replace("T", " ")} UTC.
+                Visitors still get keyword-matched answers and can still buy, but the
+                AI agent, its inventory tools and the follow-up emails are all off.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-bold">Dashboard</h1>

@@ -9,6 +9,7 @@ import { formatPrice, usdToKes } from "@/lib/utils";
 import { priceCart, persistOrder, createStripeSession, newOrderRef } from "@/lib/orders";
 import { placeHold } from "@/lib/holds";
 import { recordAgentAction } from "@/lib/agent/audit";
+import { recordAgentFailure, recordAgentRecovered } from "@/lib/agent/health";
 import { sendLeadAlert } from "@/lib/email";
 import { captureLead as recordLead } from "@/lib/leads";
 
@@ -503,7 +504,14 @@ THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
 export async function runSalesAgent(
   messages: ChatMsg[]
 ): Promise<{ reply: string; suggestions: DogSuggestion[] } | null> {
-  if (!process.env.ANTHROPIC_API_KEY) return null;
+  // The commonest way this agent dies in production, and the quietest: the key
+  // is unset or was pasted in empty, so we bail before a single log line is
+  // written and every visitor silently gets the keyword fallback instead.
+  // That is precisely the outage the health banner exists to make visible.
+  if (!process.env.ANTHROPIC_API_KEY) {
+    await recordAgentFailure("ANTHROPIC_API_KEY is not set on this deployment.");
+    return null;
+  }
 
   const client = new Anthropic();
   const seen = new Map<string, Dog>();
@@ -525,7 +533,10 @@ export async function runSalesAgent(
       .join("\n")
       .trim();
 
-    if (!reply) return null;
+    if (!reply) {
+      await recordAgentFailure("The agent returned no text (it used its tools and then said nothing).");
+      return null;
+    }
 
     // Surface the dogs the agent actually looked at, best first.
     const suggestions = [...seen.values()]
@@ -534,15 +545,22 @@ export async function runSalesAgent(
       .slice(0, 3)
       .map(toSuggestion);
 
+    void recordAgentRecovered();
     return { reply, suggestions };
   } catch (err) {
+    // The message matters as much as the fact: "credit balance is too low" and
+    // "rate limited" need completely different responses from the owner, and
+    // the fallback hides both equally well.
+    let reason: string;
     if (err instanceof Anthropic.RateLimitError) {
-      console.warn("[sales-agent] rate limited, falling back to rules");
+      reason = "Rate limited by the Anthropic API.";
     } else if (err instanceof Anthropic.APIError) {
-      console.warn(`[sales-agent] API error ${err.status}:`, err.message);
+      reason = `Anthropic API error ${err.status}: ${err.message}`;
     } else {
-      console.warn("[sales-agent] unexpected failure:", err);
+      reason = `Unexpected failure: ${(err as Error).message}`;
     }
+    console.warn("[sales-agent]", reason);
+    await recordAgentFailure(reason);
     return null;
   }
 }
