@@ -38,8 +38,9 @@ const STALL_POLL_MS = 2000;
  *
  * The copy sits on the page itself, on the left, and the media runs off the
  * right-hand edge of the screen — no scrim over the dogs, no full-bleed
- * rectangle behind the type. A narrow feather softens the seam where the two
- * meet; nothing else is laid over the picture.
+ * rectangle behind the type. The film dissolves gradually across its left
+ * third so the two do not meet on a line; nothing else is laid over it, and
+ * from a third of the way in the picture is completely clear.
  *
  * On a phone there is no room for two columns, so the media stacks above the
  * copy and the feather drops away.
@@ -230,11 +231,19 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       {/* ---- The media. Stacked above the copy on a phone; from lg up it is
               pinned to the right and runs past the edge of the screen. ---- */}
-      {/* overflow-hidden matters here: the layer inside is scaled up so it has
-          room to drift, which means it is wider and taller than this frame.
-          Without the clip it would spill over the copy — off the foot of the
-          media on a phone, across the paragraph from lg up. */}
-      <div className="relative h-[52vw] max-h-[26rem] w-full overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:max-h-none lg:w-[56%]">
+      {/* Two things ride on this element rather than the layer inside it.
+
+          overflow-hidden, because the layer inside is scaled up to give the
+          drift room, so it is wider and taller than this frame — without the
+          clip it would spill over the copy, off the foot of the media on a
+          phone and across the paragraph from lg up.
+
+          And the feather, because a mask is measured against the box it sits
+          on. On the scaled layer its percentages would be struck against a
+          box 14% too wide and then partly clipped away, so the fade would
+          land somewhere other than where it was written. Here the frame is
+          the visible media, and 34% means 34% of what the visitor sees. */}
+      <div className="feather-media relative h-[52vw] max-h-[26rem] w-full overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:max-h-none lg:w-[56%]">
         {/* The parallax layer. It drifts down as the page scrolls while the
             copy beside it moves at the ordinary rate, which is what gives the
             hero its depth. The scale is what makes that safe: growing the
@@ -242,7 +251,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             drift ever uses, so the media never pulls away from its own frame
             and exposes the background. Reduced motion gets neither. */}
         <div
-          className="feather-media relative h-full w-full"
+          className="relative h-full w-full"
           style={
             reduced
               ? undefined

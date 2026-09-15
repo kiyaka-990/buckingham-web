@@ -708,19 +708,28 @@ html {
     opacity: 0.55;
   }
 
-  /* From lg up the hero media sits beside the copy, and without something
-     on its left edge it ends on a hard vertical line against the paragraph.
-     So: a narrow feather, and only that.
+  /* From lg up the hero media sits beside the copy, and the left edge is
+     where the two meet. This has been tuned from both ends.
 
-     The mask this replaced ran a wash to 46% and dimmed the picture with it,
-     which is what the client objected to. This one is opaque by 12% — it
-     softens the seam and nothing else. The film itself is untouched, which
-     is the whole point. Below lg the media stacks above the copy and needs
-     no feather. */
+     At 46% the original washed the picture out, which the client rejected.
+     At 12% the fade was so tight it read as a seam — a straight line down
+     the middle of the window, the page split into two boxes, which the
+     client rejected too. The answer is a long, soft dissolve rather than a
+     short hard one: the film gives way gradually across its left third and
+     is completely clear from 34% on, so two thirds of the picture is
+     untouched while the edge itself stops being an edge at all.
+
+     Below lg the media stacks above the copy and there is no seam to
+     dissolve, so there is no mask. */
   @media (min-width: 1024px) {
     .feather-media {
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 12%);
-      mask-image: linear-gradient(to right, transparent 0%, #000 12%);
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(0, 0, 0, 0.5) 13%,
+        #000 34%
+      );
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 13%, #000 34%);
     }
   }
 
