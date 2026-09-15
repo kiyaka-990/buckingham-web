@@ -218,7 +218,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       {/* ---- The media. Stacked above the copy on a phone; from lg up it is
               pinned to the right and runs past the edge of the screen. ---- */}
       <div className="relative h-[52vw] max-h-[26rem] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:max-h-none lg:w-[56%]">
-        <div className="relative h-full w-full">
+        <div className="feather-media relative h-full w-full">
           {slides.map((s, i) => (
             <div
               key={s.src + i}

@@ -35,12 +35,15 @@ export const dynamic = "force-dynamic";
  * Caucasian, the litters out on the grass, the grounds at Webuye. It plays
  * through to its end before the carousel moves on — see `hero-carousel.tsx`.
  *
- * The three panes behind it are photographs. They used to be clips cut from
- * those same photographs by scripts/build-clips.sh, which were only ever
- * stand-ins for footage the kennel had not shot yet. Now that the real film
- * has arrived the stand-ins are gone and the stills speak for themselves.
- * Swap any one of them for a genuine clip the moment the kennel sends it —
- * set `kind: "video"` and point `src` and `poster` at the new files.
+ * The Kangal pane behind it is the other real clip, shot at the kennel. The
+ * two of them are the only footage the reel carries, and that is deliberate:
+ * the panes that used to sit here were clips cut from the kennel's own
+ * photographs by scripts/build-clips.sh, stand-ins for video that had not
+ * been shot yet. Both real films have now arrived, so the stand-ins are gone
+ * and the last two panes are honest stills.
+ *
+ * Swap a still for a genuine clip the moment the kennel sends one — set
+ * `kind: "video"` and point `src` and `poster` at the new files.
  */
 const heroSlides: HeroSlide[] = [
   {
@@ -55,10 +58,11 @@ const heroSlides: HeroSlide[] = [
     cta: "Browse the breeds",
   },
   {
-    kind: "image",
-    src: "/media/kangal/pup-02.jpg",
+    kind: "video",
+    src: "/media/kangal/clip-01.mp4",
+    poster: "/media/kangal/pup-02.jpg",
     thumb: "/media/kangal/pup-02.jpg",
-    eyebrow: "The Kangal",
+    eyebrow: "The Kangal, on film",
     title: "Guardians raised in the open",
     copy: "Our Kangals grow up on open ground with stock and space, which is the only way this breed comes right. Watch them work, then come and meet them.",
     href: "/breeds/kangal",
