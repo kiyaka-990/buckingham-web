@@ -708,25 +708,10 @@ html {
     opacity: 0.55;
   }
 
-  /* Media that dissolves into the page rather than ending on a hard
-     rectangle. On a phone the media sits above the copy, so it fades at
-     the foot; from lg up it sits beside the copy and bleeds off the
-     right edge of the screen, so it fades on its left instead. */
-  .bleed-media {
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
-  }
-
-  @media (min-width: 1024px) {
-    .bleed-media {
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.65) 22%, #000 46%),
-        linear-gradient(to bottom, transparent 0%, #000 14%, #000 84%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.65) 22%, #000 46%),
-        linear-gradient(to bottom, transparent 0%, #000 14%, #000 84%, transparent 100%);
-      -webkit-mask-composite: source-in;
-      mask-composite: intersect;
-    }
-  }
+  /* The hero media used to be masked so it dissolved into the page along
+     its left edge. The client wants the film shown clean — no fade, no
+     wash over the picture — so the mask is gone and the media simply ends
+     at its own edge. Nothing is painted over it. */
 
   /* Panel: the Once UI card — hairline alpha border, faint inner
      highlight, no heavy drop shadow. */

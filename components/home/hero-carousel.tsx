@@ -22,35 +22,54 @@ export type HeroSlide = {
 };
 
 const AUTOPLAY_MS = 7000;
+/**
+ * Safety net for a video pane. A clip holds the reel until it ends, so there is
+ * no fixed dwell to time out against — a longer film would simply be cut off.
+ * Instead we watch the playhead: if it has not moved for this long the clip is
+ * stuck (autoplay refused, the fetch died, the decoder gave up) and the reel
+ * moves on. Long enough to ride out a stall on a slow connection.
+ */
+const VIDEO_STALL_MS = 12000;
+/** How often the watchdog checks the playhead. */
+const STALL_POLL_MS = 2000;
 
 /**
  * The landing carousel.
  *
  * The copy sits on the page itself, on the left, and the media runs off the
  * right-hand edge of the screen — no scrim over the dogs, no full-bleed
- * rectangle behind the type. The photograph or clip is masked so it dissolves
- * into the background along its left edge, which is the only way a picture and
- * a paragraph can share a row without one shouting over the other.
+ * rectangle behind the type.
  *
- * On a phone there is no room for two columns, so the media stacks above the
- * copy and fades at its foot instead; `.bleed-media` handles the switch.
+ * The media used to be masked so it dissolved into the page along its left
+ * edge, and a bloom of the accent sat behind it. Both are gone: the client
+ * wants the film shown clean, so nothing is painted over the picture and it
+ * ends at its own edge. On a phone the media simply stacks above the copy.
  *
- * Video slides autoplay muted and looping, which is the only form of autoplay
- * browsers allow and the only one that is not rude. Sound is opt-in, the
+ * A video pane autoplays muted, which is the only form of autoplay browsers
+ * allow and the only one that is not rude. It runs once, start to finish, and
+ * then the reel moves on rather than looping. Sound is opt-in, the
  * rotation pauses on keyboard focus and while the tab is hidden, and it never
- * starts at all for a visitor who has asked for reduced motion. Hover does not
- * pause it — the reel runs on while the cursor rests over it.
+ * starts at all for a visitor who has asked for reduced motion or whose
+ * connection is metered. Hover does not pause it — the reel runs on while the
+ * cursor rests over it.
  */
 export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(true);
   const [reduced, setReduced] = useState(false);
+  /** Data Saver, or a 2G-class connection — see the effect below. */
+  const [metered, setMetered] = useState(false);
   /** 0 at the top of the page, 1 once scrolled a screenful — drives the shadow. */
   const [lift, setLift] = useState(0);
   const videos = useRef(new Map<number, HTMLVideoElement>());
 
   const count = slides.length;
+  // A boolean, not the slide itself: this feeds the rotation effect below, and
+  // a fresh object in its deps would restart the timer on every scroll tick.
+  const activeIsVideo = slides[index]?.kind === "video";
+  /** A pane only holds for a film we are actually going to play. */
+  const holdForFilm = activeIsVideo && !metered;
   const go = useCallback((n: number) => setIndex(((n % count) + count) % count), [count]);
   const next = useCallback(() => go(index + 1), [go, index]);
   const prev = useCallback(() => go(index - 1), [go, index]);
@@ -70,12 +89,61 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     };
   }, []);
 
+  // The film is several megabytes, and a good share of our buyers reach the
+  // site on a phone over mobile data. If the browser says the visitor is
+  // metered — Data Saver switched on, or a 2G-class connection — we do not
+  // spend their bundle on autoplay. They get the poster frame, the pane keeps
+  // the ordinary still's dwell, and the play control is still there if they
+  // want the film. Desktop and anything decent is unaffected.
+  useEffect(() => {
+    const conn = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    if (!conn) return;
+    const read = () =>
+      setMetered(Boolean(conn.saveData) || /^(slow-)?2g$/.test(conn.effectiveType ?? ""));
+    read();
+    const target = conn as unknown as EventTarget;
+    target.addEventListener?.("change", read);
+    return () => target.removeEventListener?.("change", read);
+  }, []);
+
   // Rotate, unless something has asked us not to.
+  //
+  // A still holds for AUTOPLAY_MS. A clip holds until it finishes and then
+  // hands over (see `onEnded` below) — the kennel's film runs over a minute
+  // and cutting it off after seven seconds, every time round, would mean no
+  // visitor ever saw past its opening shot.
+  //
+  // So a video pane gets a watchdog rather than a deadline: we sample the
+  // playhead, and only give up on a clip that has genuinely stopped moving.
+  // That way the pane fits the film instead of the film being cut to fit a
+  // constant, however long a clip the kennel sends next.
   useEffect(() => {
     if (paused || reduced || count < 2) return;
-    const t = setTimeout(next, AUTOPLAY_MS);
-    return () => clearTimeout(t);
-  }, [paused, reduced, count, next, index]);
+
+    if (!holdForFilm) {
+      const t = setTimeout(next, AUTOPLAY_MS);
+      return () => clearTimeout(t);
+    }
+
+    let lastTime = -1;
+    let stalledFor = 0;
+    const id = setInterval(() => {
+      const v = videos.current.get(index);
+      // No element yet, or it is buffering at the same frame as last check.
+      if (v && v.currentTime !== lastTime) {
+        lastTime = v.currentTime;
+        stalledFor = 0;
+        return;
+      }
+      stalledFor += STALL_POLL_MS;
+      if (stalledFor >= VIDEO_STALL_MS) next();
+    }, STALL_POLL_MS);
+    return () => clearInterval(id);
+  }, [paused, reduced, count, next, index, holdForFilm]);
 
   useEffect(() => {
     const onVisibility = () => setPaused(document.hidden);
@@ -105,18 +173,18 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   }, []);
 
   // Only the slide on screen plays; the rest rewind so they start from the top.
-  // Every pane is footage now, so a reduced-motion visitor gets none of it
-  // moving — the poster frame stands in and nothing autoplays.
+  // A reduced-motion visitor gets no playback at all — the poster frame stands
+  // in, and the stills behind it hold still too.
   useEffect(() => {
     videos.current.forEach((v, i) => {
-      if (i === index && !paused && !reduced) {
+      if (i === index && !paused && !reduced && !metered) {
         void v.play().catch(() => {});
       } else {
         v.pause();
         if (i !== index) v.currentTime = 0;
       }
     });
-  }, [index, paused, reduced]);
+  }, [index, paused, reduced, metered]);
 
   useEffect(() => {
     videos.current.forEach((v) => {
@@ -146,19 +214,11 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       }}
     >
       <span className="lattice" aria-hidden />
-      {/* A single soft bloom of the accent behind the media, so the right
-          side of the row has some light in it and the mask has something
-          to fade into. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-32 top-1/2 hidden h-[42rem] w-[42rem] -translate-y-1/2 rounded-full opacity-[0.18] blur-3xl lg:block"
-        style={{ background: "radial-gradient(circle, var(--color-volt-400), transparent 68%)" }}
-      />
 
       {/* ---- The media. Stacked above the copy on a phone; from lg up it is
               pinned to the right and runs past the edge of the screen. ---- */}
       <div className="relative h-[52vw] max-h-[26rem] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:max-h-none lg:w-[56%]">
-        <div className="bleed-media relative h-full w-full">
+        <div className="relative h-full w-full">
           {slides.map((s, i) => (
             <div
               key={s.src + i}
@@ -177,9 +237,17 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   src={s.src}
                   poster={s.poster}
                   muted
-                  loop
                   playsInline
-                  preload={i === 0 ? "auto" : "metadata"}
+                  // No `loop`: the pane hands over when the clip ends, which
+                  // it cannot do if the clip restarts itself instead.
+                  onEnded={() => i === index && next()}
+                  // A clip that will not load must not strand the reel on it.
+                  onError={() => i === index && next()}
+                  // `metadata` keeps the film off the critical path — play()
+                  // starts the stream when the pane comes up, and the poster
+                  // covers the gap. On a metered connection we fetch nothing
+                  // at all until the visitor asks for it.
+                  preload={metered ? "none" : "metadata"}
                   className="h-full w-full object-cover"
                 />
               ) : (

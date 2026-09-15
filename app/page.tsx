@@ -29,32 +29,44 @@ export const dynamic = "force-dynamic";
 /**
  * The landing carousel.
  *
- * Footage first — the client wanted the AKC Marketplace treatment, where every
- * pane moves rather than sitting still. The Kangal pane is real footage shot at
- * the kennel and it leads. The other three are cut from the kennel's own
- * photographs: each is a three-shot sequence with a slow push, pull and lateral
- * track, cross-faded, rendered to mp4 by scripts/build-clips.sh.
+ * Footage first — the client wanted the AKC Marketplace treatment, where the
+ * reel opens on a film rather than a still. The lead pane is the kennel's own
+ * video (`/media/video.mp4`): the handler walking the black shepherd and the
+ * Caucasian, the litters out on the grass, the grounds at Webuye. It plays
+ * through to its end before the carousel moves on — see `hero-carousel.tsx`.
  *
- * They are stand-ins, not a substitute for real footage. Swap any one of them
- * for a genuine clip the moment the kennel sends it — only the src and poster
- * change.
+ * The three panes behind it are photographs. They used to be clips cut from
+ * those same photographs by scripts/build-clips.sh, which were only ever
+ * stand-ins for footage the kennel had not shot yet. Now that the real film
+ * has arrived the stand-ins are gone and the stills speak for themselves.
+ * Swap any one of them for a genuine clip the moment the kennel sends it —
+ * set `kind: "video"` and point `src` and `poster` at the new files.
  */
 const heroSlides: HeroSlide[] = [
   {
     kind: "video",
-    src: "/media/kangal/clip-01.mp4",
-    poster: "/media/kangal/pup-02.jpg",
-    thumb: "/media/kangal/pup-02.jpg",
+    src: "/media/video.mp4",
+    poster: "/media/video-poster.jpg",
+    thumb: "/media/video-poster.jpg",
     eyebrow: "Filmed at the kennel",
+    title: "Five breeds, one standard",
+    copy: "Caucasian Shepherd, White Long Coat Swiss Shepherd, Royal Black German Shepherd, American Akita and Kangal — every one raised at our Webuye kennel. This is the place, on film.",
+    href: "/breeds",
+    cta: "Browse the breeds",
+  },
+  {
+    kind: "image",
+    src: "/media/kangal/pup-02.jpg",
+    thumb: "/media/kangal/pup-02.jpg",
+    eyebrow: "The Kangal",
     title: "Guardians raised in the open",
     copy: "Our Kangals grow up on open ground with stock and space, which is the only way this breed comes right. Watch them work, then come and meet them.",
     href: "/breeds/kangal",
     cta: "Meet the Kangals",
   },
   {
-    kind: "video",
-    src: "/media/clips/black-shepherd.mp4",
-    poster: "/media/gsd-black/adult-02.jpg",
+    kind: "image",
+    src: "/media/gsd-black/adult-02.jpg",
     thumb: "/media/gsd-black/adult-02.jpg",
     eyebrow: "Royal Black German Shepherd",
     title: "The black shepherd, done properly",
@@ -63,20 +75,8 @@ const heroSlides: HeroSlide[] = [
     cta: "Meet the black shepherds",
   },
   {
-    kind: "video",
-    src: "/media/clips/breeds.mp4",
-    poster: "/media/white-shepherd/adult-02.jpg",
-    thumb: "/media/white-shepherd/adult-02.jpg",
-    eyebrow: "Our register",
-    title: "Five breeds, one standard",
-    copy: "Caucasian Shepherd, White Long Coat Swiss Shepherd, Royal Black German Shepherd, American Akita and Kangal — every one raised at our Webuye kennel.",
-    href: "/breeds",
-    cta: "Browse the breeds",
-  },
-  {
-    kind: "video",
-    src: "/media/clips/parents.mp4",
-    poster: "/media/akita/adult-01.jpg",
+    kind: "image",
+    src: "/media/akita/adult-01.jpg",
     thumb: "/media/akita/adult-01.jpg",
     eyebrow: "Meet the mothers",
     title: "See the parents before you choose",
