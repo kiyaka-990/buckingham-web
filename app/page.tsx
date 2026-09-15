@@ -68,26 +68,6 @@ const heroSlides: HeroSlide[] = [
     href: "/breeds/kangal",
     cta: "Meet the Kangals",
   },
-  {
-    kind: "image",
-    src: "/media/gsd-black/adult-02.jpg",
-    thumb: "/media/gsd-black/adult-02.jpg",
-    eyebrow: "Royal Black German Shepherd",
-    title: "The black shepherd, done properly",
-    copy: "A recessive solid-black coat carried by both parents, heavy bone and the long plush coat our buyers travel for — with the level, handler-focused temperament the breed is meant to have.",
-    href: "/breeds/royal-black-shepherd",
-    cta: "Meet the black shepherds",
-  },
-  {
-    kind: "image",
-    src: "/media/akita/adult-01.jpg",
-    thumb: "/media/akita/adult-01.jpg",
-    eyebrow: "Meet the mothers",
-    title: "See the parents before you choose",
-    copy: "Suzy, Euro, Romaine, Maya and Felly Atlas live here and are not for sale. Come and meet the mother behind a litter before you put a name to a puppy.",
-    href: "/#parents",
-    cta: "Meet our mothers",
-  },
 ];
 
 export default async function HomePage() {

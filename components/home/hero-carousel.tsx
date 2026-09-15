@@ -36,14 +36,15 @@ const STALL_POLL_MS = 2000;
 /**
  * The landing carousel.
  *
- * The copy sits on the page itself, on the left, and the media runs off the
- * right-hand edge of the screen — no scrim over the dogs, no full-bleed
- * rectangle behind the type.
+ * The film runs edge to edge as a single cinematic band and the copy sits
+ * underneath it, on the page. Nothing is ever laid over the picture — no
+ * scrim, no mask, no bloom behind it.
  *
- * The media used to be masked so it dissolved into the page along its left
- * edge, and a bloom of the accent sat behind it. Both are gone: the client
- * wants the film shown clean, so nothing is painted over the picture and it
- * ends at its own edge. On a phone the media simply stacks above the copy.
+ * It used to be a two-column split: copy on the left, media pinned to the
+ * right half, feathered along the seam where the two met. The client found
+ * that too much like two squares side by side, and the feather only existed
+ * to hide the seam — with the band full width there is no seam to hide, so
+ * both went.
  *
  * A video pane autoplays muted, which is the only form of autoplay browsers
  * allow and the only one that is not rude. It runs once, start to finish, and
@@ -215,10 +216,13 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     >
       <span className="lattice" aria-hidden />
 
-      {/* ---- The media. Stacked above the copy on a phone; from lg up it is
-              pinned to the right and runs past the edge of the screen. ---- */}
-      <div className="relative h-[52vw] max-h-[26rem] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:max-h-none lg:w-[56%]">
-        <div className="feather-media relative h-full w-full">
+      {/* ---- The media: one cinematic band, edge to edge. The ratio widens
+              with the viewport — nearly square on a phone, where a 21:9 strip
+              would be a letterbox slit, and full scope on a desktop. Capped
+              at 78vh so the copy under it is not pushed off the fold on a
+              short, wide screen. ---- */}
+      <div className="relative aspect-[4/3] max-h-[78vh] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
+        <div className="relative h-full w-full">
           {slides.map((s, i) => (
             <div
               key={s.src + i}
@@ -291,17 +295,19 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </div>
       </div>
 
-      {/* ---- The copy, on the page background ---- */}
-      <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-8 lg:min-h-[38rem] lg:py-24 lg:pr-[52%]">
-        <div key={index} className="max-w-xl">
+      {/* ---- The copy, underneath the band and on the page background. It
+              never sits over the film — that was the point of going
+              full-bleed in the first place. ---- */}
+      <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-9 lg:pb-20 lg:pt-12">
+        <div key={index} className="max-w-3xl">
           <p className="animate-fade-up inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-ink">
             <span className="h-1.5 w-1.5 rounded-full bg-volt-400" />
             {active.eyebrow}
           </p>
-          <h1 className="animate-fade-up mt-5 font-display text-4xl font-bold leading-[1.03] tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-up mt-5 font-display text-4xl font-bold leading-[1.03] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
             {active.title}
           </h1>
-          <p className="animate-fade-up mt-5 max-w-lg text-base leading-relaxed text-muted">
+          <p className="animate-fade-up mt-5 max-w-2xl text-base leading-relaxed text-muted">
             {active.copy}
           </p>
           <div className="animate-fade-up mt-8 flex flex-wrap items-center gap-3">
