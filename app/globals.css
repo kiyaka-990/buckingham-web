@@ -708,9 +708,21 @@ html {
     opacity: 0.55;
   }
 
-  /* The hero media carried a feather on its left edge while it sat beside
-     the copy — it softened the seam between picture and paragraph. The hero
-     is one full-width band now, so there is no seam and no feather. */
+  /* From lg up the hero media sits beside the copy, and without something
+     on its left edge it ends on a hard vertical line against the paragraph.
+     So: a narrow feather, and only that.
+
+     The mask this replaced ran a wash to 46% and dimmed the picture with it,
+     which is what the client objected to. This one is opaque by 12% — it
+     softens the seam and nothing else. The film itself is untouched, which
+     is the whole point. Below lg the media stacks above the copy and needs
+     no feather. */
+  @media (min-width: 1024px) {
+    .feather-media {
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 12%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 12%);
+    }
+  }
 
   /* Panel: the Once UI card — hairline alpha border, faint inner
      highlight, no heavy drop shadow. */
