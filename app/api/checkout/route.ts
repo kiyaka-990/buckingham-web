@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
+import { cardEnabled, mpesaEnabled, mustRefuse } from "@/lib/payments";
 import { priceCart, persistOrder, createStripeSession, newOrderRef } from "@/lib/orders";
 
 export const runtime = "nodejs";
@@ -75,6 +76,21 @@ export async function POST(req: Request) {
 
   const priced = await priceCart(wanted, { contact: customer.email || customer.phone || null });
   if (!priced.ok) return NextResponse.json({ error: priced.error }, { status: priced.status });
+
+  // Refuse a payment method the kennel cannot collect on, before any order is
+  // written. Without this, a card order on a site with no live card rail was
+  // saved unpaid and the buyer was sent to a success page.
+  const wantsMpesa = customer.method === "mpesa";
+  if (mustRefuse(wantsMpesa ? mpesaEnabled() : cardEnabled())) {
+    return NextResponse.json(
+      {
+        error: wantsMpesa
+          ? "M-Pesa payments aren't switched on yet. Please call or WhatsApp us to reserve."
+          : "Card payments aren't available yet. Please pay by M-Pesa, or call or WhatsApp us to reserve.",
+      },
+      { status: 503 }
+    );
+  }
 
   const { items, total } = priced;
   const orderId = newOrderRef();

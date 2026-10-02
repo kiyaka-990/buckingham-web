@@ -8,6 +8,7 @@ import { runSalesAgent, type ChatMsg, type DogSuggestion } from "@/lib/agent/sal
 import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
 import { captureLead } from "@/lib/leads";
 import { logChat, validSessionId } from "@/lib/chat-log";
+import { paymentMethods } from "@/lib/payments";
 
 export const runtime = "nodejs";
 
@@ -99,8 +100,13 @@ function ruleReply(userText: string, pool: Dog[]): string {
     return `Straight answer: no. Our puppies are not Kennel Club registered and they do not come with a pedigree certificate. The parents were imported from overseas but arrived without pedigree certificates themselves, so there is no registered line to pass on. What you do get with every puppy is its vaccination record, deworming history, microchip, a vet check and a written health guarantee. If you specifically need a registered dog for showing or registered breeding, we are not the right kennel — I would rather tell you now.`;
   if (/health|vaccin|guarantee|sick|vet|microchip/.test(q))
     return `Every puppy leaves us vaccinated, dewormed, microchipped and vet-checked, with its full vaccination record and a written health guarantee of up to 36 months on hereditary conditions.`;
-  if (/pay|mpesa|m-pesa|stripe|deposit|instal|card/.test(q))
-    return `International cards through Stripe, or M-Pesa for local buyers. A deposit reserves the puppy and the balance falls due on delivery. Which one were you looking at?`;
+  if (/pay|mpesa|m-pesa|stripe|deposit|instal|card/.test(q)) {
+    const m = paymentMethods();
+    const how = m.card && m.mpesa ? "by card or M-Pesa" : m.card ? "by card" : m.mpesa ? "by M-Pesa" : null;
+    return how
+      ? `A deposit reserves the puppy and the balance falls due on delivery. You can pay ${how}. Which puppy were you looking at?`
+      : `A deposit reserves the puppy and the balance falls due on delivery. Online payment isn't switched on yet, so one of the team arranges the deposit with you directly — call or WhatsApp ${phones.map((p) => p.display).join(" or ")}. Which puppy were you looking at?`;
+  }
   if (/\bservices?\b|what do you (offer|do)/.test(q))
     return `Besides puppies we offer dog training (obedience, family protection and personal-protection work), grooming, dog stands from KES 150,000, stud services and delivery across Kenya and abroad. Call or WhatsApp ${phones.map((p) => p.display).join(" or ")} for rates. You'll find the full list on our Services page.`;
   if (/groom|bath|de-?shed|spa\b/.test(q))

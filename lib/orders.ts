@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { cardEnabled } from "@/lib/payments";
 import { PUPPY_PRICE_CEILING, depositFor } from "@/lib/data/catalog";
 import { heldByOther, linkHoldToOrder } from "@/lib/holds";
 import { randomBytes } from "node:crypto";
@@ -164,7 +165,9 @@ export async function createStripeSession(input: {
   email?: string;
 }): Promise<{ id: string; url: string | null } | null> {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
-  if (!stripeKey) return null;
+  // No key, or a sandbox key on the live site: no payment link, so nobody is
+  // ever sent to pay on a rail the kennel cannot collect from.
+  if (!stripeKey || !cardEnabled()) return null;
 
   const { default: Stripe } = await import("stripe");
   const stripe = new Stripe(stripeKey);

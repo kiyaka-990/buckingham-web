@@ -9,6 +9,7 @@ import { formatPrice, usdToKes } from "@/lib/utils";
 import { priceCart, persistOrder, createStripeSession, newOrderRef } from "@/lib/orders";
 import { placeHold } from "@/lib/holds";
 import { recordAgentAction } from "@/lib/agent/audit";
+import { paymentMethods } from "@/lib/payments";
 import { recordAgentFailure, recordAgentRecovered } from "@/lib/agent/health";
 import { sendLeadAlert } from "@/lib/email";
 import { captureLead as recordLead } from "@/lib/leads";
@@ -490,7 +491,7 @@ STYLE
 THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
 - Phone/WhatsApp ${phones.map((p) => p.display).join(" or ")}, email ${site.contact.email}.
 - Visits by appointment at ${site.contact.address.street}, ${site.contact.address.locality}.
-- Payment: international cards via Stripe, or M-Pesa for local buyers. A deposit reserves a dog; the balance falls due on delivery.
+- A deposit reserves a dog; the balance falls due on delivery. Which ways of paying are open right now is given in the PAYMENTS NOW note below — never mention a method that note does not list.
 - Every puppy leaves vaccinated, dewormed, microchipped, vet-checked, with its full vaccination record and a written health guarantee.
 - The dogs are NOT registered and NOT pedigree certified — neither the puppies nor the parents. The parents were imported but arrived without pedigree certificates, so there is no registered line to pass on.
 - NEVER promise or imply pedigree papers, Kennel Club registration, championship titles, show titles or hip certifications. If a buyer asks, say no plainly, then say what they DO get: vaccination record, deworming history, microchip, vet check and a written health guarantee.
@@ -525,6 +526,18 @@ export async function runSalesAgent(
       output_config: { effort: "low" },
       system: [
         { type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } },
+        // Computed per call from the environment, so it is never stale and never
+        // promises a payment rail the kennel cannot collect on.
+        {
+          type: "text" as const,
+          text: (() => {
+            const m = paymentMethods();
+            const open = [m.card ? "card (secure payment link)" : null, m.mpesa ? "M-Pesa" : null].filter(Boolean);
+            return open.length
+              ? `PAYMENTS NOW: ${open.join(" and ")}. No other method is available — do not offer or imply one.`
+              : `PAYMENTS NOW: online payment is not switched on yet. Do NOT promise a payment link, card payment or M-Pesa prompt. When a visitor wants to reserve, call start_reservation to hold the puppy, then tell them plainly that a handler will call or WhatsApp them (${phones[0].display}) to arrange the deposit.`;
+          })(),
+        },
         // Per-visitor, so it sits after the cached prefix rather than inside it.
         ...(visitor
           ? [{

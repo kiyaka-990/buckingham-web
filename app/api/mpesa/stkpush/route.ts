@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { mpesaConfigured, stkPush } from "@/lib/mpesa";
+import { stkPush } from "@/lib/mpesa";
+import { stkEnabled } from "@/lib/payments";
 import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ configured: true, ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  if (!mpesaConfigured()) {
+  if (!stkEnabled()) {
     // Graceful fallback — the checkout UI shows Paybill instructions instead.
     return NextResponse.json({ configured: false });
   }
