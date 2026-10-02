@@ -3,11 +3,16 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
 import { Reveal } from "@/components/ui/reveal";
 import { ButtonLink } from "@/components/ui/button";
+import { Check, MessageCircle } from "lucide-react";
 import { services } from "@/lib/data/content";
+import { site } from "@/lib/site";
+
+const whatsappHref = (text: string) =>
+  `https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(text)}`;
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Breeding, training, veterinary care, grooming, stud services, delivery and lifetime owner support.",
+  description: "Dog training, grooming, dog stands, breeding, veterinary care, stud services, delivery and lifetime owner support from Buckingham Kennel, Webuye.",
 };
 
 export default function ServicesPage() {
@@ -29,8 +34,32 @@ export default function ServicesPage() {
                 <div className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-volt-400/12 text-accent-ink transition group-hover:bg-volt-400 group-hover:text-graphite-900">
                   <s.icon size={26} />
                 </div>
-                <h3 className="font-display text-xl font-bold">{s.title}</h3>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <h3 className="font-display text-xl font-bold">{s.title}</h3>
+                  {s.price && (
+                    <span className="rounded-full bg-volt-400/15 px-3 py-1 text-xs font-semibold text-accent-ink">{s.price}</span>
+                  )}
+                </div>
                 <p className="mt-2 text-sm text-muted">{s.description}</p>
+                {s.highlights && (
+                  <ul className="mt-4 space-y-2 text-sm">
+                    {s.highlights.map((h) => (
+                      <li key={h} className="flex items-start gap-2">
+                        <Check size={16} className="mt-0.5 shrink-0 text-accent-ink" /> <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {s.enquiry && (
+                  <a
+                    href={whatsappHref(s.enquiry)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-ink hover:underline"
+                  >
+                    <MessageCircle size={16} /> Enquire on WhatsApp
+                  </a>
+                )}
               </div>
             </Reveal>
           ))}

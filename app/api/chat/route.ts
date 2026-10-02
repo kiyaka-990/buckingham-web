@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/utils";
 import { runSalesAgent, type ChatMsg, type DogSuggestion } from "@/lib/agent/sales-agent";
 import { rateLimit, clientKey, tooMany } from "@/lib/rate-limit";
 import { captureLead } from "@/lib/leads";
+import { logChat, validSessionId } from "@/lib/chat-log";
 
 export const runtime = "nodejs";
 
@@ -17,14 +18,14 @@ export const runtime = "nodejs";
 /**
  * How many questions a visitor gets before we ask who they are.
  *
- * Deliberately not zero. A wall in front of the first message costs more
- * enquiries than it captures — the visitor has had nothing from us yet and has
- * no reason to hand over an address. Three answered questions is enough for
- * the agent to have been useful, which is when asking is fair.
+ * Zero: everyone signs in (name + email, phone optional) before the first
+ * message, so every conversation is attributable and shows up on the admin
+ * dashboard. The widget asks up front; this constant is what the server
+ * enforces for anyone who POSTs the endpoint directly.
  */
-const FREE_TURNS = 3;
+const FREE_TURNS = 0;
 
-type Visitor = { name: string; email: string };
+type Visitor = { name: string; email: string; phone: string | null };
 
 /** Loose on purpose — this is a lead form, not an auth system. We only need
  *  enough structure that the address is plausibly deliverable. */
@@ -36,7 +37,11 @@ function readVisitor(raw: unknown): Visitor | null {
   const name = String(v.name ?? "").trim().slice(0, 160);
   const email = String(v.email ?? "").trim().toLowerCase().slice(0, 160);
   if (name.length < 2 || !EMAIL_RE.test(email)) return null;
-  return { name, email };
+  // Optional. Keep only what a phone number can contain, and drop it if what is
+  // left is too short to be one rather than failing the sign-in over it.
+  const rawPhone = String(v.phone ?? "").replace(/[^\d+\s-]/g, "").trim().slice(0, 20);
+  const phone = rawPhone.replace(/\D/g, "").length >= 7 ? rawPhone : null;
+  return { name, email, phone };
 }
 
 /* ------------------------------------------------------------------ */
@@ -96,6 +101,8 @@ function ruleReply(userText: string, pool: Dog[]): string {
     return `Every puppy leaves us vaccinated, dewormed, microchipped and vet-checked, with its full vaccination record and a written health guarantee of up to 36 months on hereditary conditions.`;
   if (/pay|mpesa|m-pesa|stripe|deposit|instal|card/.test(q))
     return `International cards through Stripe, or M-Pesa for local buyers. A deposit reserves the puppy and the balance falls due on delivery. Which one were you looking at?`;
+  if (/\bservices?\b|what do you (offer|do)/.test(q))
+    return `Besides puppies we offer dog training (obedience, family protection and personal-protection work), grooming, dog stands from KES 150,000, stud services and delivery across Kenya and abroad. Call or WhatsApp ${phones.map((p) => p.display).join(" or ")} for rates. You'll find the full list on our Services page.`;
   if (/groom|bath|de-?shed|spa\b/.test(q))
     return `Yes, we offer grooming — bathing, de-shedding, coat care and nail care by trained groomers. Call or WhatsApp ${phones.map((p) => p.display).join(" or ")} to book an appointment.`;
   if (/\bstands?\b/.test(q))
@@ -138,9 +145,11 @@ export async function POST(req: Request) {
 
   let messages: ChatMsg[] = [];
   let visitor: Visitor | null = null;
+  let sessionId: string | null = null;
   try {
-    const body = (await req.json()) as { messages?: ChatMsg[]; visitor?: unknown };
+    const body = (await req.json()) as { messages?: ChatMsg[]; visitor?: unknown; sessionId?: unknown };
     visitor = readVisitor(body.visitor);
+    sessionId = validSessionId(body.sessionId) ? body.sessionId : null;
     messages = (Array.isArray(body.messages) ? body.messages.slice(-MAX_TURNS) : [])
       // Roles are whitelisted so a crafted transcript cannot smuggle in a
       // "system" turn and rewrite the agent's instructions.
@@ -161,39 +170,50 @@ export async function POST(req: Request) {
     return NextResponse.json({
       gate: true,
       reply:
-        "Before we go further — may I take your name and email? It means I can send you the details of anything we talk about, and one of the team can follow up properly if I'm not enough. It takes a second and we won't pass it on to anyone.",
+        "Before we start — may I take your name and email? It means I can send you the details of anything we talk about, and one of the team can follow up properly if I'm not enough. It takes a second and we won't pass it on to anyone.",
       suggestions: [],
     });
   }
 
-  // First message after they identified themselves: put them in the pipeline.
+  // First message of a signed-in conversation: put them in the pipeline.
   // Bounded to that one turn so we are not writing to the database on every
-  // message of a long conversation.
-  if (visitor && userTurns === FREE_TURNS + 1) {
+  // message of a long conversation. captureLead upserts on email, so a
+  // returning visitor sharpens their existing record rather than duplicating it.
+  if (visitor && userTurns === 1) {
     const interest = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
     void captureLead({
       name: visitor.name,
       email: visitor.email,
+      phone: visitor.phone,
       source: "chat",
       interest: interest.slice(0, 300),
-      notes: "Gave their details in the chat widget after three questions.",
+      notes: "Signed in through the chat widget.",
       // Duke re-scores properly via capture_lead once he has qualified them;
       // this is only a floor so the lead is not sitting at zero.
       score: 25,
     }).catch((err) => console.error("[chat] captureLead failed", err));
   }
 
-  const agent = await runSalesAgent(messages);
-  if (agent) return NextResponse.json(agent);
+  const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+
+  /** Every answer is logged against the session before it is returned. */
+  const respond = async (payload: { reply: string; suggestions: unknown[] }) => {
+    if (sessionId && visitor) {
+      await logChat({ sessionId, visitor, userMessage: lastUser, reply: payload.reply });
+    }
+    return NextResponse.json(payload);
+  };
+
+  const agent = await runSalesAgent(messages, visitor);
+  if (agent) return respond(agent);
 
   // Fallback path.
-  const last = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const pool = await getDogs();
-  const suggestions = matchDogs(last, pool);
-  const showCards = /price|cost|budget|puppy|train|guard|family|breed|recommend|looking|want|show|buy|afford|dog|farm|protect/i.test(last);
+  const suggestions = matchDogs(lastUser, pool);
+  const showCards = /price|cost|budget|puppy|train|guard|family|breed|recommend|looking|want|show|buy|afford|dog|farm|protect/i.test(lastUser);
 
-  return NextResponse.json({
-    reply: ruleReply(last, pool),
+  return respond({
+    reply: ruleReply(lastUser, pool),
     suggestions: showCards ? suggestions.map(toSuggestion) : [],
   });
 }

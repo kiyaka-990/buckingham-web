@@ -143,6 +143,17 @@ export async function GET(req: Request) {
     report.errors.push(`nurture: ${(err as Error).message}`);
   }
 
+  // The run itself is recorded so the admin dashboard can tell "ran, nothing to
+  // do" from "never ran" — a missing CRON_SECRET otherwise looks identical to a
+  // quiet day.
+  await recordAgentAction({
+    agent: "follow-up-cron",
+    action: "cron_run",
+    status: report.errors.length === 0 ? "done" : "failed",
+    summary: `${report.holdsExpired} holds released, ${report.nudged} payment reminders, ${report.abandoned} unpaid orders closed, ${report.nurtured} follow-up emails${report.errors.length ? `; errors: ${report.errors.join("; ").slice(0, 200)}` : ""}.`,
+    payload: report,
+  });
+
   console.log("[cron/follow-up]", JSON.stringify(report));
   return NextResponse.json({ ok: report.errors.length === 0, ...report });
 }

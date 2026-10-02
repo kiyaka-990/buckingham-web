@@ -503,7 +503,8 @@ THE FACTS YOU MAY STATE WITHOUT A TOOL CALL
 /* ------------------------------------------------------------------ */
 
 export async function runSalesAgent(
-  messages: ChatMsg[]
+  messages: ChatMsg[],
+  visitor?: { name: string; email: string; phone?: string | null } | null
 ): Promise<{ reply: string; suggestions: DogSuggestion[] } | null> {
   // The commonest way this agent dies in production, and the quietest: the key
   // is unset or was pasted in empty, so we bail before a single log line is
@@ -522,7 +523,16 @@ export async function runSalesAgent(
       model: process.env.ANTHROPIC_MODEL || "claude-opus-5",
       max_tokens: 2048,
       output_config: { effort: "low" },
-      system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
+      system: [
+        { type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } },
+        // Per-visitor, so it sits after the cached prefix rather than inside it.
+        ...(visitor
+          ? [{
+              type: "text" as const,
+              text: `THIS VISITOR HAS SIGNED IN: ${visitor.name}, ${visitor.email}${visitor.phone ? `, ${visitor.phone}` : ""}. Address them by first name. Never ask for their name or email again — you already have them. When you call capture_lead or book_viewing, use these details, and still confirm they want a handler to follow up.`,
+            }]
+          : []),
+      ],
       tools: makeTools(seen),
       messages: messages.map((m) => ({ role: m.role, content: m.content })),
       max_iterations: 8,

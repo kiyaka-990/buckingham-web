@@ -1,23 +1,58 @@
 import Link from "next/link";
 import { FadeImage } from "@/components/ui/fade-image";
-import { DollarSign, ShoppingCart, Users, TrendingUp, TrendingDown, ArrowUpRight, Target, Package, MessageSquare, Star, AlertTriangle } from "lucide-react";
+import { DollarSign, ShoppingCart, Users, ArrowUpRight, Target, MessageSquare, AlertTriangle, Bot, MessagesSquare } from "lucide-react";
 import { db } from "@/lib/db";
 import { getDogs } from "@/lib/queries";
 import { statusStyles, type OrderStatus } from "@/lib/data/orders";
-import { revenueSeries, activity } from "@/lib/data/admin";
+import { ago, daysAgo } from "@/lib/time";
 import { formatPrice } from "@/lib/utils";
 import { DonutChart, Sparkline, AreaChart, ProgressBar } from "@/components/admin/charts";
 import { agentHealth } from "@/lib/agent/health";
 
-const activityIcon = { order: ShoppingCart, message: MessageSquare, stock: Package, review: Star };
+type FeedItem = { who: string; action: string; at: Date; kind: "order" | "message" | "chat" | "agent" };
+const activityIcon = { order: ShoppingCart, message: MessageSquare, chat: MessagesSquare, agent: Bot };
+
+/** The last seven calendar months, oldest first, as { label, key }. */
+function lastMonths(n = 7) {
+  const now = new Date();
+  return Array.from({ length: n }, (_, i) => {
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - (n - 1 - i), 1));
+    return { key: `${d.getUTCFullYear()}-${d.getUTCMonth()}`, label: d.toLocaleString("en-GB", { month: "short", timeZone: "UTC" }) };
+  });
+}
 
 export default async function AdminDashboard() {
-  const [orderRows, dogs, customerGroups, health] = await Promise.all([
+  const weekAgo = daysAgo(7);
+  const [orderRows, dogs, customerGroups, health, recentMessages, recentChats, recentActions, chatsThisWeek, leadsThisWeek, viewingsThisWeek] = await Promise.all([
     db.order.findMany({ orderBy: { createdAt: "desc" }, include: { items: true } }),
     getDogs(),
     db.order.groupBy({ by: ["email"] }),
     agentHealth(),
+    db.message.findMany({ orderBy: { createdAt: "desc" }, take: 6 }),
+    db.chatSession.findMany({ orderBy: { updatedAt: "desc" }, take: 6 }),
+    db.agentAction.findMany({ where: { action: { not: "agent_unavailable" } }, orderBy: { createdAt: "desc" }, take: 6 }),
+    db.chatSession.count({ where: { createdAt: { gt: weekAgo } } }),
+    db.agentAction.count({ where: { action: "capture_lead", status: "done", createdAt: { gt: weekAgo } } }),
+    db.agentAction.count({ where: { action: "book_viewing", status: "done", createdAt: { gt: weekAgo } } }),
   ]);
+
+  // Real monthly figures from real orders — not a demo series.
+  const months = lastMonths(7);
+  const live = orderRows.filter((o) => o.status !== "cancelled");
+  const revenueByMonth = months.map((m) =>
+    live.filter((o) => { const d = o.createdAt; return `${d.getUTCFullYear()}-${d.getUTCMonth()}` === m.key; }).reduce((n, o) => n + o.total, 0)
+  );
+  const ordersByMonth = months.map((m) =>
+    live.filter((o) => { const d = o.createdAt; return `${d.getUTCFullYear()}-${d.getUTCMonth()}` === m.key; }).length
+  );
+  const revenueSeries = { labels: months.map((m) => m.label), data: revenueByMonth };
+
+  const feed: FeedItem[] = [
+    ...orderRows.slice(0, 6).map((o): FeedItem => ({ who: o.customerName, action: `placed order ${o.ref} (${o.status})`, at: o.createdAt, kind: "order" })),
+    ...recentMessages.map((m): FeedItem => ({ who: m.name, action: `sent a message via ${m.channel}: ${m.subject}`, at: m.createdAt, kind: "message" })),
+    ...recentChats.map((c): FeedItem => ({ who: c.name || "A visitor", action: `chatted with Duke (${c.turns} message${c.turns === 1 ? "" : "s"})`, at: c.updatedAt, kind: "chat" })),
+    ...recentActions.map((a): FeedItem => ({ who: a.agent === "ivy" ? "Ivy" : a.agent === "follow-up-cron" ? "Daily job" : "Duke", action: a.summary, at: a.createdAt, kind: "agent" })),
+  ].sort((a, b) => b.at.getTime() - a.at.getTime()).slice(0, 7);
 
   const revenue = orderRows.filter((o) => o.status !== "cancelled").reduce((n, o) => n + o.total, 0);
   const paidCount = orderRows.filter((o) => o.status !== "cancelled").length || 1;
@@ -25,11 +60,11 @@ export default async function AdminDashboard() {
   const pending = orderRows.filter((o) => o.status === "pending" || o.status === "confirmed").length;
   const target = 5000;
 
-  const kpis = [
-    { label: "Total Revenue", value: formatPrice(revenue), icon: DollarSign, delta: "+18.2%", up: true, spark: revenueSeries.data },
-    { label: "Orders", value: String(orderRows.length), icon: ShoppingCart, delta: "+12.5%", up: true, spark: [4, 6, 5, 8, 7, 9, 8] },
-    { label: "Avg Order Value", value: formatPrice(aov), icon: Target, delta: "+4.1%", up: true, spark: [480, 500, 495, 510, 530, 515, 525] },
-    { label: "Customers", value: String(customerGroups.length), icon: Users, delta: "+8.1%", up: true, spark: [8, 7, 9, 6, 8, 9, 10] },
+  const kpis: { label: string; value: string; icon: typeof DollarSign; spark?: number[] }[] = [
+    { label: "Total Revenue", value: formatPrice(revenue), icon: DollarSign, spark: revenueByMonth },
+    { label: "Orders", value: String(orderRows.length), icon: ShoppingCart, spark: ordersByMonth },
+    { label: "Avg Order Value", value: formatPrice(aov), icon: Target },
+    { label: "Customers", value: String(customerGroups.length), icon: Users },
   ];
 
   const statusColors: Record<string, string> = { pending: "#f59e0b", confirmed: "#0a84ff", "in-transit": "#06b6d4", delivered: "#22c55e", cancelled: "#ef4444" };
@@ -74,19 +109,24 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
+      <Link href="/admin/agents" className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-2xl border border-border bg-surface p-4 transition hover:border-volt-400">
+        <span className="flex items-center gap-2 text-sm font-semibold"><Bot size={18} className="text-accent-ink" /> Agents · last 7 days</span>
+        <span className="text-sm"><strong>{chatsThisWeek}</strong> <span className="text-muted">conversations</span></span>
+        <span className="text-sm"><strong>{leadsThisWeek}</strong> <span className="text-muted">leads captured by Duke</span></span>
+        <span className="text-sm"><strong>{viewingsThisWeek}</strong> <span className="text-muted">viewings booked</span></span>
+        <span className="ml-auto text-xs font-medium text-accent-ink">Full activity log →</span>
+      </Link>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((k) => (
           <div key={k.label} className="gradient-border rounded-3xl p-5">
             <div className="flex items-center justify-between">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-volt-400/12 text-accent-ink"><k.icon size={20} /></div>
-              <span className={`flex items-center gap-1 text-xs font-medium ${k.up ? "text-emerald-500" : "text-red-500"}`}>
-                {k.up ? <TrendingUp size={13} /> : <TrendingDown size={13} />} {k.delta}
-              </span>
             </div>
             <p className="mt-4 font-display text-2xl font-bold">{k.value}</p>
             <div className="mt-1 flex items-end justify-between">
               <p className="text-sm text-muted">{k.label}</p>
-              <Sparkline data={k.spark} width={80} height={28} />
+              {k.spark && <Sparkline data={k.spark} width={80} height={28} />}
             </div>
           </div>
         ))}
@@ -95,8 +135,7 @@ export default async function AdminDashboard() {
       <div className="grid gap-6 xl:grid-cols-3">
         <div className="rounded-3xl border border-border bg-gradient-surface p-6 xl:col-span-2">
           <div className="mb-2 flex items-center justify-between">
-            <div><h2 className="font-display text-lg font-bold">Revenue Overview</h2><p className="text-sm text-muted">Last 7 months</p></div>
-            <span className="rounded-full bg-emerald-500/12 px-3 py-1 text-xs font-medium text-emerald-500">+22% YoY</span>
+            <div><h2 className="font-display text-lg font-bold">Revenue Overview</h2><p className="text-sm text-muted">Last 7 months, from your orders (cancelled excluded)</p></div>
           </div>
           <AreaChart data={revenueSeries.data} labels={revenueSeries.labels} />
         </div>
@@ -137,12 +176,13 @@ export default async function AdminDashboard() {
         <div className="rounded-3xl border border-border bg-surface p-6">
           <h2 className="mb-4 font-display text-lg font-bold">Recent Activity</h2>
           <ul className="space-y-4">
-            {activity.slice(0, 5).map((a, i) => {
+            {feed.length === 0 && <li className="text-sm text-muted">Nothing yet — orders, messages, chats and agent actions appear here as they happen.</li>}
+            {feed.map((a, i) => {
               const Icon = activityIcon[a.kind];
               return (
                 <li key={i} className="flex gap-3">
                   <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-surface-2 text-accent-ink"><Icon size={14} /></span>
-                  <div><p className="text-sm"><span className="font-medium">{a.who}</span> <span className="text-muted">{a.action}</span></p><p className="text-xs text-muted">{a.time}</p></div>
+                  <div className="min-w-0"><p className="text-sm"><span className="font-medium">{a.who}</span> <span className="break-words text-muted">{a.action}</span></p><p className="text-xs text-muted">{ago(a.at)}</p></div>
                 </li>
               );
             })}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Crest } from "@/components/brand/crest";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, ShoppingCart, Boxes, Users, BarChart3, MessageSquare, Settings, LogOut, Home, Search, Bell, Sprout } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, Boxes, Users, BarChart3, MessageSquare, Settings, LogOut, Home, Search, Bell, Sprout, MessagesSquare, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -14,6 +14,8 @@ const nav = [
   { label: "Inventory", href: "/admin/inventory", icon: Boxes },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Leads", href: "/admin/leads", icon: Sprout },
+  { label: "Chats", href: "/admin/chats", icon: MessagesSquare },
+  { label: "Agents", href: "/admin/agents", icon: Bot },
   { label: "Messages", href: "/admin/messages", icon: MessageSquare },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
