@@ -96,6 +96,12 @@ function ruleReply(userText: string, pool: Dog[]): string {
     return `Every puppy leaves us vaccinated, dewormed, microchipped and vet-checked, with its full vaccination record and a written health guarantee of up to 36 months on hereditary conditions.`;
   if (/pay|mpesa|m-pesa|stripe|deposit|instal|card/.test(q))
     return `International cards through Stripe, or M-Pesa for local buyers. A deposit reserves the puppy and the balance falls due on delivery. Which one were you looking at?`;
+  if (/groom|bath|de-?shed|spa\b/.test(q))
+    return `Yes, we offer grooming — bathing, de-shedding, coat care and nail care by trained groomers. Call or WhatsApp ${phones.map((p) => p.display).join(" or ")} to book an appointment.`;
+  if (/\bstands?\b/.test(q))
+    return `We sell dog stands, from KES 150,000. For current availability, sizes and finish, WhatsApp ${phones[0].display} and the team will confirm the details.`;
+  if (/(dog|obedience|handler).{0,20}train|train(ing|er)\b.{0,20}(service|program|course|class)|obedience/.test(q))
+    return `Yes, we run dog training — obedience and house manners, family protection and advanced personal-protection work, led by our handlers. Call or WhatsApp ${phones.map((p) => p.display).join(" or ")} to discuss your dog.`;
   if (/train|guard|protect|security|police|patrol|farm|livestock/.test(q))
     return `For protection and estate work we'd point you at the Caucasian Shepherd and the Kangal; for handler-focused personal protection, the Royal Black German Shepherd. A few puppies worth seeing:`;
   if (/family|kid|child|gentle|companion/.test(q))
