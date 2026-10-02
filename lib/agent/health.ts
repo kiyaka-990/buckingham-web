@@ -72,15 +72,23 @@ export type AgentHealth = {
   since: Date | null;
 };
 
-/** What the admin dashboard shows. */
+/**
+ * What the admin dashboard shows.
+ *
+ * `since` is when the outage began (the oldest open failure), but `reason` is
+ * the NEWEST failure. They used to both come from the oldest row, so after the
+ * owner fixed one problem (a missing key) and hit the next (no credit), the
+ * banner kept announcing the first one and sent them round in circles.
+ */
 export async function agentHealth(): Promise<AgentHealth> {
   try {
-    const failure = await db.agentAction.findFirst({
-      where: { action: ACTION, status: "failed", createdAt: { gt: new Date(Date.now() - STALE_MS) } },
-      orderBy: { createdAt: "asc" },
-    });
-    if (!failure) return { healthy: true, reason: null, since: null };
-    return { healthy: false, reason: failure.summary, since: failure.createdAt };
+    const where = { action: ACTION, status: "failed", createdAt: { gt: new Date(Date.now() - STALE_MS) } };
+    const [first, latest] = await Promise.all([
+      db.agentAction.findFirst({ where, orderBy: { createdAt: "asc" } }),
+      db.agentAction.findFirst({ where, orderBy: { createdAt: "desc" } }),
+    ]);
+    if (!first || !latest) return { healthy: true, reason: null, since: null };
+    return { healthy: false, reason: latest.summary, since: first.createdAt };
   } catch {
     return { healthy: true, reason: null, since: null };
   }
