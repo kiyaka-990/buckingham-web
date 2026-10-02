@@ -47,10 +47,11 @@ export function Footer() {
             </div>
           </div>
 
-          {/* These three came off the main navigation; the footer keeps them reachable. */}
+          {/* These came off the main navigation; the footer keeps them reachable. */}
           <FooterCol title="Explore" links={[
             { label: "Shop All Dogs", href: "/shop" },
             { label: "Available Puppies", href: "/puppies" },
+            { label: "Services", href: "/services" },
             { label: "About Us", href: "/about" },
             ...secondaryNav,
           ]} />
