@@ -7,9 +7,25 @@ import {
   Scissors,
   HeartHandshake,
   Users,
+  Package,
+  type LucideIcon,
 } from "lucide-react";
 
-export const services = [
+export type Service = {
+  slug: string;
+  icon: LucideIcon;
+  title: string;
+  short: string;
+  description: string;
+  /** What is included — shown as a checklist on the services page. */
+  highlights?: string[];
+  /** Shown as a badge on the card. Only set where a price has been published. */
+  price?: string;
+  /** Pre-filled WhatsApp enquiry for services that are ordered directly. */
+  enquiry?: string;
+};
+
+export const services: Service[] = [
   {
     slug: "breeding",
     icon: DogIcon,
@@ -21,10 +37,17 @@ export const services = [
   {
     slug: "protection-training",
     icon: ShieldCheck,
-    title: "Protection & Obedience Training",
-    short: "Personal protection, family guarding and obedience programs.",
+    title: "Dog Training",
+    short: "Obedience, family protection and personal-protection programs.",
     description:
       "From basic manners to advanced personal-protection work, our certified handlers deliver structured, force-balanced training for you and your dog.",
+    highlights: [
+      "Obedience and house manners",
+      "Family protection and guarding",
+      "Advanced personal-protection work",
+      "Handler-led sessions for you and your dog",
+    ],
+    enquiry: "Hello Buckingham Kennel, I'd like to enquire about dog training.",
   },
   {
     slug: "veterinary",
@@ -56,7 +79,19 @@ export const services = [
     title: "Grooming & Spa",
     short: "Full grooming, coat care and spa treatments.",
     description:
-      "Keep your companion looking regal with our full grooming services — bathing, de-shedding, nail and coat care by trained groomers.",
+      "Keep your companion looking regal with our full grooming services, carried out by trained groomers.",
+    highlights: ["Bathing and drying", "De-shedding", "Coat care", "Nail care"],
+    enquiry: "Hello Buckingham Kennel, I'd like to book a grooming appointment.",
+  },
+  {
+    slug: "dog-stands",
+    icon: Package,
+    title: "Dog Stands",
+    short: "Dog stands, available to order from the kennel.",
+    description:
+      "Dog stands from Buckingham Kennel, made to the same standard as everything we put our name to. Message us for current availability, sizes and finish, and we will confirm every detail before you commit.",
+    price: "From KES 150,000",
+    enquiry: "Hello Buckingham Kennel, I'd like to order a dog stand. Please send me the details and availability.",
   },
   {
     slug: "stud",
